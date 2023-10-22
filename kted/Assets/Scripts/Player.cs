@@ -35,7 +35,12 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (dialogueUI.IsOpen) return;
+        if (dialogueUI.IsOpen)
+        {
+            rb.velocity = Vector2.zero;
+            ChangeAnimationState(PLAYER_IDLE);
+            return;
+        }
 
         inputHorizontal = Input.GetAxisRaw("Horizontal");
         inputVertical = Input.GetAxisRaw("Vertical");
@@ -44,16 +49,13 @@ public class Player : MonoBehaviour
         {
             Interactable?.Interact(this);
         }
-    }
 
-    private void FixedUpdate()
-    {
         if (inputHorizontal != 0 || inputVertical != 0)
         {
             if (inputHorizontal != 0 && inputVertical != 0)
             {
                 inputHorizontal *= speedLimiter;
-                inputVertical *= speedLimiter; 
+                inputVertical *= speedLimiter;
 
             }
             rb.velocity = new Vector2(inputHorizontal * walkSpeed, inputVertical * walkSpeed);

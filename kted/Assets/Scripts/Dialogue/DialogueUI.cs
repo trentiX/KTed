@@ -28,13 +28,32 @@ public class DialogueUI : MonoBehaviour
     {
         foreach(string dialogue in dialogueObject.Dialogue)
         {
-            yield return typewriterEffect.Run(dialogue, textLabel);
+            yield return RunTypingEffect(dialogue);
+
+            textLabel.text = dialogue;
+
+            yield return null;
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
         }
 
         CloseDialogueBox();
     }
 
+    private IEnumerator RunTypingEffect(string dialogue)
+    {
+        typewriterEffect.Run(dialogue, textLabel);
+
+        while (typewriterEffect.IsRunning)
+        {
+            yield return null;
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                typewriterEffect.Stop();
+            }
+        }
+    }
+         
     private void CloseDialogueBox()
     {
         IsOpen = false;
