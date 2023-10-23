@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
 
     // Player
-    float walkSpeed = 4f;
+    float walkSpeed = 3f;
     float speedLimiter = 0.7f;
     float inputHorizontal;
     float inputVertical;
@@ -21,11 +21,13 @@ public class Player : MonoBehaviour
     // Animations and states
     Animator animator;
     string currentState;
-    const string PLAYER_LEFT = "Player_Left";
-    const string PLAYER_RIGHT = "Player_Right";
-    const string PLAYER_UP = "Player_Up";
-    const string PLAYER_DOWN = "Player_Down";
-    const string PLAYER_IDLE = "Player_Idle";
+    string lastDirection;
+    const string PLAYER_SIDE_WALK = "Player_Side_Walk";
+    const string PLAYER_UP_WALK = "Player_Up_Walk";
+    const string PLAYER_DOWN_WALK = "Player_Down_Walk";
+    const string PLAYER_SIDE_IDLE = "Player_Side_Idle";
+    const string PLAYER_UP_IDLE = "Player_Up_Idle";
+    const string PLAYER_DOWN_IDLE = "Player_Down_Idle";
 
     private void Start()
     {
@@ -38,7 +40,7 @@ public class Player : MonoBehaviour
         if (dialogueUI.IsOpen)
         {
             rb.velocity = Vector2.zero;
-            ChangeAnimationState(PLAYER_IDLE);
+            ChangeAnimationState(IdleAnimation());
             return;
         }
 
@@ -62,25 +64,31 @@ public class Player : MonoBehaviour
 
             if (inputHorizontal > 0)
             {
-                ChangeAnimationState(PLAYER_RIGHT);
+                lastDirection = "side";
+                GetComponent<SpriteRenderer>().flipX = true;
+                ChangeAnimationState(PLAYER_SIDE_WALK);
             }
             else if (inputHorizontal < 0)
             {
-                ChangeAnimationState(PLAYER_LEFT);
-            }
-            else if (inputVertical > 0)
-            {
-                ChangeAnimationState(PLAYER_UP);
+                lastDirection = "side";
+                GetComponent<SpriteRenderer>().flipX = false; 
+                ChangeAnimationState(PLAYER_SIDE_WALK);
             }
             else if (inputVertical < 0)
             {
-                ChangeAnimationState(PLAYER_DOWN);
+                lastDirection = "down";
+                ChangeAnimationState(PLAYER_DOWN_WALK);
+            }
+            else if (inputVertical > 0)
+            {
+                lastDirection = "up";
+                ChangeAnimationState(PLAYER_UP_WALK);
             }
         }
         else
         {
             rb.velocity = new Vector2(0f, 0f);
-            ChangeAnimationState(PLAYER_IDLE);
+            ChangeAnimationState(IdleAnimation());
         }
     }
 
@@ -91,5 +99,20 @@ public class Player : MonoBehaviour
         animator.Play(newState);
 
         currentState = newState;
+    }
+
+    private string IdleAnimation()
+    {
+        switch(lastDirection)
+        {
+            case "side":
+                return PLAYER_SIDE_IDLE;
+            case "up":
+                return PLAYER_UP_IDLE;
+            case "down":
+                return PLAYER_DOWN_IDLE;
+            default:
+                return null;
+        }
     }
 }
