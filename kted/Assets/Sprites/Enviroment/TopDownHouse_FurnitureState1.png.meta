@@ -279,10 +279,10 @@ TextureImporter:
       name: TopDownHouse_FurnitureState1_7
       rect:
         serializedVersion: 2
-        x: 167
-        y: 175
-        width: 33
-        height: 49
+        x: 168
+        y: 176
+        width: 32
+        height: 48
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -302,7 +302,7 @@ TextureImporter:
         serializedVersion: 2
         x: 160
         y: 257
-        width: 16
+        width: 32
         height: 29
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -386,7 +386,7 @@ TextureImporter:
         serializedVersion: 2
         x: 113
         y: 224
-        width: 14
+        width: 46
         height: 31
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -450,7 +450,7 @@ TextureImporter:
         x: 70
         y: 130
         width: 22
-        height: 46
+        height: 94
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -472,8 +472,8 @@ TextureImporter:
         y: 177
         width: 46
         height: 45
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.4928579, y: 0.032739937}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -661,8 +661,8 @@ TextureImporter:
         y: 97
         width: 10
         height: 23
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.53285295, y: 0.071465865}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -678,10 +678,10 @@ TextureImporter:
       name: TopDownHouse_FurnitureState1_26
       rect:
         serializedVersion: 2
-        x: 88
-        y: 96
-        width: 50
-        height: 30
+        x: 24
+        y: 32
+        width: 184
+        height: 95
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -701,7 +701,7 @@ TextureImporter:
         serializedVersion: 2
         x: 144
         y: 96
-        width: 31
+        width: 64
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -724,8 +724,8 @@ TextureImporter:
         y: 36
         width: 22
         height: 55
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5298675, y: 0.529867}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
