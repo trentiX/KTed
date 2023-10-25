@@ -65,13 +65,13 @@ public class Player : MonoBehaviour
             if (inputHorizontal > 0)
             {
                 lastDirection = "side";
-                GetComponent<SpriteRenderer>().flipX = true;
+                GetComponent<SpriteRenderer>().flipX = false;
                 ChangeAnimationState(PLAYER_SIDE_WALK);
             }
             else if (inputHorizontal < 0)
             {
                 lastDirection = "side";
-                GetComponent<SpriteRenderer>().flipX = false; 
+                GetComponent<SpriteRenderer>().flipX = true; 
                 ChangeAnimationState(PLAYER_SIDE_WALK);
             }
             else if (inputVertical < 0)
