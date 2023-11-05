@@ -13,6 +13,11 @@ public class Button : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void exitGame()
+    {
+        Application.Quit();
+    }
+
     public void ShowSettings()
     {
         blackImage.SetActive(true);
