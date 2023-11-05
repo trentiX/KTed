@@ -4,8 +4,10 @@ public class Player : MonoBehaviour
 {
 
     [SerializeField] private DialogueUI dialogueUI;
+    [SerializeField] private AudioManager audioManager;
 
     public DialogueUI DialogueUI => dialogueUI;
+    public AudioManager AudioManager => audioManager;
 
     public IInteractable Interactable { get; set; }
 

@@ -6,9 +6,9 @@ public class MusicPlayer : MonoBehaviour
 {
     public Transform listenerTransform;
     public AudioSource audioSource;
-    public float minDist=1;
-    public float maxDist=400;
- 
+    public float minDist = 1;
+    public float maxDist = 400;
+    
     void Update()
     {
         float dist = Vector3.Distance(transform.position, listenerTransform.position);

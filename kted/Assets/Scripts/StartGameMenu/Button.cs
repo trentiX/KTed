@@ -5,9 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class Button : MonoBehaviour
 {
-    //Components
-    public GameObject blackImage;
-    public GameObject settingsMenu;
     public void startGame()
     {
         SceneManager.LoadScene(1);
@@ -16,17 +13,5 @@ public class Button : MonoBehaviour
     public void exitGame()
     {
         Application.Quit();
-    }
-
-    public void ShowSettings()
-    {
-        blackImage.SetActive(true);
-        settingsMenu.SetActive(true);
-    }
-
-    public void HideSettigns()
-    {
-        blackImage.SetActive(false);
-        settingsMenu.SetActive(false);
     }
 }
