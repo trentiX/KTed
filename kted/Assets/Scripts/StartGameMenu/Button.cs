@@ -5,12 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Button : MonoBehaviour
 {
-    public void startGame()
-    {
-        SceneManager.LoadScene(1);
-    }
-
-    public void exitGame()
+    public void ExitGame()
     {
         Application.Quit();
     }
