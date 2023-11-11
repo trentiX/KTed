@@ -26,14 +26,30 @@ public class DialogueUI : MonoBehaviour
 
     private IEnumerator StepThroughDialogue(DialogueObject dialogueObject)
     {
-        foreach(string dialogue in dialogueObject.Dialogue)
+        if (ChooseLanguageScript.Language == "russian")
         {
-            yield return RunTypingEffect(dialogue);
+            foreach(string dialogue in dialogueObject.DialogueRus)
+            {
+                yield return RunTypingEffect(dialogue);
 
-            textLabel.text = dialogue;
+                textLabel.text = dialogue;
 
-            yield return null;
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+                yield return null;
+                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+            }
+        }
+        
+        else if (ChooseLanguageScript.Language == "kazakh")
+        {
+            foreach(string dialogue in dialogueObject.DialogueKaz)
+            {
+                yield return RunTypingEffect(dialogue);
+
+                textLabel.text = dialogue;
+
+                yield return null;
+                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+            }
         }
 
         CloseDialogueBox();

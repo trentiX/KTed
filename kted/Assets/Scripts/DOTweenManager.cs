@@ -25,17 +25,8 @@ public class DOTweenManager : MonoBehaviour
 
     private void Awake()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 1)
-        {
-            _circle = Instantiate(prefab, prefabMother.position, prefabMother.rotation, prefabMother);
-            _circle.transform.localScale = new Vector3(21f, 21f, 21f);
-        }
-        
-        else if (SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            _circle = Instantiate(prefab, prefabMother.position, prefabMother.rotation, prefabMother);
-            _circle.transform.localScale = new Vector3(0f, 0f, 0f);
-        }
+        _circle = Instantiate(prefab, prefabMother.position, prefabMother.rotation, prefabMother);
+        _circle.transform.localScale = new Vector3(21f, 21f, 21f);
         
         foreach (var key in keys)
         {
@@ -50,11 +41,8 @@ public class DOTweenManager : MonoBehaviour
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 1)
-        {
-            _circle.transform.DOScale(new Vector3(0f, 0f, 0f), CircleAnimTime).SetEase(Ease.InOutQuint);
-            Destroy(prefab, CircleAnimTime);
-        }
+        _circle.transform.DOScale(new Vector3(0f, 0f, 0f), CircleAnimTime).SetEase(Ease.InOutQuint);
+        Destroy(prefab, CircleAnimTime);
         
         foreach (var key in keys)
         {
