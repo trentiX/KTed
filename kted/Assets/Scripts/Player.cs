@@ -1,11 +1,12 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
 
     [SerializeField] private DialogueUI dialogueUI;
     [SerializeField] private AudioManager audioManager;
-
+    [SerializeField] private GameObject panel;
     public DialogueUI DialogueUI => dialogueUI;
     public AudioManager AudioManager => audioManager;
 
@@ -39,6 +40,31 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Pause.isOpen = true;
+            Time.timeScale = 0f;
+        
+            if (panel.activeSelf == true)
+            {
+                panel.SetActive(false);
+                Pause.isOpen = false;
+                Time.timeScale = 1f;
+            }
+            else
+            {
+                Pause.isOpen = true;
+                panel.SetActive(true);
+            }
+        }
+        
+        if (Pause.isOpen)
+        {
+            rb.velocity = Vector2.zero;
+            ChangeAnimationState(IdleAnimation());
+            return;
+        }
+        
         if (dialogueUI.IsOpen)
         {
             rb.velocity = Vector2.zero;
@@ -53,7 +79,7 @@ public class Player : MonoBehaviour
         {
             Interactable?.Interact(this);
         }
-
+        
         if (inputHorizontal != 0 || inputVertical != 0)
         {
             if (inputHorizontal != 0 && inputVertical != 0)

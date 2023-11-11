@@ -1,11 +1,15 @@
 using System.Collections;
+using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using Image = UnityEngine.UI.Image;
 
 public class DialogueUI : MonoBehaviour
 {
     [SerializeField] private GameObject dialogueBox;
     [SerializeField] private TMP_Text textLabel;
+    [SerializeField] private GameObject icon;
     
     public bool IsOpen { get; private set; }
 
@@ -19,6 +23,7 @@ public class DialogueUI : MonoBehaviour
 
     public void showDialogue(DialogueObject dialogueObject)
     {
+        icon.GetComponent<Image>().sprite = dialogueObject.Sprite;
         IsOpen = true;
         dialogueBox.SetActive(true);
         StartCoroutine(StepThroughDialogue(dialogueObject));
