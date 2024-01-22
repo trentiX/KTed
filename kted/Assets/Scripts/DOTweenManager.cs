@@ -13,7 +13,8 @@ public class DOTweenManager : MonoBehaviour
     //components
     [SerializeField] private SpriteRenderer[] keys;
     [SerializeField] private TextMeshProUGUI[] instructions;
-    [SerializeField] private GameObject prefab;
+    [SerializeField] private CanvasGroup prefab;
+    [SerializeField] private GameObject prefabObject;
     [SerializeField] private Transform prefabMother;
     
     //keys
@@ -21,13 +22,11 @@ public class DOTweenManager : MonoBehaviour
     
     //circle
     private GameObject _circle;
-    private const float CircleAnimTime = 2.5f;
+    private const float CircleAnimTime = 2;
 
     private void Awake()
     {
-        _circle = Instantiate(prefab, prefabMother.position, prefabMother.rotation, prefabMother);
-        _circle.transform.localScale = new Vector3(21f, 21f, 21f);
-        
+        prefabObject.SetActive(true);
         foreach (var key in keys)
         {
             key.color = new Color(1f, 1f ,1,0f);
@@ -41,8 +40,7 @@ public class DOTweenManager : MonoBehaviour
 
     private void Start()
     {
-        _circle.transform.DOScale(new Vector3(0f, 0f, 0f), CircleAnimTime).SetEase(Ease.InOutQuint);
-        Destroy(prefab, CircleAnimTime);
+        prefab.DOFade(0, 2).SetEase(Ease.InOutQuint);
         
         foreach (var key in keys)
         {
@@ -57,10 +55,9 @@ public class DOTweenManager : MonoBehaviour
     
     public void StartGame()
     {
-        _circle.transform.DOScale(new Vector3(21f, 21f, 21f), CircleAnimTime).SetEase(Ease.InOutQuint).OnComplete(() =>
+        prefab.DOFade(1, 2).SetEase(Ease.InOutQuint).OnComplete(() =>
         {
             SceneManager.LoadScene(1);
         }); 
-        
     }
 }

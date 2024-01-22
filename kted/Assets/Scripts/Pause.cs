@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class Pause : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
+    [SerializeField] private CanvasGroup prefab;
+
     public static bool isOpen = false;
     
     public void GoToHome()
     {
         isOpen = false;
         Time.timeScale = 1f;
-        SceneManager.LoadScene(0);
+        
+        prefab.DOFade(1, 2).SetEase(Ease.InOutQuint).OnComplete(() =>
+        {
+            SceneManager.LoadScene(0);
+        }); 
     }
     
     public void Resume()
@@ -20,5 +27,10 @@ public class Pause : MonoBehaviour
         isOpen = false;
         panel.SetActive(false);
         Time.timeScale = 1f;
+    }
+
+    public void Library()
+    {
+        
     }
 }
