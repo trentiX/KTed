@@ -16,7 +16,7 @@ public class Pause : MonoBehaviour
         isOpen = false;
         Time.timeScale = 1f;
         
-        prefab.DOFade(1, 2).SetEase(Ease.InOutQuint).OnComplete(() =>
+        prefab.DOFade(1, 2).OnComplete(() =>
         {
             SceneManager.LoadScene(0);
         }); 
@@ -27,10 +27,5 @@ public class Pause : MonoBehaviour
         isOpen = false;
         panel.SetActive(false);
         Time.timeScale = 1f;
-    }
-
-    public void Library()
-    {
-        
     }
 }
