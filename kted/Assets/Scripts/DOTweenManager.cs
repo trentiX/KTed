@@ -14,12 +14,12 @@ public class DOTweenManager : MonoBehaviour
 
     private void Start()
     {
-        prefab.DOFade(0, 2);
+        prefab.DOFade(0, 2).SetEase(Ease.InCubic);
     }
     
     public void StartGame()
     {
-        prefab.DOFade(1, 2).OnComplete(() =>
+        prefab.DOFade(1, 2).SetEase(Ease.OutCubic).OnComplete(() =>
         {
             SceneManager.LoadScene(1);
         }); 

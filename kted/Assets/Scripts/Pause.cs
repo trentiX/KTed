@@ -16,7 +16,7 @@ public class Pause : MonoBehaviour
         isOpen = false;
         Time.timeScale = 1f;
         
-        prefab.DOFade(1, 2).OnComplete(() =>
+        prefab.DOFade(1, 2).SetEase(Ease.OutCubic).OnComplete(() =>
         {
             SceneManager.LoadScene(0);
         }); 
