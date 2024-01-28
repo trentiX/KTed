@@ -14,6 +14,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioSource ambientSource;
     [SerializeField] List<AudioClip> musicClips = new List<AudioClip>();
     [SerializeField] List<AudioClip> sfxClips = new List<AudioClip>();
+    [SerializeField] List<AudioClip> easterEggClips = new List<AudioClip>();
     [SerializeField] List<AudioClip> ambientClips = new List<AudioClip>();
 
     public const string MUSIC_KEY = "musicVolume";
@@ -23,7 +24,7 @@ public class AudioManager : MonoBehaviour
     {
         if (instance == null)
         {
-            instance = null;
+            instance = this;
             
             DontDestroyOnLoad(gameObject);
         }
@@ -40,6 +41,12 @@ public class AudioManager : MonoBehaviour
         sfxSource.PlayOneShot(clip);
     }
 
+    public void EasterEggSound()
+    {
+        AudioClip clip = easterEggClips[UnityEngine.Random.Range(0, easterEggClips.Count)];
+        
+        sfxSource.PlayOneShot(clip);
+    }
     public void PlayMusic()
     {
         AudioClip clip = musicClips[UnityEngine.Random.Range(0, musicClips.Count)];

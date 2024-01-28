@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -13,12 +14,12 @@ public class EasterEggPickUp : MonoBehaviour
             EasterEggManager easterEggManager = FindObjectOfType<EasterEggManager>();
             if (easterEggManager != null)
             {
+                AudioManager.instance.EasterEggSound();
                 easterEggManager.IncreaseEasterEggCount();
                 GameObject fx = Instantiate(pickUpFX, transform.position, quaternion.identity);
-                Destroy(gameObject); // Опционально: уничтожить пасхалку после подбора
+                Destroy(gameObject);
                 Destroy(fx, 1.9f);
             }
         }
     }
-
 }
