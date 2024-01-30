@@ -5431,9 +5431,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 67e9810180767c84ab0578341497ab51, type: 3}
     - target: {fileID: 8880655786540381257, guid: 2cd5dd602ec0d8248946210cc270b2db, type: 3}
+      propertyPath: easterEggClips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8880655786540381257, guid: 2cd5dd602ec0d8248946210cc270b2db, type: 3}
       propertyPath: ambientClips.Array.data[0]
       value: 
       objectReference: {fileID: 8300000, guid: bb592054225900948b0f392a3139faed, type: 3}
+    - target: {fileID: 8880655786540381257, guid: 2cd5dd602ec0d8248946210cc270b2db, type: 3}
+      propertyPath: easterEggClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 9f69cda84873f154db4699922b27f500, type: 3}
     - target: {fileID: 9131074822745564119, guid: 2cd5dd602ec0d8248946210cc270b2db, type: 3}
       propertyPath: m_Name
       value: AudioManager

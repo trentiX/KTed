@@ -6,8 +6,6 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager instance;
-
     [SerializeField] private AudioMixer mixer;
     [SerializeField] AudioSource musicSource;
     [SerializeField] AudioSource sfxSource;
@@ -20,19 +18,38 @@ public class AudioManager : MonoBehaviour
     public const string MUSIC_KEY = "musicVolume";
     public const string SFX_KEY = "sfxVolume";
     public const string AMBIENT_KEY = "ambientVolume";
-    private void Awake()
+
+    private static AudioManager _instance;
+
+    public static AudioManager Instance
     {
-        if (instance == null)
+        get
         {
-            instance = this;
-            
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<AudioManager>();
+
+                if (_instance == null)
+                {
+                    GameObject obj = new GameObject("AudioManager");
+                    _instance = obj.AddComponent<AudioManager>();
+                }
+            }
+            return _instance;
         }
     }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
 
     public void SFXSound()
     {

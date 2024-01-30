@@ -15,7 +15,7 @@ public class EasterEggPickUp : MonoBehaviour
             EasterEggManager easterEggManager = FindObjectOfType<EasterEggManager>();
             if (easterEggManager != null)
             {
-                AudioManager.instance.EasterEggSound();
+                AudioManager.Instance.EasterEggSound();
                 easterEggManager.IncreaseEasterEggCount();
                 EasterEggPosition();
             }
