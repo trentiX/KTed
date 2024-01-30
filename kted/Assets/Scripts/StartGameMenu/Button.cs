@@ -9,4 +9,9 @@ public class Button : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void Telegram()
+    {
+        Application.OpenURL("https://t.me/KTEDchat");
+    }
 }
