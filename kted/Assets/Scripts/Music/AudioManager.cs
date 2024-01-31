@@ -39,18 +39,6 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
-
-
     public void SFXSound()
     {
         AudioClip clip = sfxClips[UnityEngine.Random.Range(0, sfxClips.Count)];
