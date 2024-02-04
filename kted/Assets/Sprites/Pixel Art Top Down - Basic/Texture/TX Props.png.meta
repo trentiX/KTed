@@ -20,11 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -63,6 +64,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
   cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
@@ -75,6 +77,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -87,6 +90,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -99,6 +103,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -111,6 +116,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -123,6 +129,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -1252,62 +1259,61 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      TX Props_50: -379271338
-      TX Props_10: -960563288
       TX Props_0: -1904066314
-      TX Props_5: -530805185
-      TX Props_4: 1629478476
+      TX Props_1: 1367282825
+      TX Props_10: -960563288
+      TX Props_11: 1702219908
+      TX Props_12: -428108058
+      TX Props_13: -20245424
+      TX Props_14: 2124042613
+      TX Props_15: -2091375944
+      TX Props_16: 230065696
+      TX Props_17: 1984359287
+      TX Props_18: 1898417526
+      TX Props_19: -677104221
+      TX Props_2: -703491594
+      TX Props_20: -992577742
       TX Props_21: -1755353058
+      TX Props_22: -1908870422
+      TX Props_23: 483563367
+      TX Props_24: 1093183449
+      TX Props_25: -404811230
+      TX Props_26: -1571885820
+      TX Props_27: 266815884
+      TX Props_28: 1537387173
+      TX Props_29: 175479268
+      TX Props_3: 1603583004
+      TX Props_30: 8478888
+      TX Props_31: 486947015
+      TX Props_32: -1594258675
+      TX Props_33: -123939876
+      TX Props_34: -1218036613
+      TX Props_35: 1381748619
+      TX Props_36: -798704317
+      TX Props_37: -135696143
+      TX Props_38: 1869222122
+      TX Props_39: 550373360
+      TX Props_4: 1629478476
+      TX Props_40: -1029638173
+      TX Props_41: 1591789580
+      TX Props_42: -1909967981
+      TX Props_43: 966593262
+      TX Props_44: 1656178471
+      TX Props_45: 1335836650
+      TX Props_46: -2124350059
       TX Props_47: 1073276121
       TX Props_48: -1652332285
-      TX Props_32: -1594258675
-      TX Props_34: -1218036613
-      TX Props_42: -1909967981
-      TX Props_52: -410160458
-      TX Props_36: -798704317
-      TX Props_6: -910311875
-      TX Props_29: 175479268
-      TX Props_38: 1869222122
-      TX Props_22: -1908870422
-      TX Props_45: 1335836650
       TX Props_49: -1425431943
-      TX Props_33: -123939876
-      TX Props_19: -677104221
-      TX Props_30: 8478888
-      TX Props_26: -1571885820
-      TX Props_37: -135696143
-      TX Props_1: 1367282825
-      TX Props_43: 966593262
-      TX Props_24: 1093183449
-      TX Props_41: 1591789580
-      TX Props_14: 2124042613
-      TX Props_20: -992577742
-      TX Props_39: 550373360
-      TX Props_31: 486947015
-      TX Props_13: -20245424
-      TX Props_9: -1657320491
-      TX Props_8: 1243700498
-      TX Props_44: 1656178471
-      TX Props_3: 1603583004
-      TX Props_35: 1381748619
-      TX Props_28: 1537387173
-      TX Props_18: 1898417526
-      TX Props_16: 230065696
-      TX Props_40: -1029638173
-      TX Props_2: -703491594
-      TX Props_11: 1702219908
-      TX Props_25: -404811230
-      TX Props_23: 483563367
-      TX Props_15: -2091375944
-      TX Props_17: 1984359287
-      TX Props_46: -2124350059
-      TX Props_27: 266815884
-      TX Props_12: -428108058
-      TX Props_7: -619002198
+      TX Props_5: -530805185
+      TX Props_50: -379271338
       TX Props_51: -854649713
-  spritePackingTag: 
+      TX Props_52: -410160458
+      TX Props_6: -910311875
+      TX Props_7: -619002198
+      TX Props_8: 1243700498
+      TX Props_9: -1657320491
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
