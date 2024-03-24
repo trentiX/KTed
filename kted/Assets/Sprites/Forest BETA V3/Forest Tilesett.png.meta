@@ -20,11 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -47,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -63,6 +64,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
   cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
@@ -75,6 +77,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -87,6 +90,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -99,6 +103,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -111,6 +116,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -123,6 +129,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -580,30 +587,29 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Forest Tilesett_18: 676742869
-      Forest Tilesett_12: -734146105
-      Forest Tilesett_17: -634590988
-      Forest Tilesett_19: 1942130433
-      Forest Tilesett_16: -659157568
-      Forest Tilesett_1: -1178275574
-      Forest Tilesett_20: -1737792472
-      Forest Tilesett_5: 799959932
-      Forest Tilesett_3: -2146786428
       Forest Tilesett_0: -197237945
-      Forest Tilesett_9: 1404122819
-      Forest Tilesett_6: 617956918
-      Forest Tilesett_14: -192208893
-      Forest Tilesett_4: 409765895
-      Forest Tilesett_13: -830736931
+      Forest Tilesett_1: -1178275574
       Forest Tilesett_10: 939322693
       Forest Tilesett_11: -1185769000
-      Forest Tilesett_2: -1872373000
+      Forest Tilesett_12: -734146105
+      Forest Tilesett_13: -830736931
+      Forest Tilesett_14: -192208893
       Forest Tilesett_15: -733165683
+      Forest Tilesett_16: -659157568
+      Forest Tilesett_17: -634590988
+      Forest Tilesett_18: 676742869
+      Forest Tilesett_19: 1942130433
+      Forest Tilesett_2: -1872373000
+      Forest Tilesett_20: -1737792472
+      Forest Tilesett_3: -2146786428
+      Forest Tilesett_4: 409765895
+      Forest Tilesett_5: 799959932
+      Forest Tilesett_6: 617956918
       Forest Tilesett_7: 1319632769
       Forest Tilesett_8: 1430640861
-  spritePackingTag: 
+      Forest Tilesett_9: 1404122819
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
