@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
 
     // Player
-    float walkSpeed = 3f;
+    float walkSpeed = 3.3f;
     float speedLimiter = 0.7f;
     float inputHorizontal;
     float inputVertical;
