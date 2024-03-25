@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     public DialogueUI DialogueUI => dialogueUI;
     public AudioManager AudioManager => audioManager;
 
+    private CameraController _cameraController;
+
     public IInteractable Interactable { get; set; }
 
     // Components
@@ -33,6 +35,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        _cameraController = FindObjectOfType<CameraController>(); // Find and assign the CameraController
         rb = GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
     }
@@ -65,6 +68,13 @@ public class Player : MonoBehaviour
         }
         
         if (dialogueUI.IsOpen)
+        {
+            rb.velocity = Vector2.zero;
+            ChangeAnimationState(IdleAnimation());
+            return;
+        }
+
+        if (_cameraController.transition)
         {
             rb.velocity = Vector2.zero;
             ChangeAnimationState(IdleAnimation());
