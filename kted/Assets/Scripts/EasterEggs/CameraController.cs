@@ -27,6 +27,8 @@ public class CameraController : MonoBehaviour
     IEnumerator TransitionCoroutine()
     {
         transition = true;
+        
+        yield return new WaitForSeconds(0.25f);
 
         // Transition camera to fixed position
         gameObject.transform.position = new Vector3(0, 0, -10);
