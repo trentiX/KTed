@@ -1,7 +1,5 @@
 using System.Collections;
-using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using Image = UnityEngine.UI.Image;
 

@@ -1,11 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
 public class EasterEggPickUp : MonoBehaviour
 {
+    
     [SerializeField] private GameObject pickUpFX;
     [SerializeField] private GameObject pickedPoint;
     private void OnTriggerEnter2D(Collider2D other)

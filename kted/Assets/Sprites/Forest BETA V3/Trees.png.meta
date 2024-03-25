@@ -412,12 +412,12 @@ TextureImporter:
       name: Trees_13
       rect:
         serializedVersion: 2
-        x: 39
+        x: 37
         y: 168
         width: 144
         height: 147
       alignment: 9
-      pivot: {x: 0.50418276, y: 0.18438627}
+      pivot: {x: 0.52441996, y: 0.10259324}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
