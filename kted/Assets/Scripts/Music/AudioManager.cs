@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -18,6 +19,8 @@ public class AudioManager : MonoBehaviour
     public const string AMBIENT_KEY = "ambientVolume";
 
     private static AudioManager _instance;
+    private NowPlaying _nowPlaying;
+    private string songName;
 
     public static AudioManager Instance
     {
@@ -37,6 +40,12 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+
+    private void Awake()
+    {
+        _nowPlaying = FindObjectOfType<NowPlaying>();
+    }
+
     public void SFXSound()
     {
         AudioClip clip = sfxClips[UnityEngine.Random.Range(0, sfxClips.Count)];
@@ -50,9 +59,33 @@ public class AudioManager : MonoBehaviour
         
         sfxSource.PlayOneShot(clip);
     }
-    public void PlayMusic()
+
+    public void PlayFirstSong()
     {
-        AudioClip clip = musicClips[UnityEngine.Random.Range(0, musicClips.Count)];
+        songName = "Амире Кашаубаев Балкадиша";
+        AudioClip clip = musicClips[0];
+
+        if (musicSource.isPlaying)
+        {
+            return;
+        }
+        
+        _nowPlaying.nowPlayingAnim(songName);
+        musicSource.PlayOneShot(clip);
+    }
+    public void PlaySecSong()
+    {
+        AudioClip clip = musicClips[1];
+
+        if (musicSource.isPlaying)
+        {
+            return;
+        }
+        musicSource.PlayOneShot(clip);
+    }
+    public void PlayThirdSong()
+    {
+        AudioClip clip = musicClips[2];
 
         if (musicSource.isPlaying)
         {

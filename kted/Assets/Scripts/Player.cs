@@ -5,8 +5,10 @@ public class Player : MonoBehaviour
 
     [SerializeField] private DialogueUI dialogueUI;
     [SerializeField] private AudioManager audioManager;
+    [SerializeField] private MusicUI musicUI;
     [SerializeField] private GameObject panel;
     public DialogueUI DialogueUI => dialogueUI;
+    public MusicUI MusicUI => musicUI;
     public AudioManager AudioManager => audioManager;
 
     private CameraController _cameraController;
@@ -67,7 +69,7 @@ public class Player : MonoBehaviour
             return;
         }
         
-        if (dialogueUI.IsOpen)
+        if (dialogueUI.DialogueOpen || musicUI.MusicOpen)
         {
             rb.velocity = Vector2.zero;
             ChangeAnimationState(IdleAnimation());

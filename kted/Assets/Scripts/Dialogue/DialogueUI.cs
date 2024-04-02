@@ -9,7 +9,7 @@ public class DialogueUI : MonoBehaviour
     [SerializeField] private TMP_Text textLabel;
     [SerializeField] private GameObject icon;
     
-    public bool IsOpen { get; private set; }
+    public bool DialogueOpen { get; private set; }
 
     private TypewriterEffect typewriterEffect;
 
@@ -22,7 +22,7 @@ public class DialogueUI : MonoBehaviour
     public void showDialogue(DialogueObject dialogueObject)
     {
         icon.GetComponent<Image>().sprite = dialogueObject.Sprite;
-        IsOpen = true;
+        DialogueOpen = true;
         dialogueBox.SetActive(true);
         StartCoroutine(StepThroughDialogue(dialogueObject));
     }
@@ -75,7 +75,7 @@ public class DialogueUI : MonoBehaviour
          
     private void CloseDialogueBox()
     {
-        IsOpen = false;
+        DialogueOpen = false;
         dialogueBox.SetActive(false);
         textLabel.text = string.Empty;
     }
