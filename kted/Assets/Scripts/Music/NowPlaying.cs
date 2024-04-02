@@ -23,11 +23,11 @@ public class NowPlaying : MonoBehaviour
     {
         text.DOFade(0, 0.01f).SetEase(Ease.OutCubic);
         text.text = "Сейчас играет..." + songName;
-        text.DOFade(1, 2).SetEase(Ease.OutCubic);
+        text.DOFade(1, 3).SetEase(Ease.OutCubic);
 
         yield return new WaitForSeconds(5);
         
-        text.DOFade(0, 2).SetEase(Ease.InCubic).OnComplete(() =>
+        text.DOFade(0, 3).SetEase(Ease.InCubic).OnComplete(() =>
         {
             nowPlaying.SetActive(false);
         }); 
