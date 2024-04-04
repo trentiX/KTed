@@ -5,6 +5,7 @@ public class EasterEggPickUp : MonoBehaviour
 {
     [SerializeField] private GameObject pickUpFX;
     [SerializeField] private GameObject pickedPoint;
+    [SerializeField] private bool music;
     private CameraController _cameraController;
 
     private void Start()
@@ -24,7 +25,14 @@ public class EasterEggPickUp : MonoBehaviour
             if (easterEggManager != null)
             {
                 AudioManager.Instance.EasterEggSound();
-                easterEggManager.IncreaseEasterEggCount();
+                if (music)
+                {
+                    easterEggManager.MusicPlatePickedUp(gameObject);
+                }
+                else
+                {
+                    easterEggManager.IncreaseEasterEggCount();
+                }
                 EasterEggPosition();
             }
         }
