@@ -75,22 +75,28 @@ public class AudioManager : MonoBehaviour
     }
     public void PlaySecSong()
     {
+        songName = "Амире Кашаубаев Ағаш аяқ";
         AudioClip clip = musicClips[1];
 
         if (musicSource.isPlaying)
         {
             return;
         }
+        
+        _nowPlaying.nowPlayingAnim(songName);
         musicSource.PlayOneShot(clip);
     }
     public void PlayThirdSong()
     {
+        songName = "Амире Кашаубаев Канапия";
         AudioClip clip = musicClips[2];
 
         if (musicSource.isPlaying)
         {
             return;
         }
+        
+        _nowPlaying.nowPlayingAnim(songName);
         musicSource.PlayOneShot(clip);
     }
     
