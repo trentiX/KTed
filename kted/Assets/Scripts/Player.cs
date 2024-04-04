@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public DialogueUI DialogueUI => dialogueUI;
     public MusicUI MusicUI => musicUI;
     public AudioManager AudioManager => audioManager;
+    public KeysActivator KeysActivator => KeysActivator;
 
     private CameraController _cameraController;
 
