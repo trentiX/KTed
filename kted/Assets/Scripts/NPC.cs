@@ -9,7 +9,7 @@ public class NPC : MonoBehaviour
     Animator animator;
     const string NPC_IDLE = "NPC_Idle"; 
     const string NPC1_IDLE = "NPC1_Idle"; 
-    const string NPC_IDLE_FRONT = "NPC_Idle_front";
+    const string NPC_IDLE_FRONT = "Akhmet_ToPlayer";
     const string NPC1_IDLE_FRONT = "NPC1_Idle_front";
 
 

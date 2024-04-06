@@ -6,9 +6,11 @@ public class Player : MonoBehaviour
     [SerializeField] private DialogueUI dialogueUI;
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private MusicUI musicUI;
+    [SerializeField] private PictureBoxUI pictureBoxUI;
     [SerializeField] private GameObject panel;
     public DialogueUI DialogueUI => dialogueUI;
     public MusicUI MusicUI => musicUI;
+    public PictureBoxUI PictureBoxUI => pictureBoxUI;
     public AudioManager AudioManager => audioManager;
     public KeysActivator KeysActivator => KeysActivator;
 
@@ -70,7 +72,7 @@ public class Player : MonoBehaviour
             return;
         }
         
-        if (dialogueUI.DialogueOpen || musicUI.MusicOpen)
+        if (dialogueUI.DialogueOpen || musicUI.MusicOpen || pictureBoxUI.PictureOpen)
         {
             rb.velocity = Vector2.zero;
             ChangeAnimationState(IdleAnimation());
