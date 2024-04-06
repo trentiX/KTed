@@ -5,6 +5,7 @@ public class DialogueActivator : MonoBehaviour, IInteractable
     [SerializeField] private DialogueObject dialogueObject;
     [SerializeField] private GameObject prefab;
     [SerializeField] private Transform prefabMother;
+    [SerializeField] private string name;
 
     private GameObject sprite;
 
@@ -32,6 +33,6 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 
     public void Interact(Player player)
     {
-        player.DialogueUI.showDialogue(dialogueObject);
+        player.DialogueUI.showDialogue(dialogueObject, name);
     }
 }

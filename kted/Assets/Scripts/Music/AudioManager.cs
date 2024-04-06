@@ -99,6 +99,11 @@ public class AudioManager : MonoBehaviour
         _nowPlaying.nowPlayingAnim(songName);
         musicSource.PlayOneShot(clip);
     }
+
+    public void StopMusic()
+    {
+        musicSource.Stop();
+    }
     
     public void AmbientSound()
     {

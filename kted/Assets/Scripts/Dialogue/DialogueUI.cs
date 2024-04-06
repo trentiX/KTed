@@ -8,6 +8,8 @@ public class DialogueUI : MonoBehaviour
     [SerializeField] private GameObject dialogueBox;
     [SerializeField] private TMP_Text textLabel;
     [SerializeField] private GameObject icon;
+    [SerializeField] private TextMeshProUGUI text;
+
     
     public bool DialogueOpen { get; private set; }
 
@@ -19,9 +21,10 @@ public class DialogueUI : MonoBehaviour
         CloseDialogueBox();
     }
 
-    public void showDialogue(DialogueObject dialogueObject)
+    public void showDialogue(DialogueObject dialogueObject, string nameOfPerson)
     {
         icon.GetComponent<Image>().sprite = dialogueObject.Sprite;
+        text.text = nameOfPerson;
         DialogueOpen = true;
         dialogueBox.SetActive(true);
         StartCoroutine(StepThroughDialogue(dialogueObject));
