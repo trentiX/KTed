@@ -5,8 +5,9 @@ public class DialogueActivator : MonoBehaviour, IInteractable
     [SerializeField] private DialogueObject dialogueObject;
     [SerializeField] private GameObject prefab;
     [SerializeField] private Transform prefabMother;
-    [SerializeField] private string name;
+    [SerializeField] private string _name;
 
+    public bool Interacted = false;
     private GameObject sprite;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -33,6 +34,7 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 
     public void Interact(Player player)
     {
-        player.DialogueUI.showDialogue(dialogueObject, name);
+        player.DialogueUI.showDialogue(dialogueObject, _name);
+        Interacted = true;
     }
 }

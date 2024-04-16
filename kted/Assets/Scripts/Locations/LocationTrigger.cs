@@ -1,28 +1,34 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LocationTrigger : MonoBehaviour
 {
     [SerializeField] private string LocationName;
     private LocationText _locationText;
-    
+    private Player _player;
+
     private void Awake()
     {
         _locationText = FindObjectOfType<LocationText>();
+        _player = FindObjectOfType<Player>();
     }
     
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-           ShowText(LocationName);
+            ShowText(LocationName);
+            if (_player != null)
+            {
+                _player.location = LocationName;
+            }
         }
     }
 
     private void ShowText(string nameOfLocation)
     {
-        _locationText.locNameAnim(nameOfLocation);
+        if (_locationText != null)
+        {
+            _locationText.locNameAnim(nameOfLocation);
+        }
     }
 }

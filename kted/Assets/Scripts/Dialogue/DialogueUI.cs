@@ -15,10 +15,17 @@ public class DialogueUI : MonoBehaviour
 
     private TypewriterEffect typewriterEffect;
 
+    private LocationsManager _locationsManager;
+
+    private void Awake()
+    {
+        _locationsManager = FindObjectOfType<LocationsManager>();
+    }
+    
     private void Start()
     {
         typewriterEffect = GetComponent<TypewriterEffect>();
-        CloseDialogueBox();
+        CloseDialogueBox(text.text);
     }
 
     public void showDialogue(DialogueObject dialogueObject, string nameOfPerson)
@@ -58,7 +65,7 @@ public class DialogueUI : MonoBehaviour
             }
         }
 
-        CloseDialogueBox();
+        CloseDialogueBox(text.text);
     }
 
     private IEnumerator RunTypingEffect(string dialogue)
@@ -76,10 +83,14 @@ public class DialogueUI : MonoBehaviour
         }
     }
          
-    private void CloseDialogueBox()
+    private void CloseDialogueBox(string nameOfPerson)
     {
         DialogueOpen = false;
         dialogueBox.SetActive(false);
         textLabel.text = string.Empty;
+        if (_locationsManager != null)
+        {
+            _locationsManager.CheckIfCompleted(nameOfPerson);
+        }
     }
 }

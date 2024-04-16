@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     [SerializeField] private MusicUI musicUI;
     [SerializeField] private PictureBoxUI pictureBoxUI;
     [SerializeField] private GameObject panel;
+
+    public string location = "none";
     public DialogueUI DialogueUI => dialogueUI;
     public MusicUI MusicUI => musicUI;
     public PictureBoxUI PictureBoxUI => pictureBoxUI;
