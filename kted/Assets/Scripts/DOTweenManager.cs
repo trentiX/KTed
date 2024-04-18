@@ -15,7 +15,7 @@ public class DOTweenManager : MonoBehaviour
     {
         prefab.DOFade(1, 2).SetEase(Ease.OutCubic).OnComplete(() =>
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(2);
         }); 
     }
 }
