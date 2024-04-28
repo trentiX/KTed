@@ -11,7 +11,7 @@ public class Storage
 
     public Storage()
     {
-        var directory = Application.persistentDataPath + "/saves";
+        var directory = Application.persistentDataPath + "/saves1";
         if (!Directory.Exists(directory))
             Directory.CreateDirectory(directory);
         filePath = directory + "/GameSave.save";
