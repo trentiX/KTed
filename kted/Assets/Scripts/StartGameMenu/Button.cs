@@ -14,4 +14,9 @@ public class Button : MonoBehaviour
     {
         Application.OpenURL("https://t.me/KTEDchat");
     }
+    
+    public void Instagram()
+    {
+        Application.OpenURL("https://www.instagram.com/kted_game/");
+    }
 }
