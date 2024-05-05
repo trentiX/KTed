@@ -14,6 +14,13 @@ public class LocationsManager : MonoBehaviour
     [SerializeField] private DialogueActivator[] AkhmetItems;
     [SerializeField] private DialogueActivator[] AmreItems;
     [SerializeField] private DialogueActivator[] AlikhanItems;
+    [SerializeField] private DialogueActivator[] KazhimukanItems;
+    [SerializeField] private DialogueActivator[] DinmukhamedItems;
+    [SerializeField] private DialogueActivator[] BaurzhanItems;
+    [SerializeField] private DialogueActivator[] ErmukhanItems;
+    [SerializeField] private DialogueActivator[] JumabekItems;
+    [SerializeField] private DialogueActivator[] MukhtarItems;
+
     [SerializeField] private AudioSource _audioSource;
 
     private void Awake()
@@ -23,6 +30,12 @@ public class LocationsManager : MonoBehaviour
         stationCompletionStatus.Add("Ахмет Байтурсынов", (AkhmetItems, false));
         stationCompletionStatus.Add("Амре Кашаубаев", (AmreItems, false));
         stationCompletionStatus.Add("Алихан Бокейханов", (AlikhanItems, false));
+        stationCompletionStatus.Add("Ермухан Бекмаханов", (ErmukhanItems, false));
+        stationCompletionStatus.Add("Бауыржан Момышулы", (BaurzhanItems, false));
+        stationCompletionStatus.Add("Кажымукан Мунайтпасов", (KazhimukanItems, false));
+        stationCompletionStatus.Add("Динмухамед Кунаев", (DinmukhamedItems, false));
+        stationCompletionStatus.Add("Жумабек Ташенов", (JumabekItems, false));
+        stationCompletionStatus.Add("Мухтар Ауэзов", (MukhtarItems, false));
     }
 
     public void CheckIfCompleted(string name)
