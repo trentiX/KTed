@@ -99,6 +99,20 @@ public class AudioManager : MonoBehaviour
         _nowPlaying.nowPlayingAnim(songName);
         musicSource.PlayOneShot(clip);
     }
+    
+    public void PlayFourthSong()
+    {
+        songName = "Амре Кашаубаев Үш дос";
+        AudioClip clip = musicClips[3];
+
+        if (musicSource.isPlaying)
+        {
+            return;
+        }
+        
+        _nowPlaying.nowPlayingAnim(songName);
+        musicSource.PlayOneShot(clip);
+    }
 
     public void StopMusic()
     {
