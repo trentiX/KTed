@@ -15,20 +15,7 @@ namespace DataSave
             Load();
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                Save();
-            }
-
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                Load();
-            }
-        }
-
-        private void Save()
+        public void Save()
         {
             _gameData.position = _player.transform.position;
             _storage.Save(_gameData);
