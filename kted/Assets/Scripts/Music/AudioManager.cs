@@ -62,7 +62,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayFirstSong()
     {
-        songName = "Амре Кашаубаев Балкадиша";
+        songName = "Балкадиша";
         AudioClip clip = musicClips[0];
 
         if (musicSource.isPlaying)
@@ -75,7 +75,7 @@ public class AudioManager : MonoBehaviour
     }
     public void PlaySecSong()
     {
-        songName = "Амре Кашаубаев Ағаш аяқ";
+        songName = "Ағаш аяқ";
         AudioClip clip = musicClips[1];
 
         if (musicSource.isPlaying)
@@ -88,7 +88,7 @@ public class AudioManager : MonoBehaviour
     }
     public void PlayThirdSong()
     {
-        songName = "Амре Кашаубаев Дударай";
+        songName = "Дударай";
         AudioClip clip = musicClips[2];
 
         if (musicSource.isPlaying)
@@ -102,7 +102,7 @@ public class AudioManager : MonoBehaviour
     
     public void PlayFourthSong()
     {
-        songName = "Амре Кашаубаев Үш дос";
+        songName = "Үш дос";
         AudioClip clip = musicClips[3];
 
         if (musicSource.isPlaying)
