@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using Image = UnityEngine.UI.Image;
 
 public class DialogueUI : MonoBehaviour
@@ -10,7 +13,7 @@ public class DialogueUI : MonoBehaviour
     [SerializeField] private GameObject icon;
     [SerializeField] private TextMeshProUGUI text;
 
-    
+    private bool onButtonCliked = false;
     public bool DialogueOpen { get; private set; }
 
     private TypewriterEffect typewriterEffect;
@@ -48,7 +51,8 @@ public class DialogueUI : MonoBehaviour
                 textLabel.text = dialogue;
 
                 yield return null;
-                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space) || onButtonCliked);
+                onButtonCliked = false;
             }
         }
         
@@ -61,7 +65,8 @@ public class DialogueUI : MonoBehaviour
                 textLabel.text = dialogue;
 
                 yield return null;
-                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space) || onButtonCliked);
+                onButtonCliked = false;
             }
         }
 
@@ -76,9 +81,10 @@ public class DialogueUI : MonoBehaviour
         {
             yield return null;
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) || onButtonCliked)
             {
                 typewriterEffect.Stop();
+                onButtonCliked = false;
             }
         }
     }
@@ -92,5 +98,10 @@ public class DialogueUI : MonoBehaviour
         {
             _locationsManager.CheckIfCompleted(nameOfPerson);
         }
+    }
+    
+    public void OnPointerDown()
+    {
+        onButtonCliked = true;
     }
 }

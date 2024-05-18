@@ -7,6 +7,7 @@ public class MobileInput : MonoBehaviour
     [SerializeField] private RectTransform _joystick, _joystickButton;
     
     private bool _isJoystickHeld;
+    float speedLimiter = 0.7f;
     
     public static float HorizontalAxis { get; set; }
     public static float VerticalAxis { get; set; }
@@ -35,13 +36,21 @@ public class MobileInput : MonoBehaviour
     {
         if (_isJoystickHeld)
         {
-            _joystickButton.position = new Vector3(
-                Mathf.Clamp(Input.mousePosition.x, _joystick.position.x-_joystick.sizeDelta.x, 
-                    _joystick.position.x+_joystick.sizeDelta.x),
-                Mathf.Clamp(Input.mousePosition.y, _joystick.position.y-_joystick.sizeDelta.y, 
-                    _joystick.position.y+_joystick.sizeDelta.y));
-            HorizontalAxis = Mathf.Clamp((_joystickButton.position.x - _joystick.position.x) / _joystick.sizeDelta.x * _sensitivity, -1f, 1f);
-            VerticalAxis = Mathf.Clamp((_joystickButton.position.y - _joystick.position.y) / _joystick.sizeDelta.y * _sensitivity, -1f, 1f);
+            if (HorizontalAxis != 0 || VerticalAxis != 0)
+            {
+                if (HorizontalAxis != 0 && VerticalAxis != 0)
+                {
+                    HorizontalAxis *= speedLimiter;
+                    VerticalAxis *= speedLimiter;
+                }
+                _joystickButton.position = new Vector3(
+                    Mathf.Clamp(Input.mousePosition.x, _joystick.position.x-_joystick.sizeDelta.x, 
+                        _joystick.position.x+_joystick.sizeDelta.x),
+                    Mathf.Clamp(Input.mousePosition.y, _joystick.position.y-_joystick.sizeDelta.y, 
+                        _joystick.position.y+_joystick.sizeDelta.y));
+                HorizontalAxis = Mathf.Clamp((_joystickButton.position.x - _joystick.position.x) / _joystick.sizeDelta.x * _sensitivity, -1f, 1f);
+                VerticalAxis = Mathf.Clamp((_joystickButton.position.y - _joystick.position.y) / _joystick.sizeDelta.y * _sensitivity, -1f, 1f);
+            }
         }
         else
         {

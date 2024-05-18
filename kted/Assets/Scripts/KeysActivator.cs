@@ -4,7 +4,6 @@ using TMPro;
 
 public class KeysActivator : MonoBehaviour, IInteractable
 {
-    [SerializeField] private GameObject[] keys;
     [SerializeField] private TextMeshProUGUI[] text;
     [SerializeField] private GameObject prefab;
     [SerializeField] private Transform prefabMother;
@@ -41,15 +40,6 @@ public class KeysActivator : MonoBehaviour, IInteractable
 
     public void keysAnim()
     {
-        foreach (var key in keys)
-        {
-            // Start fading the key's alpha from 1.0f to 0.6f over a duration of 3 seconds
-            key.GetComponent<SpriteRenderer>().DOFade(0.75f, 3f).OnComplete(() =>
-            {
-                key.GetComponent<SpriteRenderer>().DOFade(0, 5f).SetEase(Ease.InExpo);
-            });
-        }
-
         foreach (var label in text)
         {
             label.DOFade(0.75f, 3).OnComplete(() => { label.DOFade(0, 5f).SetEase(Ease.InExpo);});

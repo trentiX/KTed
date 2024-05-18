@@ -1,14 +1,17 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
     [SerializeField] private DialogueUI dialogueUI;
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private MusicUI musicUI;
     [SerializeField] private PictureBoxUI pictureBoxUI;
     [SerializeField] private GameObject panel;
+    [SerializeField] private Joystick movementJoystick; // Reference to the joystick
 
+    private bool onButtonCliked = false;
     public string location = "none";
     public DialogueUI DialogueUI => dialogueUI;
     public MusicUI MusicUI => musicUI;
@@ -47,13 +50,31 @@ public class Player : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
     }
 
+    public void PauseGame()
+    {
+        Pause.isOpen = true;
+        Time.timeScale = 0f;
+
+        if (panel.activeSelf == true)
+        {
+            panel.SetActive(false);
+            Pause.isOpen = false;
+            Time.timeScale = 1f;
+        }
+        else
+        {
+            Pause.isOpen = true;
+            panel.SetActive(true);
+        }
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Pause.isOpen = true;
             Time.timeScale = 0f;
-        
+
             if (panel.activeSelf == true)
             {
                 panel.SetActive(false);
@@ -66,14 +87,14 @@ public class Player : MonoBehaviour
                 panel.SetActive(true);
             }
         }
-        
+
         if (Pause.isOpen)
         {
             rb.velocity = Vector2.zero;
             ChangeAnimationState(IdleAnimation());
             return;
         }
-        
+
         if (dialogueUI.DialogueOpen || musicUI.MusicOpen || pictureBoxUI.PictureOpen)
         {
             rb.velocity = Vector2.zero;
@@ -88,14 +109,22 @@ public class Player : MonoBehaviour
             return;
         }
 
-        inputHorizontal = Input.GetAxisRaw("Horizontal") + MobileInput.HorizontalAxis;
-        inputVertical = Input.GetAxisRaw("Vertical") + MobileInput.VerticalAxis;
+        // Get input from joystick
+        inputHorizontal = movementJoystick.Horizontal;
+        inputVertical = movementJoystick.Vertical;
 
-        if (Input.GetKeyDown(KeyCode.E))
+        // Keyboard input for testing in the editor (optional)
+#if UNITY_EDITOR
+        if (Input.GetAxisRaw("Horizontal") != 0) inputHorizontal = Input.GetAxisRaw("Horizontal");
+        if (Input.GetAxisRaw("Vertical") != 0) inputVertical = Input.GetAxisRaw("Vertical");
+#endif
+
+        if (Input.GetKeyDown(KeyCode.E) || onButtonCliked)
         {
             Interactable?.Interact(this);
+            onButtonCliked = false;
         }
-        
+
         if (inputHorizontal != 0 || inputVertical != 0)
         {
 #if !UNITY_ANDROID
@@ -116,7 +145,7 @@ public class Player : MonoBehaviour
             else if (inputHorizontal < 0)
             {
                 lastDirection = "side";
-                GetComponent<SpriteRenderer>().flipX = true; 
+                GetComponent<SpriteRenderer>().flipX = true;
                 ChangeAnimationState(PLAYER_SIDE_WALK);
             }
             else if (inputVertical < 0)
@@ -148,7 +177,7 @@ public class Player : MonoBehaviour
 
     private string IdleAnimation()
     {
-        switch(lastDirection)
+        switch (lastDirection)
         {
             case "side":
                 return PLAYER_SIDE_IDLE;
@@ -159,5 +188,10 @@ public class Player : MonoBehaviour
             default:
                 return null;
         }
+    }
+    
+    public void OnPointerDown()
+    {
+        onButtonCliked = true;
     }
 }
