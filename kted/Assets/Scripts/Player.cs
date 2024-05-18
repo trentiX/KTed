@@ -88,8 +88,8 @@ public class Player : MonoBehaviour
             return;
         }
 
-        inputHorizontal = Input.GetAxisRaw("Horizontal");
-        inputVertical = Input.GetAxisRaw("Vertical");
+        inputHorizontal = Input.GetAxisRaw("Horizontal") + MobileInput.HorizontalAxis;
+        inputVertical = Input.GetAxisRaw("Vertical") + MobileInput.VerticalAxis;
 
         if (Input.GetKeyDown(KeyCode.E))
         {

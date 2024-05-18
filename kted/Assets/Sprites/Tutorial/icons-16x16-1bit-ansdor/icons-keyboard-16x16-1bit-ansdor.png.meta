@@ -20,11 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -63,6 +64,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
   cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
@@ -70,11 +72,12 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -87,6 +90,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -99,6 +103,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -111,6 +116,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -123,6 +129,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -1903,93 +1910,92 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      icons-keyboard-16x16-1bit-ansdor_34: -279721723
-      icons-keyboard-16x16-1bit-ansdor_53: 408223870
-      icons-keyboard-16x16-1bit-ansdor_26: 1492491480
-      icons-keyboard-16x16-1bit-ansdor_79: 895763673
-      icons-keyboard-16x16-1bit-ansdor_55: 2105366508
-      icons-keyboard-16x16-1bit-ansdor_82: 1118524218
-      icons-keyboard-16x16-1bit-ansdor_60: -1198680690
-      icons-keyboard-16x16-1bit-ansdor_16: 1783031040
-      icons-keyboard-16x16-1bit-ansdor_35: -644008195
-      icons-keyboard-16x16-1bit-ansdor_66: 2001878831
-      icons-keyboard-16x16-1bit-ansdor_11: 1780156665
-      icons-keyboard-16x16-1bit-ansdor_57: -1758775619
-      icons-keyboard-16x16-1bit-ansdor_27: 194845723
-      icons-keyboard-16x16-1bit-ansdor_21: 2137818334
-      icons-keyboard-16x16-1bit-ansdor_74: 1436141756
-      icons-keyboard-16x16-1bit-ansdor_7: 1188838664
-      icons-keyboard-16x16-1bit-ansdor_54: -532080544
-      icons-keyboard-16x16-1bit-ansdor_38: -1498338771
+      icons-keyboard-16x16-1bit-ansdor_0: -1583022968
       icons-keyboard-16x16-1bit-ansdor_1: 639987656
-      icons-keyboard-16x16-1bit-ansdor_68: -203344295
-      icons-keyboard-16x16-1bit-ansdor_71: 1889506673
       icons-keyboard-16x16-1bit-ansdor_10: 1649018680
-      icons-keyboard-16x16-1bit-ansdor_81: -1509872141
-      icons-keyboard-16x16-1bit-ansdor_8: -1481200768
-      icons-keyboard-16x16-1bit-ansdor_23: 2022612402
+      icons-keyboard-16x16-1bit-ansdor_11: 1780156665
+      icons-keyboard-16x16-1bit-ansdor_12: 1727313801
+      icons-keyboard-16x16-1bit-ansdor_13: -775640395
       icons-keyboard-16x16-1bit-ansdor_14: -1490650970
-      icons-keyboard-16x16-1bit-ansdor_41: -1468380249
-      icons-keyboard-16x16-1bit-ansdor_5: -1836314929
-      icons-keyboard-16x16-1bit-ansdor_25: 503795361
+      icons-keyboard-16x16-1bit-ansdor_15: -415839938
+      icons-keyboard-16x16-1bit-ansdor_16: 1783031040
+      icons-keyboard-16x16-1bit-ansdor_17: 12410305
+      icons-keyboard-16x16-1bit-ansdor_18: 1271793527
+      icons-keyboard-16x16-1bit-ansdor_19: 1860190255
+      icons-keyboard-16x16-1bit-ansdor_2: 1172270859
+      icons-keyboard-16x16-1bit-ansdor_20: -1890321945
+      icons-keyboard-16x16-1bit-ansdor_21: 2137818334
       icons-keyboard-16x16-1bit-ansdor_22: 319191418
+      icons-keyboard-16x16-1bit-ansdor_23: 2022612402
+      icons-keyboard-16x16-1bit-ansdor_24: -33483402
+      icons-keyboard-16x16-1bit-ansdor_25: 503795361
+      icons-keyboard-16x16-1bit-ansdor_26: 1492491480
+      icons-keyboard-16x16-1bit-ansdor_27: 194845723
+      icons-keyboard-16x16-1bit-ansdor_28: -990888258
+      icons-keyboard-16x16-1bit-ansdor_29: -1517914159
+      icons-keyboard-16x16-1bit-ansdor_3: 2101167952
+      icons-keyboard-16x16-1bit-ansdor_30: -1010856980
+      icons-keyboard-16x16-1bit-ansdor_31: -1963332253
+      icons-keyboard-16x16-1bit-ansdor_32: -29230737
+      icons-keyboard-16x16-1bit-ansdor_33: 109287464
+      icons-keyboard-16x16-1bit-ansdor_34: -279721723
+      icons-keyboard-16x16-1bit-ansdor_35: -644008195
+      icons-keyboard-16x16-1bit-ansdor_36: 465765945
+      icons-keyboard-16x16-1bit-ansdor_37: -1156705529
+      icons-keyboard-16x16-1bit-ansdor_38: -1498338771
+      icons-keyboard-16x16-1bit-ansdor_39: 1560975657
+      icons-keyboard-16x16-1bit-ansdor_4: -1193403706
+      icons-keyboard-16x16-1bit-ansdor_40: -1676639142
+      icons-keyboard-16x16-1bit-ansdor_41: -1468380249
+      icons-keyboard-16x16-1bit-ansdor_42: 1247249408
+      icons-keyboard-16x16-1bit-ansdor_43: -101494863
       icons-keyboard-16x16-1bit-ansdor_44: 1952988096
       icons-keyboard-16x16-1bit-ansdor_45: -368923952
-      icons-keyboard-16x16-1bit-ansdor_0: -1583022968
       icons-keyboard-16x16-1bit-ansdor_46: -689440351
-      icons-keyboard-16x16-1bit-ansdor_19: 1860190255
-      icons-keyboard-16x16-1bit-ansdor_52: -1713730249
-      icons-keyboard-16x16-1bit-ansdor_2: 1172270859
-      icons-keyboard-16x16-1bit-ansdor_37: -1156705529
-      icons-keyboard-16x16-1bit-ansdor_4: -1193403706
-      icons-keyboard-16x16-1bit-ansdor_29: -1517914159
-      icons-keyboard-16x16-1bit-ansdor_63: 2001015332
-      icons-keyboard-16x16-1bit-ansdor_32: -29230737
-      icons-keyboard-16x16-1bit-ansdor_12: 1727313801
-      icons-keyboard-16x16-1bit-ansdor_43: -101494863
-      icons-keyboard-16x16-1bit-ansdor_9: 1444348689
-      icons-keyboard-16x16-1bit-ansdor_67: -617909985
-      icons-keyboard-16x16-1bit-ansdor_6: -1496790219
-      icons-keyboard-16x16-1bit-ansdor_77: 482492666
       icons-keyboard-16x16-1bit-ansdor_47: -1765297658
-      icons-keyboard-16x16-1bit-ansdor_40: -1676639142
-      icons-keyboard-16x16-1bit-ansdor_51: 1450991936
-      icons-keyboard-16x16-1bit-ansdor_56: 1763240477
-      icons-keyboard-16x16-1bit-ansdor_75: 1854357020
-      icons-keyboard-16x16-1bit-ansdor_3: 2101167952
-      icons-keyboard-16x16-1bit-ansdor_15: -415839938
-      icons-keyboard-16x16-1bit-ansdor_50: 750778851
-      icons-keyboard-16x16-1bit-ansdor_30: -1010856980
-      icons-keyboard-16x16-1bit-ansdor_42: 1247249408
-      icons-keyboard-16x16-1bit-ansdor_72: 2092739336
-      icons-keyboard-16x16-1bit-ansdor_31: -1963332253
-      icons-keyboard-16x16-1bit-ansdor_70: -875655428
-      icons-keyboard-16x16-1bit-ansdor_49: 565626279
-      icons-keyboard-16x16-1bit-ansdor_13: -775640395
       icons-keyboard-16x16-1bit-ansdor_48: 1999323655
-      icons-keyboard-16x16-1bit-ansdor_59: -1868554405
-      icons-keyboard-16x16-1bit-ansdor_62: 1951088605
-      icons-keyboard-16x16-1bit-ansdor_73: -1432109643
-      icons-keyboard-16x16-1bit-ansdor_65: -37611873
-      icons-keyboard-16x16-1bit-ansdor_69: -222915084
-      icons-keyboard-16x16-1bit-ansdor_17: 12410305
-      icons-keyboard-16x16-1bit-ansdor_20: -1890321945
-      icons-keyboard-16x16-1bit-ansdor_33: 109287464
-      icons-keyboard-16x16-1bit-ansdor_64: -1294485503
-      icons-keyboard-16x16-1bit-ansdor_36: 465765945
-      icons-keyboard-16x16-1bit-ansdor_39: 1560975657
-      icons-keyboard-16x16-1bit-ansdor_76: 1905686878
-      icons-keyboard-16x16-1bit-ansdor_18: 1271793527
-      icons-keyboard-16x16-1bit-ansdor_24: -33483402
-      icons-keyboard-16x16-1bit-ansdor_61: -1159649092
-      icons-keyboard-16x16-1bit-ansdor_78: 1124409491
-      icons-keyboard-16x16-1bit-ansdor_80: -1313623561
-      icons-keyboard-16x16-1bit-ansdor_83: -1956396630
-      icons-keyboard-16x16-1bit-ansdor_28: -990888258
+      icons-keyboard-16x16-1bit-ansdor_49: 565626279
+      icons-keyboard-16x16-1bit-ansdor_5: -1836314929
+      icons-keyboard-16x16-1bit-ansdor_50: 750778851
+      icons-keyboard-16x16-1bit-ansdor_51: 1450991936
+      icons-keyboard-16x16-1bit-ansdor_52: -1713730249
+      icons-keyboard-16x16-1bit-ansdor_53: 408223870
+      icons-keyboard-16x16-1bit-ansdor_54: -532080544
+      icons-keyboard-16x16-1bit-ansdor_55: 2105366508
+      icons-keyboard-16x16-1bit-ansdor_56: 1763240477
+      icons-keyboard-16x16-1bit-ansdor_57: -1758775619
       icons-keyboard-16x16-1bit-ansdor_58: -212572431
-  spritePackingTag: 
+      icons-keyboard-16x16-1bit-ansdor_59: -1868554405
+      icons-keyboard-16x16-1bit-ansdor_6: -1496790219
+      icons-keyboard-16x16-1bit-ansdor_60: -1198680690
+      icons-keyboard-16x16-1bit-ansdor_61: -1159649092
+      icons-keyboard-16x16-1bit-ansdor_62: 1951088605
+      icons-keyboard-16x16-1bit-ansdor_63: 2001015332
+      icons-keyboard-16x16-1bit-ansdor_64: -1294485503
+      icons-keyboard-16x16-1bit-ansdor_65: -37611873
+      icons-keyboard-16x16-1bit-ansdor_66: 2001878831
+      icons-keyboard-16x16-1bit-ansdor_67: -617909985
+      icons-keyboard-16x16-1bit-ansdor_68: -203344295
+      icons-keyboard-16x16-1bit-ansdor_69: -222915084
+      icons-keyboard-16x16-1bit-ansdor_7: 1188838664
+      icons-keyboard-16x16-1bit-ansdor_70: -875655428
+      icons-keyboard-16x16-1bit-ansdor_71: 1889506673
+      icons-keyboard-16x16-1bit-ansdor_72: 2092739336
+      icons-keyboard-16x16-1bit-ansdor_73: -1432109643
+      icons-keyboard-16x16-1bit-ansdor_74: 1436141756
+      icons-keyboard-16x16-1bit-ansdor_75: 1854357020
+      icons-keyboard-16x16-1bit-ansdor_76: 1905686878
+      icons-keyboard-16x16-1bit-ansdor_77: 482492666
+      icons-keyboard-16x16-1bit-ansdor_78: 1124409491
+      icons-keyboard-16x16-1bit-ansdor_79: 895763673
+      icons-keyboard-16x16-1bit-ansdor_8: -1481200768
+      icons-keyboard-16x16-1bit-ansdor_80: -1313623561
+      icons-keyboard-16x16-1bit-ansdor_81: -1509872141
+      icons-keyboard-16x16-1bit-ansdor_82: 1118524218
+      icons-keyboard-16x16-1bit-ansdor_83: -1956396630
+      icons-keyboard-16x16-1bit-ansdor_9: 1444348689
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
