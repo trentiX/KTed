@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MobileInput : MonoBehaviour
 {
-    [SerializeField] private float _sensitivity = 2f;
+    [SerializeField] private float _sensitivity = 10f;
     [SerializeField] private RectTransform _joystick, _joystickButton;
     
     private bool _isJoystickHeld;
@@ -15,7 +15,7 @@ public class MobileInput : MonoBehaviour
     {
 #if UNITY_ANDROID
         Application.targetFrameRate = 60;
-#elif !UNITY_EDITOR
+#elif !UNITY_ANDROID
         _joystick.gameObject.SetActive(false);
         _joystickButton.gameObject.SetActive(false);
 #endif

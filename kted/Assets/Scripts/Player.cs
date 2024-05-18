@@ -98,12 +98,13 @@ public class Player : MonoBehaviour
         
         if (inputHorizontal != 0 || inputVertical != 0)
         {
+#if !UNITY_ANDROID
             if (inputHorizontal != 0 && inputVertical != 0)
             {
                 inputHorizontal *= speedLimiter;
                 inputVertical *= speedLimiter;
-
             }
+#endif
             rb.velocity = new Vector2(inputHorizontal * walkSpeed, inputVertical * walkSpeed);
 
             if (inputHorizontal > 0)
