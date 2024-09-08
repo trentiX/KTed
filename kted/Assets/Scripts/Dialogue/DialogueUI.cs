@@ -14,6 +14,7 @@ public class DialogueUI : MonoBehaviour
     public bool DialogueOpen { get; private set; }
 
     private TypewriterEffect typewriterEffect;
+    private ResponseHandler _responseHandler;
 
     private LocationsManager _locationsManager;
 
@@ -25,6 +26,7 @@ public class DialogueUI : MonoBehaviour
     private void Start()
     {
         typewriterEffect = GetComponent<TypewriterEffect>();
+        _responseHandler = GetComponent<ResponseHandler>();
         CloseDialogueBox(text.text);
     }
 
@@ -41,12 +43,14 @@ public class DialogueUI : MonoBehaviour
     {
         if (ChooseLanguageScript.Language == "russian")
         {
-            foreach(string dialogue in dialogueObject.DialogueRus)
+            for (int i = 0; i < dialogueObject.DialogueRus.Length; i++)
             {
+                string dialogue = dialogueObject.DialogueRus[i];
                 yield return RunTypingEffect(dialogue);
 
                 textLabel.text = dialogue;
 
+                if (i == dialogueObject.DialogueRus.Length - 1 && dialogueObject.HasResponses) break;
                 yield return null;
                 yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
             }
@@ -65,7 +69,14 @@ public class DialogueUI : MonoBehaviour
             }
         }
 
-        CloseDialogueBox(text.text);
+        if (dialogueObject.HasResponses)
+        {
+            _responseHandler.ShowResponses(dialogueObject.Responses);
+        }
+        else
+        {
+            CloseDialogueBox(text.text);
+        }
     }
 
     private IEnumerator RunTypingEffect(string dialogue)

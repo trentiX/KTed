@@ -50,3 +50,5 @@ MonoBehaviour:
     \u0435\u0435!\"\r\n"
   dialogueKaz: []
   sprite: {fileID: 21300000, guid: 1abaf4abb5b5a3b4cb0bd57eb2c8282d, type: 3}
+  name: "\u0416\u0443\u043C\u0430\u0431\u0435\u043A \u0422\u0430\u0448\u0435\u043D\u043E\u0432"
+  _responses: []

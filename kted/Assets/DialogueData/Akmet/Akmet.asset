@@ -50,3 +50,5 @@ MonoBehaviour:
     \u0438 \u0435\u0449\u0435 \u0440\u0430\u0437 \u0443\u0447\u0438\u0442\u044C\u0441\u044F."
   dialogueKaz: []
   sprite: {fileID: 21300000, guid: ad18bcfe1343e6146860426f8b62c74a, type: 3}
+  name: "\u0410\u0445\u043C\u0435\u0442 \u0411\u0430\u0439\u0442\u0443\u0440\u0441\u044B\u043D\u043E\u0432"
+  _responses: []

@@ -25,3 +25,5 @@ MonoBehaviour:
     \u0442\u0440\u0443\u0434\u043E\u0432\r\n"
   dialogueKaz: []
   sprite: {fileID: 21300000, guid: ebac8da3891ff4f4797a8cd92ff7c84f, type: 3}
+  name: "\u0414\u0438\u043D\u043C\u0443\u0445\u0430\u043C\u0435\u0434 \u041A\u0443\u043D\u0430\u0435\u0432"
+  _responses: []
