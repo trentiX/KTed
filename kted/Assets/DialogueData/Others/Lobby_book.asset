@@ -33,5 +33,3 @@ MonoBehaviour:
   _responses:
   - responseText: "\u0425\u043C\u043C...\u0438\u043D\u0442\u0435\u0440\u0435\u0441\u043D\u043E"
     dialogueObject: {fileID: 11400000, guid: 0b0a960a9c631064191e78ba4b2b92ba, type: 2}
-  - responseText: 1111
-    dialogueObject: {fileID: 11400000, guid: 0b0a960a9c631064191e78ba4b2b92ba, type: 2}

@@ -21,7 +21,7 @@ public class EasterEggMenuUpdater : MonoBehaviour
         EasterEggManager easterEggManager = FindObjectOfType<EasterEggManager>();
         if (easterEggManager != null && easterEggManager.GetEasterEggCount() <= 10)
         {
-            easterEggCountText.text = easterEggManager.GetEasterEggCount().ToString() + "/10";
+           // easterEggCountText.text = easterEggManager.GetEasterEggCount().ToString() + "/10";
         }
     }
 }

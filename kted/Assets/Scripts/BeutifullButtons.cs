@@ -46,28 +46,37 @@ public class BeautifulButtons : MonoBehaviour
 
     private void OnPointerEnter(GameObject button)
     {
-        TMP_Text buttonText = button.GetComponentInChildren<TMP_Text>();
-        if (buttonText != null)
+        if (button.GetComponent<UnityEngine.UI.Button>().interactable)
         {
-            buttonText.text = "--> " + buttonText.text; // Add arrow on hover
+            TMP_Text buttonText = button.GetComponentInChildren<TMP_Text>();
+            if (buttonText != null)
+            {
+                buttonText.text = "--> " + buttonText.text; // Add arrow on hover
+            }   
         }
     }
 
     private void OnPointerExit(GameObject button)
     {
-        TMP_Text buttonText = button.GetComponentInChildren<TMP_Text>();
-        if (buttonText != null && buttonText.text.StartsWith("-->"))
+        if (button.GetComponent<UnityEngine.UI.Button>().interactable)
         {
-            buttonText.text = buttonText.text.Substring(4); // Remove the arrow on exit
+            TMP_Text buttonText = button.GetComponentInChildren<TMP_Text>();
+            if (buttonText != null && buttonText.text.StartsWith("-->"))
+            {
+                buttonText.text = buttonText.text.Substring(4); // Remove the arrow on exit
+            }
         }
     }
 
     private void OnPointerDown(GameObject button)
     {
-        TMP_Text buttonText = button.GetComponentInChildren<TMP_Text>();
-        if (buttonText != null && buttonText.text.StartsWith("--> "))
+        if (button.GetComponent<UnityEngine.UI.Button>().interactable)
         {
-            buttonText.text = buttonText.text.Substring(4); // Remove the arrow on exit
+            TMP_Text buttonText = button.GetComponentInChildren<TMP_Text>();
+            if (buttonText != null && buttonText.text.StartsWith("--> "))
+            {
+                buttonText.text = buttonText.text.Substring(4); // Remove the arrow on exit
+            }
         }
     }
 

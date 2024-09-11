@@ -23,6 +23,11 @@ public class EasterEggManager : MonoBehaviour
         OnEasterEggPickupUpdated.Invoke(); // Notify listeners that easter egg count has been updated
     }
 
+    public void SmartPhonePickedUp()
+    {
+        OnEasterEggPickupUpdated.Invoke();
+    }
+    
     public void MusicPlatePickedUp(GameObject musicPlate)
     {
         if (_musicUI == null)

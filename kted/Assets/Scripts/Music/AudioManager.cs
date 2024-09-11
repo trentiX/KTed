@@ -48,9 +48,23 @@ public class AudioManager : MonoBehaviour
 
     public void SFXSound()
     {
-        AudioClip clip = sfxClips[UnityEngine.Random.Range(0, sfxClips.Count)];
+        AudioClip clip = sfxClips[0];
         
         sfxSource.PlayOneShot(clip);
+    }
+
+    public void phoneRing()
+    {
+        songName = "Рингтон телефона";
+        AudioClip clip = musicClips[4];
+
+        if (musicSource.isPlaying)
+        {
+            return;
+        }
+        
+        _nowPlaying.nowPlayingAnim(songName);
+        musicSource.Play();
     }
 
     public void EasterEggSound()
@@ -117,6 +131,10 @@ public class AudioManager : MonoBehaviour
     public void StopMusic()
     {
         musicSource.Stop();
+    }
+    public void StopSfx()
+    {
+        sfxSource.Stop();
     }
     
     public void AmbientSound()

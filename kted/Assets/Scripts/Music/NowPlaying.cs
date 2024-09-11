@@ -22,7 +22,7 @@ public class NowPlaying : MonoBehaviour
     public IEnumerator musicNameAnimation(string songName)
     {
         text.DOFade(0, 0.01f).SetEase(Ease.OutCubic);
-        text.text = "Сейчас играет..." + songName;
+        text.text = "Сейчас играет... " + songName;
         text.DOFade(1, 3).SetEase(Ease.OutCubic);
 
         yield return new WaitForSeconds(5);
