@@ -20,11 +20,13 @@ public class SmartPhone : MonoBehaviour
     //Animations
     private Tweener phoneImageIdleAnim;
     private Tweener phonePopUpAnim;
+    private Tweener phoneHideAnim;
     
     //Booleans
     public bool SmartPhonePicked;
+    private bool isTaken = false;
+    private bool isTipTextShowed = false;
     private bool isRinging = false;
-    private bool tipTextShow = false;
     
     //String
     private string phoneControlls = "\"1\" - Достать/убрать телефон или ответить на звонок" +
@@ -48,7 +50,7 @@ public class SmartPhone : MonoBehaviour
         }
         else
         {
-            PhoneIsPicked();
+            SmartPhonePicked = true;
         }
     }
 
@@ -76,18 +78,14 @@ public class SmartPhone : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 takePhone();
-            }
+            }    
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                takePhone();
-            }
+                MusicBoxOnDistanceControl();
+            }   
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 Messanger();
-            }   
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                MusicBoxOnDistanceControl();
             }   
         }
     }
@@ -100,29 +98,31 @@ public class SmartPhone : MonoBehaviour
 
     private void takePhone()
     {
-        if (isRinging)
+        if (CheckPhoneAnim())
         {
-            hidePhone();
-            tipTextShow = false;
-        }
-        else
-        {
-            if (!phonePopUpAnim.IsActive())
+            if (isTaken)
             {
-                phonePopUpAnim = phoneImage.transform.DOMoveY(250, 2)
-                    .SetEase(Ease.OutCubic)
-                    .OnComplete((() => PhoneRingAnim()));
-                tipTextShow = true;
-                _tipPanel.tipPanelPopUp(phoneControllsHeader, phoneControlls);
+                hidePhone();
             }
+            else
+            {
+                if (CheckPhoneAnim())
+                {
+                    phonePopUpAnim = phoneImage.transform.DOMoveY(250, 2)
+                        .SetEase(Ease.OutCubic)
+                        .OnComplete((() => PhoneRingAnim()));
+                }
+            }   
         }
     }
     private void Ring()
     {
-        if (tipTextShow)
+        if (!isTipTextShowed && CheckPhoneAnim())
         {
+            _audioManager.StopMusic();
             _audioManager.phoneRing();
             takePhone();
+            isTaken = true;
             isRinging = true;
         }
     }
@@ -131,17 +131,38 @@ public class SmartPhone : MonoBehaviour
     {
         phoneImageIdleAnim = phoneImage.transform.DOMoveY(235, 2)
             .SetLoops(-1, LoopType.Yoyo)
-            .SetEase(Ease.InOutCubic); 
+            .SetEase(Ease.InOutCubic);
+
+        if (!isRinging)
+        {
+            _tipPanel.tipPanelPopUp(phoneControllsHeader, phoneControlls);
+            isTipTextShowed = true;
+        }
+        
+        isTaken = true;
     }
     
     private void hidePhone()
     {
         StartCoroutine(FadeOut(_audioSource, 2));
-        phoneImage.transform.DOMoveY(-780, 2).OnComplete((() =>
-        { 
-            phoneImageIdleAnim.Kill();
-            _audioManager.StopMusic();
-        })).SetEase(Ease.InCubic);
+
+        if (CheckPhoneAnim())
+        {
+            phoneHideAnim = phoneImage.transform.DOMoveY(-780, 2).OnComplete((() =>
+            { 
+                phoneImageIdleAnim.Kill();
+                _audioManager.StopMusic();
+            })).SetEase(Ease.InCubic);
+        }
+
+        if (!isRinging)
+        {
+            _tipPanel.tipPanelPopUp(phoneControllsHeader, phoneControlls);
+            isTipTextShowed = false;
+        }
+        
+        isTaken = false;
+        isRinging = false;
     }
 
     private void Messanger()
@@ -151,7 +172,8 @@ public class SmartPhone : MonoBehaviour
 
     private void MusicBoxOnDistanceControl()
     {
-        player.MusicUI.showMusicBox();
+        if (!isTipTextShowed && !isRinging)
+            player.MusicUI.showMusicBox();
     }
     
     public static IEnumerator FadeOut (AudioSource audioSource, float FadeTime) {
@@ -165,5 +187,12 @@ public class SmartPhone : MonoBehaviour
 
         audioSource.Stop ();
         audioSource.volume = startVolume;
+    }
+
+    private bool CheckPhoneAnim()
+    {
+        if (!phoneHideAnim.IsActive() && !phonePopUpAnim.IsActive())
+            return true;
+        return false;   
     }
 }

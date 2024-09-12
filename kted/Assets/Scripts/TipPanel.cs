@@ -11,7 +11,7 @@ public class TipPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tipHeader;
     [SerializeField] private TextMeshProUGUI tipTextLabel;
 
-    private bool fadeIn;
+    private bool fadeIn = true;
 
     private void Start()
     {
@@ -29,12 +29,12 @@ public class TipPanel : MonoBehaviour
     {
         if (fadeIn)
         {
-            _canvasGroup.DOFade(1, 4);
+            _canvasGroup.DOFade(1, 1).SetEase(Ease.InCubic);
             fadeIn = false;
         }
         else
         {
-            _canvasGroup.DOFade(0, 3);
+            _canvasGroup.DOFade(0, 1);
             fadeIn = true;
         }
     }
