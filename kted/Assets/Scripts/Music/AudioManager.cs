@@ -64,7 +64,7 @@ public class AudioManager : MonoBehaviour
         }
         
         _nowPlaying.nowPlayingAnim(songName);
-        musicSource.Play();
+        musicSource.PlayOneShot(clip);
     }
 
     public void EasterEggSound()

@@ -37,10 +37,29 @@ public class LocationCompleted : MonoBehaviour
         }
     }
 
+    public void SmartPhonePickAnim(string text)
+    {
+        locComplete.SetActive(true);
+        StartCoroutine(SmartPhonePickedUpAnimation(text));
+    }
+
     public IEnumerator LocationCompletedAnimation()
     {
         text.DOFade(0, 0.01f).SetEase(Ease.OutCubic);
         text.text = "Локация " + _player.location + " пройдена!";
+        text.DOFade(1, 3).SetEase(Ease.OutCubic);
+
+        yield return new WaitForSeconds(2);
+        
+        text.DOFade(0, 3).SetEase(Ease.InCubic).OnComplete(() =>
+        {
+            locComplete.SetActive(false);
+        }); 
+    }
+    public IEnumerator SmartPhonePickedUpAnimation(string label)
+    {
+        text.DOFade(0, 0.01f).SetEase(Ease.OutCubic);
+        text.text = label;
         text.DOFade(1, 3).SetEase(Ease.OutCubic);
 
         yield return new WaitForSeconds(2);

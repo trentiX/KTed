@@ -6,20 +6,40 @@ using UnityEngine;
 
 public class SmartPhone : MonoBehaviour
 {
+    //Serialization
     [SerializeField] private Transform smartPhoneInitPos;
     [SerializeField] private GameObject phoneImage;
     [SerializeField] private AudioSource _audioSource;
     
-    public bool SmartPhonePicked;
+    //Other scripts
     private AudioManager _audioManager;
-    private bool isRinging = false;
     private Player player;
-    private Tweener phoneImageAnim;
-
+    private LocationCompleted _locationCompleted;
+    private TipPanel _tipPanel;
+    
+    //Animations
+    private Tweener phoneImageIdleAnim;
+    private Tweener phonePopUpAnim;
+    
+    //Booleans
+    public bool SmartPhonePicked;
+    private bool isRinging = false;
+    private bool tipTextShow = false;
+    
+    //String
+    private string phoneControlls = "\"1\" - Достать/убрать телефон или ответить на звонок" +
+                                    "\n\"2\" - Открыть звуковой проигрыватель" +
+                                    "\n\"3\" - Открыть мессенджер";
+    
+    private string phoneControllsHeader = "Как пользоватся смартфоном?)";
+    
+    //Code
     private void Start()
     {
         player = FindObjectOfType<Player>();
         _audioManager = FindObjectOfType<AudioManager>();
+        _locationCompleted = FindObjectOfType<LocationCompleted>();
+        _tipPanel = FindObjectOfType<TipPanel>();
 
         if (!SmartPhonePicked)
         {
@@ -55,13 +75,17 @@ public class SmartPhone : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                getCall();
+                takePhone();
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                Messanger();
+                takePhone();
             }
             if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                Messanger();
+            }   
+            if (Input.GetKeyDown(KeyCode.Alpha4))
             {
                 MusicBoxOnDistanceControl();
             }   
@@ -71,37 +95,51 @@ public class SmartPhone : MonoBehaviour
     private void PhoneIsPicked()
     {
         SmartPhonePicked = true;
+        _locationCompleted.SmartPhonePickAnim("Вы подобрали смартфон!");
     }
 
+    private void takePhone()
+    {
+        if (isRinging)
+        {
+            hidePhone();
+            tipTextShow = false;
+        }
+        else
+        {
+            if (!phonePopUpAnim.IsActive())
+            {
+                phonePopUpAnim = phoneImage.transform.DOMoveY(250, 2)
+                    .SetEase(Ease.OutCubic)
+                    .OnComplete((() => PhoneRingAnim()));
+                tipTextShow = true;
+                _tipPanel.tipPanelPopUp(phoneControllsHeader, phoneControlls);
+            }
+        }
+    }
     private void Ring()
     {
-        _audioManager.phoneRing();
-        isRinging = true;
-        phoneImage.SetActive(true);
-        phoneImage.transform.DOMoveY(250, 2).SetEase(Ease.OutCubic).OnComplete((() => PhoneRingAnim()));  
+        if (tipTextShow)
+        {
+            _audioManager.phoneRing();
+            takePhone();
+            isRinging = true;
+        }
     }
 
     private void PhoneRingAnim()
     {
-        phoneImageAnim = phoneImage.transform.DOMoveY(235, 2)
+        phoneImageIdleAnim = phoneImage.transform.DOMoveY(235, 2)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutCubic); 
     }
     
-    private void getCall()
-    {
-        if (isRinging)
-        {
-            endCall();
-        }
-    }
-
-    private void endCall()
+    private void hidePhone()
     {
         StartCoroutine(FadeOut(_audioSource, 2));
         phoneImage.transform.DOMoveY(-780, 2).OnComplete((() =>
         { 
-            phoneImageAnim.Kill();
+            phoneImageIdleAnim.Kill();
             _audioManager.StopMusic();
         })).SetEase(Ease.InCubic);
     }
