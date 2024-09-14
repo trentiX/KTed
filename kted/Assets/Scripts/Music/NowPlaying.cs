@@ -1,13 +1,15 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+
 public class NowPlaying : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private GameObject nowPlaying;
+
+    private Tweener nowPlayingAnimation;
+
     private void Start()
     {
         nowPlaying.SetActive(false);
@@ -19,17 +21,32 @@ public class NowPlaying : MonoBehaviour
         StartCoroutine(musicNameAnimation(nameOfSong));
     }
 
-    public IEnumerator musicNameAnimation(string songName)
+    private IEnumerator musicNameAnimation(string songName)
     {
-        text.DOFade(0, 0.01f).SetEase(Ease.OutCubic);
-        text.text = "Сейчас играет... " + songName;
-        text.DOFade(1, 3).SetEase(Ease.OutCubic);
-
-        yield return new WaitForSeconds(5);
-        
-        text.DOFade(0, 3).SetEase(Ease.InCubic).OnComplete(() =>
+        if (!nowPlayingAnimation.IsActive())
         {
-            nowPlaying.SetActive(false);
-        }); 
+            // Устанавливаем новый текст
+            text.text = "Сейчас играет... " + songName;
+
+            // Плавно показываем новый текст
+            text.alpha = 0;
+            nowPlayingAnimation = text.DOFade(1, 2).SetEase(Ease.OutCubic);
+
+            // Ждем 5 секунд перед началом затухания
+            yield return new WaitForSeconds(5);
+
+            // Плавно скрываем текст
+            nowPlayingAnimation = text.DOFade(0, 2).SetEase(Ease.InCubic).OnComplete(() =>
+            {
+                nowPlaying.SetActive(false);
+            });
+        }
+        else
+        {
+            nowPlayingAnimation = text.DOFade(0, 2).SetEase(Ease.InCubic).OnComplete(() =>
+            {
+                StartCoroutine(musicNameAnimation(songName));
+            });
+        }
     }
 }

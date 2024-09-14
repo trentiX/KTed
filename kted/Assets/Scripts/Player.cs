@@ -67,21 +67,7 @@ public class Player : MonoBehaviour
             }
         }
         
-        if (Pause.isOpen)
-        {
-            rb.velocity = Vector2.zero;
-            ChangeAnimationState(IdleAnimation());
-            return;
-        }
-        
-        if (dialogueUI.DialogueOpen || musicUI.MusicOpen || pictureBoxUI.PictureOpen)
-        {
-            rb.velocity = Vector2.zero;
-            ChangeAnimationState(IdleAnimation());
-            return;
-        }
-
-        if (_cameraController.transition)
+        if (!canMove())
         {
             rb.velocity = Vector2.zero;
             ChangeAnimationState(IdleAnimation());
@@ -159,5 +145,15 @@ public class Player : MonoBehaviour
             default:
                 return null;
         }
+    }
+
+    public bool canMove()
+    {
+        if (dialogueUI.DialogueOpen || musicUI.MusicOpen || pictureBoxUI.PictureOpen || _cameraController.transition || Pause.isOpen)
+        {
+            return false;
+        }
+        else
+            return true;
     }
 }

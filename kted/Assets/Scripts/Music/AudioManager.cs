@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -130,7 +131,7 @@ public class AudioManager : MonoBehaviour
 
     public void StopMusic()
     {
-        musicSource.Stop();
+        StartCoroutine(FadeOut(gameObject.GetComponent<AudioSource>(), 2));
     }
     public void StopSfx()
     {
@@ -153,5 +154,39 @@ public class AudioManager : MonoBehaviour
         mixer.SetFloat(VolumeSettings.MIXER_MUSIC, Mathf.Log10(musicVolume) * 20);
         mixer.SetFloat(VolumeSettings.MIXER_SFX, Mathf.Log10(sfxVolume) * 20);
         mixer.SetFloat(VolumeSettings.MIXER_AMBIENT, Mathf.Log10(ambientVolume) * 20);
+    }
+    
+    public IEnumerator FadeOut(AudioSource audioSource, float FadeTime) {
+        float startVolume = audioSource.volume;
+
+        while (audioSource.volume > 0) {
+            audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = startVolume; // Сбрасываем громкость обратно после остановки
+    }
+
+    public IEnumerator FadeIn(AudioSource audioSource, float FadeTime, Action songToPlay) {
+        if (audioSource.isPlaying)
+        {
+            StartCoroutine(FadeOut(audioSource, FadeTime));
+            yield return new  WaitForSeconds(FadeTime);
+        }
+        
+        songToPlay.Invoke();
+        audioSource.volume = 0; // Начинаем с нулевой громкости
+
+        float targetVolume = 1.0f; // Желаемая максимальная громкость
+
+        while (audioSource.volume < targetVolume) {
+            audioSource.volume += Time.deltaTime / FadeTime;
+
+            yield return null;
+        }
+
+        audioSource.volume = targetVolume; // Устанавливаем максимальную громкость
     }
 }
