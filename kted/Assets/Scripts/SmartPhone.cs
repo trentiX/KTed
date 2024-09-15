@@ -16,6 +16,7 @@ public class SmartPhone : MonoBehaviour
     private Player player;
     private LocationCompleted _locationCompleted;
     private TipPanel _tipPanel;
+    private Messanger _messanger;
     
     //Animations
     private Tweener phoneImageIdleAnim;
@@ -42,6 +43,7 @@ public class SmartPhone : MonoBehaviour
         _audioManager = FindObjectOfType<AudioManager>();
         _locationCompleted = FindObjectOfType<LocationCompleted>();
         _tipPanel = FindObjectOfType<TipPanel>();
+        _messanger = FindObjectOfType<Messanger>();
 
         if (!SmartPhonePicked)
         {
@@ -166,7 +168,8 @@ public class SmartPhone : MonoBehaviour
 
     private void Messanger()
     {
-        
+        _messanger.gameObject.SetActive(true);
+        _messanger.openMessanger();
     }
 
     private void MusicBoxOnDistanceControl()

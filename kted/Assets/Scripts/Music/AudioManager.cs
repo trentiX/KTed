@@ -131,7 +131,7 @@ public class AudioManager : MonoBehaviour
 
     public void StopMusic()
     {
-        StartCoroutine(FadeOut(gameObject.GetComponent<AudioSource>(), 2));
+        StartCoroutine(FadeOut(musicSource, 2));
     }
     public void StopSfx()
     {

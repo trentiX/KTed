@@ -9,7 +9,6 @@ public class Pause : MonoBehaviour
     [SerializeField] private CanvasGroup prefab;
 
     public static bool isOpen = false;
-    private Example _example;
     
     public void GoToHome()
     {

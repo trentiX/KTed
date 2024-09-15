@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Vector3 = UnityEngine.Vector3;
 
 namespace DataSave
@@ -8,5 +9,6 @@ namespace DataSave
     {
         public Vector3 position;
         public bool phoneIsPicked;
+        public List<DialogueObject> chatsInStorage = new List<DialogueObject>();
     }
 }

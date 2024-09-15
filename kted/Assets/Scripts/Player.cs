@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public KeysActivator KeysActivator => KeysActivator;
 
     private CameraController _cameraController;
+    private Messanger _messanger;
 
     public IInteractable Interactable { get; set; }
 
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour
         _cameraController = FindObjectOfType<CameraController>(); // Find and assign the CameraController
         rb = GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
+        _messanger = FindObjectOfType<Messanger>();
     }
 
     private void Update()
@@ -149,7 +151,8 @@ public class Player : MonoBehaviour
 
     public bool canMove()
     {
-        if (dialogueUI.DialogueOpen || musicUI.MusicOpen || pictureBoxUI.PictureOpen || _cameraController.transition || Pause.isOpen)
+        if (dialogueUI.DialogueOpen || musicUI.MusicOpen || pictureBoxUI.PictureOpen || _cameraController.transition 
+            || Pause.isOpen || _messanger.MessangerIsOpen)
         {
             return false;
         }

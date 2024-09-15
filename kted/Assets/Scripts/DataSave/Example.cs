@@ -6,6 +6,7 @@ namespace DataSave
     {
         public GameObject _player;
         public SmartPhone _smartPhone;
+        public Messanger _messanger;
         
         private Storage _storage;
         private GameData _gameData;
@@ -27,12 +28,21 @@ namespace DataSave
             {
                 Load();
             }
+            
+            if (Input.GetKeyDown(KeyCode.R)) // temporary
+            {
+                _gameData.chatsInStorage = null;
+                Debug.Log("Chats storage is clear");
+            }
         }
         
         public void Save()
         {
             _gameData.position = _player.transform.position;
             _gameData.phoneIsPicked = _smartPhone.SmartPhonePicked;
+            
+            if (_messanger.chats != null)
+                _gameData.chatsInStorage = _messanger.chats;
 
             _storage.Save(_gameData);
         }
@@ -43,6 +53,9 @@ namespace DataSave
 
             _player.transform.position = _gameData.position;
             _smartPhone.SmartPhonePicked = _gameData.phoneIsPicked;
+            
+            if(_gameData.chatsInStorage != null)
+                _messanger.chats = _gameData.chatsInStorage;
             Debug.Log("phone is picked (from memory)");
         }
 

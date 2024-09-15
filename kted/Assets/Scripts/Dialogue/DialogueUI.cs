@@ -15,18 +15,19 @@ public class DialogueUI : MonoBehaviour
 
     private TypewriterEffect typewriterEffect;
     private ResponseHandler _responseHandler;
-
     private LocationsManager _locationsManager;
+    private Messanger _messanger;
 
     private void Awake()
     {
         _locationsManager = FindObjectOfType<LocationsManager>();
+        _messanger = FindObjectOfType<Messanger>();
     }
     
     private void Start()
     {
         typewriterEffect = GetComponent<TypewriterEffect>();
-        _responseHandler = GetComponent<ResponseHandler>();
+        _responseHandler = GetComponent<ResponseHandler>(); 
         CloseDialogueBox(text.text);
     }
 
@@ -76,6 +77,7 @@ public class DialogueUI : MonoBehaviour
         else
         {
             CloseDialogueBox(text.text);
+            _messanger.addNewChat(dialogueObject);
         }
     }
 
