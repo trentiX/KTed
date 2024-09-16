@@ -41,8 +41,8 @@ namespace DataSave
             _gameData.position = _player.transform.position;
             _gameData.phoneIsPicked = _smartPhone.SmartPhonePicked;
             
-            if (_messanger.chats != null)
-                _gameData.chatsInStorage = _messanger.chats;
+            //if (_messanger.chats != null)
+                //_gameData.chatsInStorage = _messanger.chats;
 
             _storage.Save(_gameData);
         }
@@ -54,8 +54,8 @@ namespace DataSave
             _player.transform.position = _gameData.position;
             _smartPhone.SmartPhonePicked = _gameData.phoneIsPicked;
             
-            if(_gameData.chatsInStorage != null)
-                _messanger.chats = _gameData.chatsInStorage;
+            //if(_gameData.chatsInStorage != null)
+                //_messanger.chats = _gameData.chatsInStorage;
             Debug.Log("phone is picked (from memory)");
         }
 

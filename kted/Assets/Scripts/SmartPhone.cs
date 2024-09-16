@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class SmartPhone : MonoBehaviour
+public class SmartPhone : MonoBehaviour, IDataPersistence
 {
     //Serialization
     [SerializeField] private Transform smartPhoneInitPos;
@@ -64,7 +64,6 @@ public class SmartPhone : MonoBehaviour
     private void OnDisable()
     {
         EasterEggManager.OnEasterEggPickupUpdated.RemoveListener(PhoneIsPicked);
-
     }
 
     private void Update()
@@ -183,5 +182,17 @@ public class SmartPhone : MonoBehaviour
         if (!phoneHideAnim.IsActive() && !phonePopUpAnim.IsActive())
             return true;
         return false;   
+    }
+    
+    // DATA
+
+    public void LoadData(GameData data)
+    {
+        this.SmartPhonePicked = data.phoneIsPicked;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.phoneIsPicked = this.SmartPhonePicked;
     }
 }

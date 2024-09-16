@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Messanger : MonoBehaviour
+public class Messanger : MonoBehaviour, IDataPersistence
 {
     // Serialization
     [SerializeField] private GameObject chatTemplate;
@@ -107,5 +107,17 @@ public class Messanger : MonoBehaviour
         {
             addNewChat(chat);
         }
+    }
+    
+    // DATA
+
+    public void LoadData(GameData gameData)
+    {
+        this.chats = gameData.chatsInStorage;
+    }
+
+    public void SaveData(ref GameData gameData)
+    {
+        gameData.chatsInStorage = this.chats;
     }
 }

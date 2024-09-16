@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDataPersistence
 {
 
     [SerializeField] private DialogueUI dialogueUI;
@@ -158,5 +158,16 @@ public class Player : MonoBehaviour
         }
         else
             return true;
+    }
+    
+    // DATA
+    public void LoadData(GameData data)
+    {
+        this.transform.position = data.playerPosition;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.playerPosition = this.transform.position;
     }
 }
