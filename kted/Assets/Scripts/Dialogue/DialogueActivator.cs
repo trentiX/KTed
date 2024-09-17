@@ -1,13 +1,27 @@
+using System;
 using UnityEngine;
 
-public class DialogueActivator : MonoBehaviour, IInteractable
+public class DialogueActivator : MonoBehaviour, IInteractable, IDataPersistence
 {
-    [SerializeField] private DialogueObject dialogueObject;
+    [SerializeField] public DialogueObject dialogueObject;
     [SerializeField] private GameObject prefab;
     [SerializeField] private Transform prefabMother;
+    [SerializeField] private string id;
 
+    [ContextMenu("Generate guid for id")]
+    public void GenerateGuid()
+    {
+        id = System.Guid.NewGuid().ToString();
+    }
+    
     public bool Interacted = false;
     private GameObject sprite;
+    private Messanger _messanger;
+
+    private void Start()
+    {
+        _messanger = FindObjectOfType<Messanger>();
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -35,5 +49,25 @@ public class DialogueActivator : MonoBehaviour, IInteractable
     {
         player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);
         Interacted = true;
+        _messanger.addNewChat(this);
+    }
+    
+    // DATA
+    public void LoadData(GameData gameData)
+    {
+        gameData.dialogueObjInteracted.TryGetValue(id, out Interacted);
+        if (Interacted)
+        {
+            _messanger.addNewChat(this);
+        }
+    }
+
+    public void SaveData(ref GameData gameData)
+    {
+        if (gameData.dialogueObjInteracted.ContainsKey(id))
+        {
+            gameData.dialogueObjInteracted.Remove(id);
+        }
+        gameData.dialogueObjInteracted.Add(id, Interacted);
     }
 }

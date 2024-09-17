@@ -9,7 +9,7 @@ public class DialogueObject : ScriptableObject
     [SerializeField] public Sprite sprite;
     [SerializeField] public string name;
     [SerializeField] private Response[] _responses;
-    
+
     public Sprite Sprite => sprite;
     public string Name => name;
     

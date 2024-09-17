@@ -29,7 +29,7 @@ MonoBehaviour:
     \u0456\u0448\u0456\u043D\u0435 \u0442\u0430\u0440\u0442\u0430\u0442\u044B\u043D
     \u0442\u044B\u043B\u0441\u044B\u043C \u043A\u0435\u04A3\u0456\u0441\u0442\u0456\u043A."
   sprite: {fileID: 21300000, guid: 205b9ca8bc90c1c4f8a1981eba678bc4, type: 3}
-  name: 
+  name: "\u041A\u043D\u0438\u0433\u0430 \u0437\u043D\u0430\u043D\u0438\u0439"
   _responses:
   - responseText: "\u0425\u043C\u043C...\u0438\u043D\u0442\u0435\u0440\u0435\u0441\u043D\u043E"
     dialogueObject: {fileID: 11400000, guid: 0b0a960a9c631064191e78ba4b2b92ba, type: 2}

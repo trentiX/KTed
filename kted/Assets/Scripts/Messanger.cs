@@ -1,13 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DataSave;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Messanger : MonoBehaviour, IDataPersistence
+public class Messanger : MonoBehaviour
 {
     // Serialization
     [SerializeField] private GameObject chatTemplate;
@@ -16,10 +15,9 @@ public class Messanger : MonoBehaviour, IDataPersistence
 
     // Variables
     public bool MessangerIsOpen = false;
-    private bool dataIsLoaded = false;
     private Tweener messangerTweener;
-    public List<DialogueObject> chats = new List<DialogueObject>();
 
+    public List<DialogueActivator> chats;
     // Instances
     private Player _player;
 
@@ -37,16 +35,11 @@ public class Messanger : MonoBehaviour, IDataPersistence
         }
     }
 
-    public void addNewChat(DialogueObject dialogueObject)
+    public void addNewChat(DialogueActivator dialogueActivator)
     {
-        if (dialogueObject == null)
-        {
-            return;
-        }
-        
         if (chats != null)
         {
-            if (chats.Contains(dialogueObject))
+            if (chats.Contains(dialogueActivator))
             {
                 return;
             }
@@ -54,12 +47,12 @@ public class Messanger : MonoBehaviour, IDataPersistence
         
         GameObject newChat = Instantiate(chatTemplate, chatsBox.transform);
         newChat.SetActive(true); 
-        newChat.GetComponentInChildren<Image>().sprite = dialogueObject.sprite;
-        newChat.GetComponentInChildren<TextMeshProUGUI>().text = dialogueObject.name;
-
-        chats.Add(dialogueObject);
+        newChat.GetComponentInChildren<Image>().sprite = dialogueActivator.dialogueObject.sprite;
+        newChat.GetComponentInChildren<TextMeshProUGUI>().text = dialogueActivator.dialogueObject.name;
+        
+        chats.Add(dialogueActivator);
     }
-
+    
     private void closeMessanger()
     {
         // Check if messangerTweener is null or not active before using it
@@ -69,7 +62,7 @@ public class Messanger : MonoBehaviour, IDataPersistence
         }
 
         MessangerIsOpen = false;
-        messangerTweener = _canvasGroup.DOFade(0, 1f).SetEase(Ease.OutExpo).OnComplete(() =>
+        messangerTweener = _canvasGroup.DOFade(0, 1f).OnComplete(() =>
         {
             _canvasGroup.interactable = false;
             _canvasGroup.blocksRaycasts = false;
@@ -79,45 +72,16 @@ public class Messanger : MonoBehaviour, IDataPersistence
     public void openMessanger()
     {
         // Check if messangerTweener is null or not active before using it
-        if (messangerTweener != null && messangerTweener.IsActive())
+        if (messangerTweener.IsActive())
         {
             return;
         }
 
-        if (!dataIsLoaded)
-        {
-            getDataFromStorage();
-            dataIsLoaded = true;
-        }
-
         MessangerIsOpen = true;
-        messangerTweener = _canvasGroup.DOFade(1, 1f).SetEase(Ease.OutExpo).OnComplete((() =>
+        messangerTweener = _canvasGroup.DOFade(1, 1f).OnComplete((() =>
         {
             _canvasGroup.interactable = true;
             _canvasGroup.blocksRaycasts = true;
         }));
-    }
-
-    private void getDataFromStorage()
-    {
-        if(chats == null)
-            return;
-        
-        foreach (DialogueObject chat in chats)
-        {
-            addNewChat(chat);
-        }
-    }
-    
-    // DATA
-
-    public void LoadData(GameData gameData)
-    {
-        this.chats = gameData.chatsInStorage;
-    }
-
-    public void SaveData(ref GameData gameData)
-    {
-        gameData.chatsInStorage = this.chats;
     }
 }

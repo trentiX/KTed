@@ -7,12 +7,12 @@ public class GameData
 {
     public bool phoneIsPicked;
     public Vector3 playerPosition;
-    public List<DialogueObject> chatsInStorage;
+    public SerializableDictionary<string, bool> dialogueObjInteracted;
 
     public GameData()
     {
         this.phoneIsPicked = false;
         playerPosition = Vector3.zero;
-        chatsInStorage = new List<DialogueObject>();
+        dialogueObjInteracted = new SerializableDictionary<string, bool>();
     }
 }
