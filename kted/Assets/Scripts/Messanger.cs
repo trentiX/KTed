@@ -4,20 +4,25 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class Messanger : MonoBehaviour
+public class Messanger : MonoBehaviour,IDataPersistence
 {
     // Serialization
     [SerializeField] private GameObject chatTemplate;
     [SerializeField] private GameObject chatsBox;
-    [SerializeField] private CanvasGroup _canvasGroup;
-
+    [FormerlySerializedAs("_canvasGroup")] [SerializeField] private CanvasGroup canvasGroup;
+    
     // Variables
-    public bool MessangerIsOpen = false;
-    private Tweener messangerTweener;
-
+    [FormerlySerializedAs("MessangerIsOpen")] public bool messangerIsOpen = false;
+    public static UnityEvent OnChatAdd = new UnityEvent();
+    public int generalTurn = 0;
+    public bool addChatAgain;
     public List<DialogueActivator> chats;
+    private Tweener _messangerTweener;
+    
     // Instances
     private Player _player;
 
@@ -26,16 +31,16 @@ public class Messanger : MonoBehaviour
     {
         _player = FindObjectOfType<Player>();
     }
-
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            closeMessanger();
+            CloseMessenger();
         }
     }
 
-    public void addNewChat(DialogueActivator dialogueActivator)
+    public void AddNewChat(DialogueActivator dialogueActivator)
     {
         if (chats != null)
         {
@@ -49,39 +54,58 @@ public class Messanger : MonoBehaviour
         newChat.SetActive(true); 
         newChat.GetComponentInChildren<Image>().sprite = dialogueActivator.dialogueObject.sprite;
         newChat.GetComponentInChildren<TextMeshProUGUI>().text = dialogueActivator.dialogueObject.name;
-        
-        chats.Add(dialogueActivator);
+
+        chats?.Add(dialogueActivator);
+
+        if (addChatAgain)
+        {
+            OnChatAdd.Invoke();
+            return;
+        }
+        generalTurn++;
     }
     
-    private void closeMessanger()
+    private void CloseMessenger()
     {
         // Check if messangerTweener is null or not active before using it
-        if (messangerTweener != null && messangerTweener.IsActive() && !_player.canMove())
+        if (_messangerTweener != null && _messangerTweener.IsActive() && !_player.canMove())
         {
             return;
         }
 
-        MessangerIsOpen = false;
-        messangerTweener = _canvasGroup.DOFade(0, 1f).OnComplete(() =>
+        messangerIsOpen = false;
+        _messangerTweener = canvasGroup.DOFade(0, 1f).OnComplete(() =>
         {
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
         });
     }
 
-    public void openMessanger()
+    public void OpenMessenger()
     {
         // Check if messangerTweener is null or not active before using it
-        if (messangerTweener.IsActive())
+        if (_messangerTweener.IsActive())
         {
             return;
         }
 
-        MessangerIsOpen = true;
-        messangerTweener = _canvasGroup.DOFade(1, 1f).OnComplete((() =>
+        messangerIsOpen = true;
+        _messangerTweener = canvasGroup.DOFade(1, 1f).OnComplete((() =>
         {
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
         }));
+    }
+    
+    // DATA
+
+    public void LoadData(GameData gameData)
+    {
+        generalTurn = gameData.chatTurn;
+    }
+
+    public void SaveData(ref GameData gameData)
+    {
+        gameData.chatTurn = generalTurn;
     }
 }

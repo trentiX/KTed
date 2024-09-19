@@ -168,7 +168,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
     private void Messanger()
     {
         _messanger.gameObject.SetActive(true);
-        _messanger.openMessanger();
+        _messanger.OpenMessenger();
     }
 
     private void MusicBoxOnDistanceControl()

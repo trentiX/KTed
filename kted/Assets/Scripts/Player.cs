@@ -152,7 +152,7 @@ public class Player : MonoBehaviour, IDataPersistence
     public bool canMove()
     {
         if (dialogueUI.DialogueOpen || musicUI.MusicOpen || pictureBoxUI.PictureOpen || _cameraController.transition 
-            || Pause.isOpen || _messanger.MessangerIsOpen)
+            || Pause.isOpen || _messanger.messangerIsOpen)
         {
             return false;
         }
