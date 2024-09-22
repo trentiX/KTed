@@ -6,20 +6,30 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Messenger : MonoBehaviour,IDataPersistence
 {
     // Serialization
+    [Header("Chats:")]
     [SerializeField] private GameObject chatTemplate;
     [SerializeField] private GameObject chatsBox;
+    
+    [Header("Messages:")]
+    [SerializeField] private GameObject messageTemplate;
+    [SerializeField] private GameObject messageBox;
+    [SerializeField] private GameObject messageImage;
+    
+    [Header("Other:")]
     [SerializeField] private CanvasGroup canvasGroup;
     
     // Variables
     public bool messengerIsOpen = false;
     public SerializableDictionary<GameObject, DialogueActivator> chats;
     public List<DialogueActivator> chatsTemp;
+    public List<GameObject> messagesTemp;
     private Tweener _messengerTweener;
     
     // Instances
@@ -45,16 +55,94 @@ public class Messenger : MonoBehaviour,IDataPersistence
             return;
         chatsTemp.Add(dialogueActivator);
         
+        // new chat instantiation
         GameObject newChat = Instantiate(chatTemplate, chatsBox.transform);
         newChat.SetActive(true);
+                
         newChat.GetComponentInChildren<Image>().sprite = dialogueActivator.dialogueObject.sprite;
-        newChat.GetComponentInChildren<TextMeshProUGUI>().text = dialogueActivator.dialogueObject.name;
+        newChat.GetComponentInChildren<TextMeshProUGUI>(0).text = dialogueActivator.dialogueObject.name;
+        newChat.GetComponentInChildren<TextMeshProUGUI>(1).text = dialogueActivator.dialogueObject.DialogueRus[0];
+
+        // new chat triggers
+        EventTrigger eventTrigger = newChat.AddComponent<EventTrigger>();
+        EventTrigger.Entry onClick = new EventTrigger.Entry()
+        {
+            eventID = EventTriggerType.PointerClick
+        };
         
+        EventTrigger.Entry onEnter = new EventTrigger.Entry()
+        {
+            eventID = EventTriggerType.PointerEnter
+        };
+        
+        EventTrigger.Entry onExit = new EventTrigger.Entry()
+        {
+            eventID = EventTriggerType.PointerExit
+        };
+
+        onClick.callback.AddListener((eventData) => ShowMessages(eventData, newChat, dialogueActivator));
+        onEnter.callback.AddListener((AbstractEventData) =>
+        {
+            ChangeAlpha(0.2f, newChat);
+
+        });
+        onExit.callback.AddListener((AbstractEventData) =>
+        {
+            ChangeAlpha(0, newChat);
+        });
+        
+        eventTrigger.triggers.Add(onClick);
+        eventTrigger.triggers.Add(onEnter);
+        eventTrigger.triggers.Add(onExit);
+        
+        // new chat add to messenger
         if (chats.ContainsValue(dialogueActivator))
             return;
         chats?.Add(newChat, dialogueActivator);
     }
 
+    private void ShowMessages(BaseEventData eventData, GameObject chat, DialogueActivator dialogueActivator)
+    {
+        // Clear the old messages
+        foreach (var message in messagesTemp)
+        {
+            Destroy(message);
+        }
+        messagesTemp.Clear();
+
+        // Set the image for the current chat
+        messageImage.SetActive(true);
+        messageImage.GetComponent<Image>().sprite = dialogueActivator.dialogueObject.sprite;
+
+        // Add new messages
+        foreach (var dialogueRu in dialogueActivator.dialogueObject.DialogueRus)
+        {
+            GameObject newMessage = Instantiate(messageTemplate, messageBox.transform);
+            newMessage.SetActive(true);
+            newMessage.GetComponentInChildren<TextMeshProUGUI>().text = dialogueRu;
+
+            messagesTemp.Add(newMessage);
+
+            // After adding the new message, force its layout rebuild
+            LayoutRebuilder.ForceRebuildLayoutImmediate(newMessage.GetComponent<RectTransform>());
+        }
+
+        // Rebuild the layout for the entire message box to ensure flexible backgrounds work
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)messageBox.transform);
+
+        // Rebuild the layout for chat
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)chat.transform);
+
+        // Rebuild parent layout groups
+        LayoutGroup[] parentLayoutGroups = chat.GetComponentsInParent<LayoutGroup>();
+        foreach (LayoutGroup group in parentLayoutGroups)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)group.transform);
+        }
+    }
+
+
+    
     private void LoadChats()
     {
         foreach (var chat in chats)
@@ -94,6 +182,13 @@ public class Messenger : MonoBehaviour,IDataPersistence
             canvasGroup.blocksRaycasts = true;
         }));
     }
+
+    private void ChangeAlpha(float value, GameObject chat)
+    {
+        var color = chat.GetComponent<RawImage>().color;
+        color.a = value;
+        chat.GetComponent<RawImage>().color = color;
+    }
     
     // DATA
 
@@ -106,5 +201,13 @@ public class Messenger : MonoBehaviour,IDataPersistence
     public void SaveData(ref GameData gameData)
     {
         gameData.chatsInStorage = chats;
+    }
+}
+
+public static class ExtensionFunction
+{
+    public static T GetComponentInChildren<T>(this GameObject gameObject, int index)
+    {
+        return gameObject.transform.GetChild(index).GetComponent<T>();
     }
 }
