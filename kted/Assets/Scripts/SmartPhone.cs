@@ -16,7 +16,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
     private Player player;
     private LocationCompleted _locationCompleted;
     private TipPanel _tipPanel;
-    private Messanger _messanger;
+    private Messenger _messenger;
     
     //Animations
     private Tweener phoneImageIdleAnim;
@@ -43,7 +43,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
         _audioManager = FindObjectOfType<AudioManager>();
         _locationCompleted = FindObjectOfType<LocationCompleted>();
         _tipPanel = FindObjectOfType<TipPanel>();
-        _messanger = FindObjectOfType<Messanger>();
+        _messenger = FindObjectOfType<Messenger>();
 
         if (!SmartPhonePicked)
         {
@@ -86,7 +86,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
             }   
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                Messanger();
+                Messenger();
             }   
         }
     }
@@ -165,10 +165,10 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
         isRinging = false;
     }
 
-    private void Messanger()
+    private void Messenger()
     {
-        _messanger.gameObject.SetActive(true);
-        _messanger.OpenMessenger();
+        _messenger.gameObject.SetActive(true);
+        _messenger.OpenMessenger();
     }
 
     private void MusicBoxOnDistanceControl()

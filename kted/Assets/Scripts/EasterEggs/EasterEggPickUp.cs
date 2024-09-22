@@ -32,13 +32,13 @@ public class EasterEggPickUp : MonoBehaviour
                 {
                     easterEggManager.MusicPlatePickedUp(gameObject);
                 }
+                else if (smartPhone)
+                {
+                    easterEggManager.SmartPhonePickedUp();
+                }
                 else 
                 {
                     easterEggManager.IncreaseEasterEggCount();
-                }
-                if (smartPhone)
-                {
-                    easterEggManager.SmartPhonePickedUp();
                 }
             }
         }

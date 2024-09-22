@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -5,15 +6,13 @@ public class GameData
 {
     public bool phoneIsPicked;
     public Vector3 playerPosition;
-    public int chatTurn;
-    public SerializableDictionary<string, SerializableDictionary<bool,int>> dialogueObjInteracted;
+    public SerializableDictionary<GameObject, DialogueActivator> chatsInStorage;
 
     public GameData()
     {
         this.phoneIsPicked = false;
         playerPosition = Vector3.zero;
-        dialogueObjInteracted = new SerializableDictionary<string, SerializableDictionary<bool, int>>();
-        chatTurn = 0;
+        chatsInStorage = new SerializableDictionary<GameObject, DialogueActivator>();
     }
 
 }
