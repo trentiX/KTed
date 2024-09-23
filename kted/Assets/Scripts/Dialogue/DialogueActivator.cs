@@ -17,12 +17,23 @@ public class DialogueActivator : MonoBehaviour, IInteractable
     }
     
     public bool Interacted = false;
+    public Response chooseResponse;
     private GameObject sprite;
     private Messenger _messenger;
 
     private void Start()
     {
         _messenger = FindObjectOfType<Messenger>();
+    }
+
+    private void OnEnable()
+    {
+        ResponseHandler.onResponsePicked.AddListener(OnPickedResponse);
+    }
+
+    private void OnDisable()
+    {
+        ResponseHandler.onResponsePicked.AddListener(OnPickedResponse);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -49,9 +60,14 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 
     public void Interact(Player player)
     {
-        player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);
+        player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name, false);
         Interacted = true;
         
         _messenger.AddNewChat(this);
+    }
+
+    private void OnPickedResponse(Response response)
+    {
+        chooseResponse = response;
     }
 }

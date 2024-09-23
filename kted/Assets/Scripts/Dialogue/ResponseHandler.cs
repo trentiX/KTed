@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.EventSystems;
 using UnityEditor.Events;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class ResponseHandler : MonoBehaviour
@@ -17,6 +18,7 @@ public class ResponseHandler : MonoBehaviour
     private DialogueUI _dialogueUI;
 
     private List<GameObject> tempResponseButtons = new List<GameObject>();
+    public static UnityEvent<Response> onResponsePicked = new UnityEvent<Response>();
 
     private void Start()
     {
@@ -86,6 +88,7 @@ public class ResponseHandler : MonoBehaviour
         }
         tempResponseButtons.Clear();
 
-        _dialogueUI.showDialogue(response.DialogueObject, response.DialogueObject.name);
+        _dialogueUI.showDialogue(response.DialogueObject, response.DialogueObject.name, true);
+        onResponsePicked.Invoke(response);
     }
 }

@@ -6,6 +6,7 @@ public class GameData
 {
     public bool phoneIsPicked;
     public Vector3 playerPosition;
+    public SerializableDictionary<DialogueActivator, Response> responsesInStorage;
     public SerializableDictionary<GameObject, DialogueActivator> chatsInStorage;
 
     public GameData()
@@ -13,6 +14,6 @@ public class GameData
         this.phoneIsPicked = false;
         playerPosition = Vector3.zero;
         chatsInStorage = new SerializableDictionary<GameObject, DialogueActivator>();
+        responsesInStorage = new SerializableDictionary<DialogueActivator, Response>();
     }
-
 }

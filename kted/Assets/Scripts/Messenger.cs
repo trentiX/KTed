@@ -19,6 +19,7 @@ public class Messenger : MonoBehaviour,IDataPersistence
     
     [Header("Messages:")]
     [SerializeField] private GameObject messageTemplate;
+    [SerializeField] private GameObject responseTemplate;
     [SerializeField] private GameObject messageBox;
     [SerializeField] private GameObject messageImage;
     
@@ -28,6 +29,7 @@ public class Messenger : MonoBehaviour,IDataPersistence
     // Variables
     public bool messengerIsOpen = false;
     public SerializableDictionary<GameObject, DialogueActivator> chats;
+    public SerializableDictionary<DialogueActivator, Response> responses;
     public List<DialogueActivator> chatsTemp;
     public List<GameObject> messagesTemp;
     private Tweener _messengerTweener;
@@ -80,7 +82,7 @@ public class Messenger : MonoBehaviour,IDataPersistence
             eventID = EventTriggerType.PointerExit
         };
 
-        onClick.callback.AddListener((eventData) => ShowMessages(eventData, newChat, dialogueActivator));
+        onClick.callback.AddListener((eventData) => ShowMessages(eventData, newChat, dialogueActivator,dialogueActivator.dialogueObject, true));
         onEnter.callback.AddListener((AbstractEventData) =>
         {
             ChangeAlpha(0.2f, newChat);
@@ -101,53 +103,64 @@ public class Messenger : MonoBehaviour,IDataPersistence
         chats?.Add(newChat, dialogueActivator);
     }
 
-    private void ShowMessages(BaseEventData eventData, GameObject chat, DialogueActivator dialogueActivator)
+    private void ShowMessages(BaseEventData eventData, GameObject chat, DialogueActivator dialogueActivator, DialogueObject dialogueObject, bool newChat)
     {
-        // Clear the old messages
-        foreach (var message in messagesTemp)
+        if (newChat)
         {
-            Destroy(message);
+            // Clear the old messages
+            foreach (var message in messagesTemp)
+            {
+                Destroy(message);
+            }
+            messagesTemp.Clear();
         }
-        messagesTemp.Clear();
-
+        
         // Set the image for the current chat
         messageImage.SetActive(true);
-        messageImage.GetComponent<Image>().sprite = dialogueActivator.dialogueObject.sprite;
+        messageImage.GetComponent<Image>().sprite = dialogueObject.sprite;
 
-        // Add new messages
-        foreach (var dialogueRu in dialogueActivator.dialogueObject.DialogueRus)
+        for (int i = 0; i < dialogueObject.DialogueRus.Length; i++)
         {
             GameObject newMessage = Instantiate(messageTemplate, messageBox.transform);
             newMessage.SetActive(true);
-            newMessage.GetComponentInChildren<TextMeshProUGUI>().text = dialogueRu;
+            newMessage.GetComponentInChildren<TextMeshProUGUI>().text = dialogueObject.DialogueRus[i];
 
             messagesTemp.Add(newMessage);
-
-            // After adding the new message, force its layout rebuild
             LayoutRebuilder.ForceRebuildLayoutImmediate(newMessage.GetComponent<RectTransform>());
+            
+            if (i == dialogueObject.DialogueRus.Length - 1 && dialogueObject.HasResponses) break;
         }
 
-        // Rebuild the layout for the entire message box to ensure flexible backgrounds work
-        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)messageBox.transform);
-
-        // Rebuild the layout for chat
-        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)chat.transform);
-
-        // Rebuild parent layout groups
-        LayoutGroup[] parentLayoutGroups = chat.GetComponentsInParent<LayoutGroup>();
-        foreach (LayoutGroup group in parentLayoutGroups)
+        if (dialogueObject.HasResponses)
         {
-            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)group.transform);
+            GameObject newResponse = Instantiate(responseTemplate, messageBox.transform);
+            newResponse.SetActive(true);
+            newResponse.GetComponentInChildren<TextMeshProUGUI>().text = dialogueActivator.chooseResponse.ResponseText;
+
+            messagesTemp.Add(newResponse);
+            responses.Add(dialogueActivator, dialogueActivator.chooseResponse);
+            
+            // After adding the new response, force its layout rebuild
+            LayoutRebuilder.ForceRebuildLayoutImmediate(newResponse.GetComponent<RectTransform>());
+            
+            ShowMessages(eventData, chat, dialogueActivator, dialogueActivator.chooseResponse.DialogueObject, false);
         }
+        RebuildLayout(chat);
     }
-
-
     
     private void LoadChats()
     {
         foreach (var chat in chats)
         {
             AddNewChat(chat.Value);
+        }
+    }
+
+    private void LoadResponses()
+    {
+        foreach (var response in responses)
+        {
+            response.Key.chooseResponse = response.Value;
         }
     }
     
@@ -189,18 +202,37 @@ public class Messenger : MonoBehaviour,IDataPersistence
         color.a = value;
         chat.GetComponent<RawImage>().color = color;
     }
+
+    private void RebuildLayout(GameObject chat)
+    {
+        // Rebuild the layout for the entire message box to ensure flexible backgrounds work
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)messageBox.transform);
+
+        // Rebuild the layout for chat
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)chat.transform);
+
+        // Rebuild parent layout groups
+        LayoutGroup[] parentLayoutGroups = chat.GetComponentsInParent<LayoutGroup>();
+        foreach (LayoutGroup group in parentLayoutGroups)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)group.transform);
+        }
+    }
     
     // DATA
 
     public void LoadData(GameData gameData)
     {
         chats = gameData.chatsInStorage;
+        responses = gameData.responsesInStorage;
         LoadChats();
+        LoadResponses();
     }
 
     public void SaveData(ref GameData gameData)
     {
         gameData.chatsInStorage = chats;
+        gameData.responsesInStorage = responses;
     }
 }
 
