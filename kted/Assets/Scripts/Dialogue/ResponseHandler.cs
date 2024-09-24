@@ -88,7 +88,7 @@ public class ResponseHandler : MonoBehaviour
         }
         tempResponseButtons.Clear();
 
-        _dialogueUI.showDialogue(response.DialogueObject, response.DialogueObject.name, true);
+        _dialogueUI.showDialogue(response.DialogueObject, response.DialogueObject.name);
         onResponsePicked.Invoke(response);
     }
 }

@@ -1,13 +1,18 @@
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 
 public class EasterEggPickUp : MonoBehaviour
 {
+    [Header("EasterEgg:")]
     [SerializeField] private GameObject pickUpFX;
     [SerializeField] private GameObject pickedPoint;
     [SerializeField] private bool music;
     [SerializeField] private bool smartPhone;
+    
+    [HideInInspector] public static event Action<DialogueObject> EasterEggPickedUp;
     private CameraController _cameraController;
+    private RingManager _ringManager;
 
     private void Start()
     {
@@ -16,6 +21,8 @@ public class EasterEggPickUp : MonoBehaviour
         {
             Debug.LogError("CameraController not found in the scene!");
         }
+
+        _ringManager = FindObjectOfType<RingManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -23,6 +30,8 @@ public class EasterEggPickUp : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             EasterEggManager easterEggManager = FindObjectOfType<EasterEggManager>();
+            EasterEggPickedUp?.Invoke(_ringManager._dialogueObjectEasterEgg); // convey info to ringManager so smartphone will ring
+            
             if (easterEggManager != null)
             {
                 AudioManager.Instance.EasterEggSound();

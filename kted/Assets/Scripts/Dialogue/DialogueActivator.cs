@@ -3,11 +3,16 @@ using UnityEngine;
 
 public class DialogueActivator : MonoBehaviour, IInteractable
 {
+    [Header("Dialogue activator props")]
     [SerializeField] public DialogueObject dialogueObject;
     [SerializeField] private GameObject prefab;
     [SerializeField] private Transform prefabMother;
     [SerializeField] private string id;
     [SerializeField] private int interactionTurn;
+
+    [Header("Dialogue object for action")] 
+    [SerializeField] private DialogueObject DialogueObject;
+    [HideInInspector] public static event Action<DialogueObject> onInteracted;
 
 
     [ContextMenu("Generate guid for id")]
@@ -20,10 +25,12 @@ public class DialogueActivator : MonoBehaviour, IInteractable
     public Response chooseResponse;
     private GameObject sprite;
     private Messenger _messenger;
+    private RingManager _ringManager;
 
     private void Start()
     {
         _messenger = FindObjectOfType<Messenger>();
+        _ringManager = FindObjectOfType<RingManager>();
     }
 
     private void OnEnable()
@@ -60,8 +67,9 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 
     public void Interact(Player player)
     {
-        player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name, false);
+        player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);
         Interacted = true;
+        onInteracted?.Invoke(DialogueObject);
         
         _messenger.AddNewChat(this);
     }

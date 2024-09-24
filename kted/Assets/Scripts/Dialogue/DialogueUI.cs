@@ -29,7 +29,7 @@ public class DialogueUI : MonoBehaviour
         CloseDialogueBox(text.text);
     }
 
-    public void showDialogue(DialogueObject dialogueObject, string nameOfPerson, bool response)
+    public void showDialogue(DialogueObject dialogueObject, string nameOfPerson)
     {
         icon.GetComponent<Image>().sprite = dialogueObject.Sprite;
         text.text = nameOfPerson;
