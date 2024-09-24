@@ -144,8 +144,11 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
     
     private void hidePhone()
     {
-        if(isRinging)
+        if (isRinging)
+        {
             _audioManager.StartCoroutine(_audioManager.FadeOut(_audioSource,3));
+            
+        }
 
         if (CheckPhoneAnim())
         {

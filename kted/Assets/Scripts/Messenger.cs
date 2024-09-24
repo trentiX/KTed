@@ -131,19 +131,31 @@ public class Messenger : MonoBehaviour,IDataPersistence
             if (i == dialogueObject.DialogueRus.Length - 1 && dialogueObject.HasResponses) break;
         }
 
+        Response myResponse = dialogueActivator.chooseResponse;
         if (dialogueObject.HasResponses)
         {
+            if (!responses.ContainsKey(dialogueActivator))
+            {
+                responses.Add(dialogueActivator, dialogueActivator.chooseResponse);
+            }
+            else
+            {
+                responses.TryGetValue(dialogueActivator, out var response);
+                {
+                    myResponse = response;
+                }
+            }
+            
             GameObject newResponse = Instantiate(responseTemplate, messageBox.transform);
             newResponse.SetActive(true);
-            newResponse.GetComponentInChildren<TextMeshProUGUI>().text = dialogueActivator.chooseResponse.ResponseText;
-
+            newResponse.GetComponentInChildren<TextMeshProUGUI>().text = myResponse.ResponseText;
+            
             messagesTemp.Add(newResponse);
-            responses.Add(dialogueActivator, dialogueActivator.chooseResponse);
             
             // After adding the new response, force its layout rebuild
             LayoutRebuilder.ForceRebuildLayoutImmediate(newResponse.GetComponent<RectTransform>());
             
-            ShowMessages(eventData, chat, dialogueActivator, dialogueActivator.chooseResponse.DialogueObject, false);
+            ShowMessages(eventData, chat, dialogueActivator, myResponse.DialogueObject, false);
         }
         RebuildLayout(chat);
     }
@@ -153,14 +165,6 @@ public class Messenger : MonoBehaviour,IDataPersistence
         foreach (var chat in chats)
         {
             AddNewChat(chat.Value);
-        }
-    }
-
-    private void LoadResponses()
-    {
-        foreach (var response in responses)
-        {
-            response.Key.chooseResponse = response.Value;
         }
     }
     
@@ -173,7 +177,7 @@ public class Messenger : MonoBehaviour,IDataPersistence
         }
 
         messengerIsOpen = false;
-        _messengerTweener = canvasGroup.DOFade(0, 1f).OnComplete(() =>
+        _messengerTweener = canvasGroup.DOFade(0, 0.5f).OnComplete(() =>
         {
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
@@ -189,7 +193,7 @@ public class Messenger : MonoBehaviour,IDataPersistence
         }
 
         messengerIsOpen = true;
-        _messengerTweener = canvasGroup.DOFade(1, 1f).OnComplete((() =>
+        _messengerTweener = canvasGroup.DOFade(1, 0.5f).OnComplete((() =>
         {
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
@@ -226,7 +230,6 @@ public class Messenger : MonoBehaviour,IDataPersistence
         chats = gameData.chatsInStorage;
         responses = gameData.responsesInStorage;
         LoadChats();
-        LoadResponses();
     }
 
     public void SaveData(ref GameData gameData)
