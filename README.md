@@ -23,4 +23,4 @@ KTed is an engaging game about exploring the history of Kazakhstan, available in
 
 ## License
 
-- KTed is distributed under the MIT license. You can read the full license [here](https://opensource.org/licenses/MIT).
+- KTed is distributed under the MIT license
