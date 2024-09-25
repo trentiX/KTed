@@ -26,8 +26,6 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
     
     //Variables
     public bool SmartPhonePicked;
-    private bool isTaken = false;
-    private bool isTipTextShowed = false;
     private bool isRinging = false;
     private DialogueObject tempDialogueObject;
     
@@ -77,7 +75,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                takePhone();
+                answerTheCall();
             }    
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
@@ -93,53 +91,41 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
     private void PhoneIsPicked()
     {
         SmartPhonePicked = true;
-        _locationCompleted.SmartPhonePickAnim("Вы подобрали смартфон!\n" +
-                                              "Нажмите 1 ");
+        _locationCompleted.SmartPhonePickAnim("Вы подобрали смартфон!");
     }
 
-    private void takePhone()
+    private void answerTheCall()
     {
-        if (CheckPhoneAnim() && player.canMove())
+        if (isRinging)
         {
-            if (isTaken)
-            {
-                StartCoroutine(HidePhone());
-            }
-            else
-            {
-                phonePopUpAnim = phoneImage.transform.DOMoveY(250, 2)
-                    .SetEase(Ease.OutCubic)
-                    .OnComplete((() => PhoneRingAnim()));
-            }   
+            StartCoroutine(HidePhone());
         }
     }
     public void Ring(DialogueObject dialogueObject)
     {
-        if (!isTipTextShowed && CheckPhoneAnim() && player.canMove())
+        if (CheckPhoneAnim() && player.canMove())
         {
             //_audioManager.StartCoroutine(_audioManager.FadeOut(_audioSource,3));
             _audioManager.StartCoroutine(_audioManager.FadeIn(_audioSource,2, _audioManager.phoneRing));
-
+            
+           PhonePopUpAnim();
+           
             tempDialogueObject = dialogueObject;
-            takePhone();
-            isTaken = true;
             isRinging = true;
         }
     }
 
+    private void PhonePopUpAnim()
+    {
+        phonePopUpAnim = phoneImage.transform.DOMoveY(250, 2)
+            .SetEase(Ease.OutCubic)
+            .OnComplete((() => PhoneRingAnim()));
+    }
     private void PhoneRingAnim()
     {
         phoneImageIdleAnim = phoneImage.transform.DOMoveY(235, 2)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutCubic);
-
-        if (!isRinging)
-        {
-            _tipPanel.tipPanelPopUp(phoneControllsHeader, phoneControlls);
-            isTipTextShowed = true;
-        }
-        
-        isTaken = true;
     }
     
     private IEnumerator HidePhone()
@@ -152,22 +138,12 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
             })).SetEase(Ease.InCubic);
         }
         
-        if (isRinging)
-        {
-            _audioManager.StartCoroutine(_audioManager.FadeOut(_audioSource,3));
+        _audioManager.StartCoroutine(_audioManager.FadeOut(_audioSource,3));
 
-            yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2);
             
-            _dialogueUI.showDialogue(tempDialogueObject, "Разработчик КТеда");
-        }
+        _dialogueUI.showDialogue(tempDialogueObject, "Разработчик КТеда");
 
-        if (!isRinging)
-        {
-            _tipPanel.tipPanelPopUp(phoneControllsHeader, phoneControlls);
-            isTipTextShowed = false;
-        }
-        
-        isTaken = false;
         isRinging = false;
     }
 
@@ -179,7 +155,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
 
     private void MusicBoxOnDistanceControl()
     {
-        if (!isTipTextShowed && !isRinging)
+        if (!isRinging)
             player.MusicUI.showMusicBox();
     }
     

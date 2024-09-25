@@ -20,7 +20,7 @@ public class EasterEggManager : MonoBehaviour
     public void IncreaseEasterEggCount()
     {
         easterEggsCount++;
-        OnEasterEggPickupUpdated.Invoke(); // Notify listeners that easter egg count has been updated
+        //OnEasterEggPickupUpdated.Invoke(); // Notify listeners that easter egg count has been updated
     }
 
     public void SmartPhonePickedUp()

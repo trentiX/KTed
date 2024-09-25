@@ -8,6 +8,8 @@ public class GameData
     public Vector3 playerPosition;
     public SerializableDictionary<DialogueActivator, Response> responsesInStorage;
     public SerializableDictionary<GameObject, DialogueActivator> chatsInStorage;
+    public SerializableDictionary<DialogueObject, bool> ringedActionsInStorage;
+
 
     public GameData()
     {
@@ -15,5 +17,6 @@ public class GameData
         playerPosition = Vector3.zero;
         chatsInStorage = new SerializableDictionary<GameObject, DialogueActivator>();
         responsesInStorage = new SerializableDictionary<DialogueActivator, Response>();
+        ringedActionsInStorage = new SerializableDictionary<DialogueObject, bool>();
     }
 }

@@ -54,6 +54,7 @@ public class ResponseHandler : MonoBehaviour
             EventTrigger.Entry entry = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
             entry.callback.AddListener((eventData) => OnPointerEnter(responseButton, response));
             eventTrigger.triggers.Add(entry);
+            
             EventTrigger.Entry exitEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
             exitEntry.callback.AddListener((eventData) => OnPointerExit(responseButton, response));
             eventTrigger.triggers.Add(exitEntry);

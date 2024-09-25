@@ -9,9 +9,7 @@ public class DialogueActivator : MonoBehaviour, IInteractable
     [SerializeField] private Transform prefabMother;
     [SerializeField] private string id;
     [SerializeField] private int interactionTurn;
-
-    [Header("Dialogue object for action")] 
-    [SerializeField] private DialogueObject DialogueObject;
+    
     [HideInInspector] public static event Action<DialogueObject> onInteracted;
 
 
@@ -69,7 +67,7 @@ public class DialogueActivator : MonoBehaviour, IInteractable
     {
         player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);
         Interacted = true;
-        onInteracted?.Invoke(DialogueObject);
+        onInteracted?.Invoke(_ringManager._dialogueObjectOnInteracted);
         
         _messenger.AddNewChat(this);
     }
