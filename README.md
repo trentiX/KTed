@@ -6,6 +6,7 @@
    <img src="https://img.shields.io/badge/Engine-Unity%202022.3.16f1-violet" alt="Unity Version">
    <img src="https://img.shields.io/badge/Version-v2.0-698f3f" alt="Game Version">
    <img src="https://img.shields.io/badge/License-MIT-f2542d" alt="License">
+   <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/trentiX/KTed">
 </p>
 
 ## About
