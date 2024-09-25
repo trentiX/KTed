@@ -1,13 +1,26 @@
-# KTed
+<p align="center">
+      <img src="https://i.ibb.co.com/4KtrNmr/photo-2024-09-25-19-19-36.jpg">
+</p>
 
-![Game Logo](![photo_2024-09-25_19-19-36](https://github.com/user-attachments/assets/e661a5cf-8021-4f08-b9a0-ae42217c7999))
+<p align="center">
+   <img src="https://img.shields.io/badge/Engine-Unity%202022.3.16f1-violet" alt="Unity Version">
+   <img src="https://img.shields.io/badge/Version-v2.0-698f3f" alt="Game Version">
+   <img src="https://img.shields.io/badge/License-MIT-f2542d" alt="License">
+</p>
 
-## Watch the Gameplay
-[![Watch the video](https://img.youtube.com/vi/52tJTgyT6gM/maxresdefault.jpg)](https://www.youtube.com/watch?v=52tJTgyT6gM&ab_channel=trentiX)
+## About
 
-## Download
-[Скачать на itch.io](https://tr33ntix.itch.io/kted)
+KTed is an engaging game about exploring the history of Kazakhstan, available in three languages. Its interactive approach to learning allows students to immerse themselves in a virtual world, where they can interact with historical figures from Kazakhstan's past and discover various real-world sources scattered throughout the game world
 
-## Stats
-![Downloads](https://img.shields.io/badge/downloads-1000-blue)
-![Version](https://img.shields.io/badge/version-1.0.0-brightgreen)
+## Distribute
+
+- Download Kted and start learning! [Itch.io](https://tr33ntix.itch.io/kted)
+
+
+## Developers
+
+- trentiX (Alembayev Kaisar) [trentiX](https://github.com/trentiX)
+
+## License
+
+- KTed is distributed under the MIT license. You can read the full license [here](https://opensource.org/licenses/MIT).
