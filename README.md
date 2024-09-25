@@ -18,13 +18,13 @@ KTed is an engaging game about exploring the history of Kazakhstan, available in
 
 ## Distribute
 
-- Download Kted and start learning! [Itch.io](https://tr33ntix.itch.io/kted)
+Download Kted and start learning! [Itch.io](https://tr33ntix.itch.io/kted)
 
 
 ## Developers
 
-- trentiX (Alembayev Kaisar) [trentiX](https://github.com/trentiX)
+trentiX (Alembayev Kaisar) [trentiX](https://github.com/trentiX)
 
 ## License
 
-- KTed is distributed under the MIT license
+KTed is distributed under the MIT license
