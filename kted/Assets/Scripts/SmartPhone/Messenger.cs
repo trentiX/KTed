@@ -22,7 +22,7 @@ public class Messenger : MonoBehaviour,IDataPersistence
     [SerializeField] private GameObject responseTemplate;
     [SerializeField] private GameObject messageBox;
     [SerializeField] private GameObject messageImage;
-    [SerializeField] private GameObject KtedGramTextBig;
+    [SerializeField] private GameObject ktedGramTextBig;
     
     [Header("Other:")]
     [SerializeField] private CanvasGroup canvasGroup;
@@ -114,7 +114,7 @@ public class Messenger : MonoBehaviour,IDataPersistence
                 Destroy(message);
             }
             messagesTemp.Clear();
-            KtedGramTextBig.SetActive(false);
+            ktedGramTextBig.SetActive(false);
         }
         
         // Set the image for the current chat
@@ -167,6 +167,17 @@ public class Messenger : MonoBehaviour,IDataPersistence
         foreach (var chat in chats)
         {
             AddNewChat(chat.Value);
+        }
+    }
+
+    private void SaveMessages()
+    {
+        foreach (var chat in chatsTemp)
+        {
+            if (!responses.ContainsKey(chat) && chat.dialogueObject.HasResponses)
+            {
+                responses.Add(chat, chat.chooseResponse);
+            }
         }
     }
     
@@ -238,6 +249,7 @@ public class Messenger : MonoBehaviour,IDataPersistence
     {
         gameData.chatsInStorage = chats;
         gameData.responsesInStorage = responses;
+        SaveMessages();
     }
 }
 

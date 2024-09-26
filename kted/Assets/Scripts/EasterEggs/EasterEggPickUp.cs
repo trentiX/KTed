@@ -10,7 +10,7 @@ public class EasterEggPickUp : MonoBehaviour
     [SerializeField] private bool music;
     [SerializeField] private bool smartPhone;
     
-    [HideInInspector] public static event Action<DialogueObject> EasterEggPickedUp;
+    [HideInInspector] public static event Action<DialogueObject, string> EasterEggPickedUp;
     private CameraController _cameraController;
     private RingManager _ringManager;
 
@@ -30,7 +30,7 @@ public class EasterEggPickUp : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             EasterEggManager easterEggManager = FindObjectOfType<EasterEggManager>();
-            EasterEggPickedUp?.Invoke(_ringManager._dialogueObjectEasterEgg); // convey info to ringManager so smartphone will ring
+            if (!smartPhone) EasterEggPickedUp?.Invoke(_ringManager._dialogueObjectEasterEgg, "EasterEggAction"); // convey info to ringManager so smartphone will ring
             
             if (easterEggManager != null)
             {

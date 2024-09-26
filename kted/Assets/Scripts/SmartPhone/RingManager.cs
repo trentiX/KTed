@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class RingManager : MonoBehaviour, IDataPersistence
@@ -15,7 +16,8 @@ public class RingManager : MonoBehaviour, IDataPersistence
     private Player _player;
     
     // Variables
-    private SerializableDictionary<DialogueObject, bool> ringedActions;
+    private SerializableDictionary<string, bool> ringedActions;
+    private bool isGoingToRing = false;
     private void Start()
     {
         _smartPhone = FindObjectOfType<SmartPhone>();
@@ -33,25 +35,47 @@ public class RingManager : MonoBehaviour, IDataPersistence
         DialogueActivator.onInteracted -= Ring;
     }
 
-    private void Ring(DialogueObject dialogueObject)
+    private void Ring(DialogueObject dialogueObject, string action)
     {
-        ringedActions.TryGetValue(dialogueObject, out var alreadyRinged);
+        ringedActions.TryGetValue(action, out var alreadyRinged);
         {
             if (alreadyRinged == true) return;
         }
 
-        StartCoroutine(DelayedRing(dialogueObject));
+        StartCoroutine(DelayedRing(dialogueObject, action));
     }
 
-    private IEnumerator DelayedRing(DialogueObject dialogueObject)
+    private IEnumerator DelayedRing(DialogueObject dialogueObject, string action)
     {
-        yield return new WaitForSeconds(Random.Range(5,7));
-        yield return new WaitUntil(() => _player.canMove());
-        _smartPhone.Ring(dialogueObject);
+        if (isGoingToRing) yield break;
+        isGoingToRing = true;
         
-        ringedActions?.Add(dialogueObject, true);
+        // Задержка перед началом звонка
+        yield return StartCoroutine(GenerateDelay());
+
+        // Ожидание, пока игрок сможет двигаться
+        yield return new WaitUntil(() => _player.canMove());
+
+        // Короткая задержка перед звонком
+        yield return new WaitForSeconds(2);
+
+        // Звоним на смартфон
+        _smartPhone.Ring(dialogueObject);
+
+        // Добавляем действие в список выполненных
+        ringedActions?.Add(action, true);
+
+        // Сбрасываем флаг, позволяющий другим звонкам инициироваться
+        isGoingToRing = false;
     }
-    
+
+// Метод для генерации случайной задержки
+    private IEnumerator GenerateDelay()
+    {
+        float delay = Random.Range(5, 7);
+        yield return new WaitForSeconds(delay);
+    }
+
     // DATA
 
     public void LoadData(GameData gameData)

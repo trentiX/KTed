@@ -1,4 +1,5 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using TMPro;
 using Image = UnityEngine.UI.Image;
@@ -34,7 +35,11 @@ public class DialogueUI : MonoBehaviour
         icon.GetComponent<Image>().sprite = dialogueObject.Sprite;
         text.text = nameOfPerson;
         DialogueOpen = true;
+
         dialogueBox.SetActive(true);
+        dialogueBox.GetComponent<CanvasGroup>().alpha = 0;
+        dialogueBox.GetComponent<CanvasGroup>().DOFade(1, 0.6f);
+        
         StartCoroutine(StepThroughDialogue(dialogueObject));
     }
 
@@ -96,7 +101,11 @@ public class DialogueUI : MonoBehaviour
     private void CloseDialogueBox(string nameOfPerson)
     {
         DialogueOpen = false;
-        dialogueBox.SetActive(false);
+        
+        dialogueBox.GetComponent<CanvasGroup>().DOFade(0, 0.5f).OnComplete((() =>
+        {
+            dialogueBox.SetActive(false);
+        }));
         textLabel.text = string.Empty;
         if (_locationsManager != null)
         {

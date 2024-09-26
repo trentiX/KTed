@@ -10,7 +10,7 @@ public class DialogueActivator : MonoBehaviour, IInteractable
     [SerializeField] private string id;
     [SerializeField] private int interactionTurn;
     
-    [HideInInspector] public static event Action<DialogueObject> onInteracted;
+    [HideInInspector] public static event Action<DialogueObject, string> onInteracted;
 
 
     [ContextMenu("Generate guid for id")]
@@ -67,7 +67,7 @@ public class DialogueActivator : MonoBehaviour, IInteractable
     {
         player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);
         Interacted = true;
-        onInteracted?.Invoke(_ringManager._dialogueObjectOnInteracted);
+        onInteracted?.Invoke(_ringManager._dialogueObjectOnInteracted, "DialogueAction");
         
         _messenger.AddNewChat(this);
     }
