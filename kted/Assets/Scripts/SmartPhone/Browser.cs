@@ -15,9 +15,9 @@ public class Browser : MonoBehaviour
     [SerializeField] private GameObject tabsbox;
     [SerializeField] private GameObject tabsTemplate;
     [SerializeField] private TextMeshProUGUI url;
+    [SerializeField] private GameObject addNewTab;
     
     [Header("Shortcuts")] 
-    [SerializeField] private GameObject[] sites;
     [SerializeField] private GameObject mainPage;
 
     // Variables
@@ -25,6 +25,7 @@ public class Browser : MonoBehaviour
     private Dictionary<GameObject, GameObject> shortcuts = new Dictionary<GameObject, GameObject>();
     private Tweener browserAnimation;
     private GameObject openedPage;
+    private GameObject addNewTabTemp;
     
     // Code 
     private void Start()
@@ -41,14 +42,19 @@ public class Browser : MonoBehaviour
         }
         if (_tabsOpened.Count > 3) return;
 
+        if (addNewTabTemp != null) Destroy(addNewTabTemp);
         GameObject newTab = Instantiate(tabsTemplate, tabsbox.transform);
         newTab.SetActive(true);
         _tabsOpened.Add(newTab);
+        
+        GameObject addNewTabButton = Instantiate(addNewTab, tabsbox.transform);
+        addNewTabTemp = addNewTabButton;
+        addNewTabTemp.SetActive(true);
 
         ChangeAlpha(0, newTab);
 
         newTab.GetComponentInChildren<TextMeshProUGUI>().text
-            = tab.GetComponentInChildren<TextMeshProUGUI>().text;
+            = shortCutButton.siteName;
         
         EventTrigger eventTrigger = newTab.AddComponent<EventTrigger>();
         EventTrigger.Entry onClick = new EventTrigger.Entry()

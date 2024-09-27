@@ -7,4 +7,5 @@ public class ShortCutButton : MonoBehaviour
 {
     [SerializeField] public GameObject site;
     [SerializeField] public string url;
+    [SerializeField] public string siteName;
 }
