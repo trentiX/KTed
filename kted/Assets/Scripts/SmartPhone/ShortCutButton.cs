@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class ShortCutButton : MonoBehaviour
 {
-    [SerializeField] public GameObject site;
-    [SerializeField] public string url;
-    [SerializeField] public string siteName;
+    [SerializeField] public Sprite icon;
+    [SerializeField] public string tabName;
+    [SerializeField] public Webpage goToPage;
 }
