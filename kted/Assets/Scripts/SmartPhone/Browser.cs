@@ -8,8 +8,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
+using Random = UnityEngine.Random;
 
-public class Browser : MonoBehaviour
+public class Browser : MonoBehaviour, IDataPersistence
 {
     // Serialization
     [Header("Tabs")]
@@ -32,6 +33,9 @@ public class Browser : MonoBehaviour
     private GameObject _addNewTab;
     private Tweener _browserAnim;
     private CanvasGroup _canvasGroup;
+    private GameObject _extraTab;
+    private int _extraClicksCount;
+    private bool _easterEggFound = false;
     
     [HideInInspector] public Webpage currPage;
     [HideInInspector] public Webpage prevPage;
@@ -61,6 +65,14 @@ public class Browser : MonoBehaviour
     }
     private void AddNewTab(Sprite icon, string tabName, Webpage page)
     {
+        if (_tabsOpened.Count == 4)
+        {
+            if (_extraClicksCount <= 9 && !_easterEggFound)
+            {
+                AddExtraTab(icon, tabName, page);
+                return;
+            }
+        } 
         Destroy(_addNewTab);
         GameObject newTab = Instantiate(tabsTemplate, tabsbox.transform);
         _tabsOpened.Add(newTab);
@@ -70,11 +82,21 @@ public class Browser : MonoBehaviour
         
         // Get the existing Tab component and initialize it
         Tab tabComponent = newTab.GetComponent<Tab>();
-        tabComponent.InitializeTab(icon, tabName, page, this);
+        tabComponent.InitializeTab(icon, tabName, page, this,true);
 
         // Activate the tab now that it has been set up
         newTab.SetActive(true);
+
+        if (_tabsOpened.Count > 4)
+        {
+            foreach (var tab in _tabsOpened)
+            {
+                RectTransform rectTransform = tab.GetComponent<RectTransform>();
+                rectTransform.sizeDelta = new Vector2(1200/_tabsOpened.Count, rectTransform.sizeDelta.y);
+            }
+        }
     }
+    
     public void OpenPage(Webpage page, Tab tab)
     {
         currPage.Close(page); // Close currPage and open page
@@ -93,7 +115,7 @@ public class Browser : MonoBehaviour
         currTab = tab;
         
         // Make currTab opaque
-        ChangeAlpha(1, tab.gameObject);
+        ChangeAlpha(0.5f, tab.gameObject);
     }
 
     public void CloseTab(Tab tab)
@@ -101,6 +123,15 @@ public class Browser : MonoBehaviour
         tab.CloseTab();
         _tabsOpened.Remove(tab.gameObject);
 
+        if (_tabsOpened.Count >= 4)
+        {
+            foreach (var tabOpened in _tabsOpened)
+            {
+                RectTransform rectTransform = tabOpened.GetComponent<RectTransform>();
+                rectTransform.sizeDelta = new Vector2(1200/_tabsOpened.Count, rectTransform.sizeDelta.y);
+            }
+        }
+        
         if (_tabsOpened.Count == 0)
         {
             CloseBrowser();
@@ -127,7 +158,7 @@ public class Browser : MonoBehaviour
         OpenPage(mainPage, _tabsOpened[0].GetComponent<Tab>());
         
         browserOpen = true;
-        _browserAnim = _canvasGroup.DOFade(1, 0.5f).OnComplete((() =>
+        _browserAnim = _canvasGroup.DOFade(1, 0.2f).OnComplete((() =>
         {
             _canvasGroup.interactable = true;
             _canvasGroup.blocksRaycasts = true;
@@ -155,7 +186,7 @@ public class Browser : MonoBehaviour
         }
         
         browserOpen = false;
-        _browserAnim = _canvasGroup.DOFade(0, 0.5f).OnComplete(() =>
+        _browserAnim = _canvasGroup.DOFade(0, 0.2f).OnComplete(() =>
         {
             _canvasGroup.interactable = false;
             _canvasGroup.blocksRaycasts = false;
@@ -204,6 +235,76 @@ public class Browser : MonoBehaviour
             eventTrigger.triggers.Add(onEnter);
             eventTrigger.triggers.Add(onExit);
         }
+    }
+    private void AddExtraTab(Sprite icon, string tabName, Webpage page)
+    {
+        if (_extraTab != null)
+        {
+            return;
+        }
+        
+        GameObject newTab = Instantiate(tabsTemplate, tabsbox.transform);
+        Tab tabComponent = newTab.GetComponent<Tab>();
+        
+        RectTransform rectTransform = newTab.GetComponent<RectTransform>();
+        rectTransform.sizeDelta = new Vector2(500, rectTransform.sizeDelta.y);
+
+        switch (_extraClicksCount)
+        {
+            case 1:
+                tabName = "Не нажимай!";
+                break;
+            case 2:
+                tabName = "На кнопку!";
+                break;
+            case 3:
+                tabName = "ПОЖАЛУЙСТА";
+                break;
+            case 4:
+                tabName = "Удали другие";
+                break;
+            case 5:
+                tabName = "ВКЛАДКИИ!!";
+                break;
+            case 6:
+                tabName = "ПОЖАЛУЙСТААА";
+                break;
+            case 7:
+                tabName = "МЫ ПРОСИМ";
+                break;;
+            case 8:
+                tabName = "НЕ НАДООО";
+                break;
+            case 9:
+                tabName = "Ты доигрался...";
+                _easterEggFound = true;
+                break;
+        }
+        
+        tabComponent.InitializeTab(icon, tabName, page, this,false);
+        newTab.SetActive(true);
+        _extraClicksCount++;
+
+        _extraTab = newTab;
+
+        // Добавление Rigidbody2D для гравитации
+        Rigidbody2D newTabRb = newTab.AddComponent<Rigidbody2D>();
+        newTabRb.gravityScale = 90;
+        newTabRb.mass = 50;
+        
+        // Уничтожение таба после падения (через несколько секунд)
+        Destroy(newTab, 2f);
+    }
+    
+    // DATA
+
+    public void LoadData(GameData gameData)
+    {
+        _easterEggFound = gameData.browserEasterEggFound;
+    }
+    public void SaveData(ref GameData gameData)
+    {
+        gameData.browserEasterEggFound = _easterEggFound;
     }
 }
 

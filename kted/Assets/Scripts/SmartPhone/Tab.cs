@@ -15,14 +15,16 @@ public class Tab : MonoBehaviour
     
     // Variables
     private Browser _browser;
+    private bool _clickable;
     [HideInInspector] public Webpage itsPage;
 
-    public void InitializeTab(Sprite iconSprite, string tabNameText, Webpage goToPage, Browser browser)
+    public void InitializeTab(Sprite iconSprite, string tabNameText, Webpage goToPage, Browser browser, bool clickable)
     {
         icon.sprite = iconSprite;
         tabName.text = tabNameText;
         itsPage = goToPage;
         _browser = browser;
+        _clickable = clickable;
     }
     
     private void Start()
@@ -61,6 +63,7 @@ public class Tab : MonoBehaviour
 
     private void OnClick()
     {
+        if (!_clickable) return;
         // Open new page
         _browser.OpenPage(itsPage, this);
     }
