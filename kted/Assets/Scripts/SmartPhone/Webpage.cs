@@ -12,6 +12,8 @@ public class Webpage : MonoBehaviour
     // Variables
     private Browser _browser;
     private CanvasGroup _canvasGroup;
+    private Tweener _ClosePageAnimation;
+
 
     private void Start()
     {
@@ -21,17 +23,25 @@ public class Webpage : MonoBehaviour
 
     public void Open()
     {
-        _browser.currPage = this;
-        _canvasGroup.DOFade(1, 0.2f);
-        _canvasGroup.interactable = true;
-        _canvasGroup.blocksRaycasts = true;
+        Debug.Log("Открытие страницы: " + url);
+        _canvasGroup.DOFade(1, 0.1f).OnComplete((() =>
+        {
+            _canvasGroup.interactable = true;
+            _canvasGroup.blocksRaycasts = true;
+        }));
     }
 
-    public void Close()
+    public void Close(Webpage webpage) // webpage is page that need to be opened after closing other
     {
-        _browser.prevPage = this;
-        _canvasGroup.DOFade(0, 0.2f);
-        _canvasGroup.interactable = false;
-        _canvasGroup.blocksRaycasts = false;
+        if (_ClosePageAnimation.IsActive()) return;
+
+        Debug.Log("Закрытие страницы: " + url);
+        _ClosePageAnimation = _canvasGroup.DOFade(0, 0.1f).OnComplete((() =>
+        {
+            webpage.Open();
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
+        }));
+
     }
 }

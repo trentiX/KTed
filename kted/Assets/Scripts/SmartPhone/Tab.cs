@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Tab : MonoBehaviour
@@ -14,13 +15,13 @@ public class Tab : MonoBehaviour
     
     // Variables
     private Browser _browser;
-    private Webpage _itsPage;
+    [HideInInspector] public Webpage itsPage;
 
     public void InitializeTab(Sprite iconSprite, string tabNameText, Webpage goToPage, Browser browser)
     {
         icon.sprite = iconSprite;
         tabName.text = tabNameText;
-        _itsPage = goToPage;
+        itsPage = goToPage;
         _browser = browser;
     }
     
@@ -49,6 +50,7 @@ public class Tab : MonoBehaviour
         });
         onExit.callback.AddListener((AbstractEventData) =>
         {
+            if(_browser.currTab == this) return;
             ChangeAlpha(0, gameObject);
         });
         
@@ -59,11 +61,13 @@ public class Tab : MonoBehaviour
 
     private void OnClick()
     {
-        _browser.OpenPage(_itsPage);
+        // Open new page
+        _browser.OpenPage(itsPage, this);
     }
 
     public void CloseTab()
     {
+        // Destroy tab gameObject
         Destroy(gameObject);
     }
 

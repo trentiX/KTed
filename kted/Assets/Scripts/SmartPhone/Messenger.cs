@@ -44,14 +44,6 @@ public class Messenger : MonoBehaviour,IDataPersistence
         _player = FindObjectOfType<Player>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            CloseMessenger();
-        }
-    }
-
     public void AddNewChat(DialogueActivator dialogueActivator)
     {
         if (chatsTemp.Contains(dialogueActivator))
@@ -181,38 +173,6 @@ public class Messenger : MonoBehaviour,IDataPersistence
         }
     }
     
-    private void CloseMessenger()
-    {
-        // Check if messengerTweener is null or not active before using it
-        if (_messengerTweener != null && _messengerTweener.IsActive() && !_player.canMove())
-        {
-            return;
-        }
-
-        messengerIsOpen = false;
-        _messengerTweener = canvasGroup.DOFade(0, 0.5f).OnComplete(() =>
-        {
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
-        });
-    }
-
-    public void OpenMessenger()
-    {
-        // Check if messengerTweener is null or not active before using it
-        if (_messengerTweener.IsActive())
-        {
-            return;
-        }
-
-        messengerIsOpen = true;
-        _messengerTweener = canvasGroup.DOFade(1, 0.5f).OnComplete((() =>
-        {
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
-        }));
-    }
-
     private void ChangeAlpha(float value, GameObject chat)
     {
         var color = chat.GetComponent<RawImage>().color;

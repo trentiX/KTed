@@ -15,7 +15,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
     private AudioManager _audioManager;
     private Player player;
     private LocationCompleted _locationCompleted;
-    private TipPanel _tipPanel;
+    private Browser _browser;
     private Messenger _messenger;
     private DialogueUI _dialogueUI;
     
@@ -42,7 +42,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
         player = FindObjectOfType<Player>();
         _audioManager = FindObjectOfType<AudioManager>();
         _locationCompleted = FindObjectOfType<LocationCompleted>();
-        _tipPanel = FindObjectOfType<TipPanel>();
+        _browser = FindObjectOfType<Browser>();
         _messenger = FindObjectOfType<Messenger>();
         _dialogueUI = FindObjectOfType<DialogueUI>();
 
@@ -79,11 +79,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
             }    
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                MusicBoxOnDistanceControl();
-            }   
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                Messenger();
+                OpenBrowser();
             }   
         }
     }
@@ -113,6 +109,12 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
             tempDialogueObject = dialogueObject;
             isRinging = true;
         }
+    }
+
+    private void OpenBrowser()
+    {
+        _browser.gameObject.SetActive(true);
+        _browser.OpenBrowser();
     }
 
     private void PhonePopUpAnim()
@@ -146,19 +148,6 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
 
         isRinging = false;
     }
-
-    private void Messenger()
-    {
-        _messenger.gameObject.SetActive(true);
-        _messenger.OpenMessenger();
-    }
-
-    private void MusicBoxOnDistanceControl()
-    {
-        if (!isRinging)
-            player.MusicUI.showMusicBox();
-    }
-    
     private bool CheckPhoneAnim()
     {
         if (!phoneHideAnim.IsActive() && !phonePopUpAnim.IsActive())

@@ -17,7 +17,7 @@ public class Player : MonoBehaviour, IDataPersistence
     public KeysActivator KeysActivator => KeysActivator;
 
     private CameraController _cameraController;
-    private Messenger _messenger;
+    private Browser _browser;
 
     public IInteractable Interactable { get; set; }
 
@@ -46,7 +46,7 @@ public class Player : MonoBehaviour, IDataPersistence
         _cameraController = FindObjectOfType<CameraController>(); // Find and assign the CameraController
         rb = GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
-        _messenger = FindObjectOfType<Messenger>();
+        _browser = FindObjectOfType<Browser>();
     }
 
     private void Update()
@@ -152,7 +152,7 @@ public class Player : MonoBehaviour, IDataPersistence
     public bool canMove()
     {
         if (dialogueUI.DialogueOpen || musicUI.MusicOpen || pictureBoxUI.PictureOpen || _cameraController.transition 
-            || Pause.isOpen || _messenger.messengerIsOpen)
+            || Pause.isOpen || _browser.browserOpen)
         {
             return false;
         }
