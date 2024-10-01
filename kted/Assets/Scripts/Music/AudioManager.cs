@@ -114,6 +114,16 @@ public class AudioManager : MonoBehaviour
         _nowPlaying.nowPlayingAnim(songName);
         musicSource.PlayOneShot(clip);
     }
+
+    public void PlaySong(AudioClip clip)
+    {
+        musicSource.PlayOneShot(clip);
+    }
+
+    public void PauseSong()
+    {
+        musicSource.Pause();
+    }
     
     public void PlayFourthSong()
     {

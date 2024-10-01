@@ -32,9 +32,9 @@ public class VolumeSettings : MonoBehaviour
 
     private void OnDisable()
     {
-        PlayerPrefs.SetFloat(AudioManager.MUSIC_KEY, MusicSlider.value);
-        PlayerPrefs.SetFloat(AudioManager.SFX_KEY, SFXSlider.value);
-        PlayerPrefs.SetFloat(AudioManager.AMBIENT_KEY, AmbientSlider.value);
+        if (MusicSlider != null) PlayerPrefs.SetFloat(AudioManager.MUSIC_KEY, MusicSlider.value);
+        if (SFXSlider != null) PlayerPrefs.SetFloat(AudioManager.SFX_KEY, SFXSlider.value);
+        if (AmbientSlider != null) PlayerPrefs.SetFloat(AudioManager.AMBIENT_KEY, AmbientSlider.value);
     }
 
     void SetMusicVolume(float value)
