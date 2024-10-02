@@ -114,7 +114,6 @@ public class AudioManager : MonoBehaviour
         _nowPlaying.nowPlayingAnim(songName);
         musicSource.PlayOneShot(clip);
     }
-    
     public void PlayFourthSong()
     {
         songName = "Үш дос";
@@ -129,9 +128,39 @@ public class AudioManager : MonoBehaviour
         musicSource.PlayOneShot(clip);
     }
 
+    public void PlaySong(AudioClip clip)
+    {
+        if (musicSource.isPlaying)
+        {
+            return; // Prevent overlapping songs
+        }
+
+        musicSource.clip = clip; // Set the clip to the AudioSource
+        musicSource.Play();      // Start playing the clip
+    }
+
+    public void PauseSong()
+    {
+        if (musicSource.isPlaying)
+        {
+            musicSource.Pause(); // Pause the currently playing clip
+        }
+    }
+
+    public void ResumeSong()
+    {
+        if (!musicSource.isPlaying && musicSource.clip != null)
+        {
+            musicSource.UnPause(); // Resume playback if it was paused
+        }
+    }
+
     public void StopMusic()
     {
-        StartCoroutine(FadeOut(musicSource, 2));
+        if (musicSource.isPlaying)
+        {
+            musicSource.Stop();
+        }
     }
     public void StopSfx()
     {
