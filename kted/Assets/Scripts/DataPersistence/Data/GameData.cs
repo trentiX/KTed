@@ -12,6 +12,7 @@ public class GameData
     public SerializableDictionary<DialogueActivator, Response> responsesInStorage;
     public SerializableDictionary<GameObject, DialogueActivator> chatsInStorage;
     public SerializableDictionary<string, bool> ringedActionsInStorage;
+    public SerializableDictionary<string, bool> favouriteSongs;
 
 
     public GameData()
@@ -22,5 +23,6 @@ public class GameData
         chatsInStorage = new SerializableDictionary<GameObject, DialogueActivator>();
         responsesInStorage = new SerializableDictionary<DialogueActivator, Response>();
         ringedActionsInStorage = new SerializableDictionary<string, bool>();
+        favouriteSongs = new SerializableDictionary<string, bool>();
     }
 }
