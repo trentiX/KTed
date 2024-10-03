@@ -109,12 +109,6 @@ public class Playlist : MonoBehaviour
             newSong.GetComponentInChildren<TextMeshProUGUI>(2).text
                 = _songNumber.ToString();
             _songNumber++;
-
-            _ktedtify._favouriteSongs.Add(song.name, false);
-            _ktedtify._favouriteSongs.TryGetValue(song.name, out var liked);
-            {
-                _ktedtify._favouriteSongs[song.name] = liked;
-            }
         }
     }
 
