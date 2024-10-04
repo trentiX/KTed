@@ -17,6 +17,7 @@ public class Playlist : MonoBehaviour
     [SerializeField] private int _listenersAmount;
     [SerializeField] private bool _library;
 
+
     [Header("PlaylistSongs")] [SerializeField]
     public List<AudioClip> songs = new List<AudioClip>();
 
@@ -34,12 +35,15 @@ public class Playlist : MonoBehaviour
     // Variables
     private int _songNumber = 1;
     private Ktedtify _ktedtify;
-    [HideInInspector] public List<GameObject> songsList = new List<GameObject>();
+    private AudioManager _audioManager;
+    private FavouritePlaylist _favouritePlaylist;
+    public List<GameObject> songsList = new List<GameObject>();
 
 
     // Code
     private void Start()
     {
+        _audioManager = FindObjectOfType<AudioManager>();
         gameObject.GetComponent<CanvasGroup>().alpha = 0;
         gameObject.GetComponent<CanvasGroup>().interactable = false;
         gameObject.GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -47,20 +51,18 @@ public class Playlist : MonoBehaviour
 
     private void OnEnable()
     {
+        _favouritePlaylist = FindObjectOfType<FavouritePlaylist>();
         _ktedtify = FindObjectOfType<Ktedtify>();
-        OnPlaylistOpen();
-        Ktedtify.OnLiked.AddListener(LibraryPlaylistAdd);
-        Ktedtify.OnDisLiked.AddListener(LibraryPlaylistRemove);
+        OnPlaylistOpen(this);
+        
+        Ktedtify._onLiked.AddListener(OnLiked);
+        Ktedtify._onUnLiked.AddListener(OnUnLiked);
+        Ktedtify.updatePlaylist.AddListener(OnPlaylistOpen);
     }
 
-    private void OnDisable()
+    private void OnPlaylistOpen(Playlist playlist)
     {
-        Ktedtify.OnLiked.RemoveListener(LibraryPlaylistAdd);
-        Ktedtify.OnDisLiked.AddListener(LibraryPlaylistRemove);
-    }
-
-    private void OnPlaylistOpen()
-    {
+        if (this != playlist) return;
         SongsInstantiation(songs);
 
         // Show playlist data
@@ -70,7 +72,7 @@ public class Playlist : MonoBehaviour
         _listenersUIAmount.text = _listenersAmount.ToString() + " слушателей на KTedtify";
     }
 
-    private void SongsInstantiation(List<AudioClip> songsInst)
+    public void SongsInstantiation(List<AudioClip> songsInst)
     {
         // Reset songs box
         List<GameObject> songsToRemove = new List<GameObject>(songsList);
@@ -78,8 +80,18 @@ public class Playlist : MonoBehaviour
         {
             Destroy(song);
         }
-
         songsList.Clear();
+        Debug.Log("songlist cleared");
+
+        if (_ktedtify._currPlayingPlaylist == this)
+        {
+            List<GameObject> songsQueueToRemove = new List<GameObject>(_ktedtify._songsQueue);
+            foreach (var song in songsQueueToRemove)
+            {
+                Destroy(song);
+            }
+            _ktedtify._songsQueue.Clear();
+        }
         _songNumber = 1;
         // Songs instantiation
         foreach (var song in songsInst)
@@ -88,8 +100,10 @@ public class Playlist : MonoBehaviour
                 (_songTemplate, _songsBox.transform);
             newSong.SetActive(true);
 
-            songsList.Add(newSong);
-            _ktedtify._songsQueue.Add(newSong);
+            if (_ktedtify._currPlayingPlaylist == this)
+            {
+                _ktedtify._songsQueue.Add(newSong);
+            }
 
             // Add AudioSource and assign AudioClip
             AudioSource audioSource = newSong.AddComponent<AudioSource>();
@@ -109,57 +123,46 @@ public class Playlist : MonoBehaviour
             newSong.GetComponentInChildren<TextMeshProUGUI>(2).text
                 = _songNumber.ToString();
             _songNumber++;
-
-            _ktedtify._favouriteSongs.Add(song.name, false);
-            _ktedtify._favouriteSongs.TryGetValue(song.name, out var liked);
-            {
-                _ktedtify._favouriteSongs[song.name] = liked;
-            }
-        }
-    }
-
-    private void LibraryPlaylistAdd(GameObject addSong)
-    {
-        if (_library)
-        {
-            GameObject newSong = Instantiate
-                (_songTemplate, _songsBox.transform);
-            newSong.SetActive(true);
-
+            
             songsList.Add(newSong);
-            _ktedtify._songsQueue.Add(newSong);
-
-            // Add AudioSource and assign AudioClip
-            AudioSource audioSource = newSong.AddComponent<AudioSource>();
-            audioSource.clip = addSong.GetComponent<AudioSource>().clip;
-            // Song name
-            newSong.GetComponentInChildren<TextMeshProUGUI>(0).text
-                = addSong.name;
-
-            // Song Duration
-            TimeSpan t = TimeSpan.FromSeconds(addSong.GetComponent<AudioSource>().clip.length);
-            string answer = string.Format("{0:D2}:{1:D2}", t.Minutes, t.Seconds);
-            newSong.GetComponentInChildren<TextMeshProUGUI>(1).text
-                = answer;
-
-            // Song number
-            newSong.GetComponentInChildren<TextMeshProUGUI>(2).text
-                = _songNumber.ToString();
-            _songNumber++;
-
-            _ktedtify._favouriteSongs.Add(addSong.name, false);
-            _ktedtify._favouriteSongs.TryGetValue(addSong.name, out var liked);
-            {
-                _ktedtify._favouriteSongs[addSong.name] = liked;
-            }
+            Debug.Log("songlist added new song");
         }
     }
-    private void LibraryPlaylistRemove(GameObject removeSong)
+
+    private void OnLiked(AudioClip likedClip)
     {
-        if (_library)
+        Debug.Log("OnLiked");
+
+        if (!this.songs.Contains(likedClip)) return;
+        Debug.Log("OnLiked passed");
+        
+        _favouritePlaylist.favouriteSongs.Add(likedClip);
+        
+        Debug.Log("FavSongsInstantiation");
+        _favouritePlaylist.FavSongsInstantiation();
+        
+        _ktedtify.DuplicateCheck(songsList);
+    }
+
+    private void OnUnLiked(AudioClip unlikedClip)
+    {
+        Debug.Log("OnUnLiked");
+
+        if (!this.songs.Contains(unlikedClip)) return;
+        Debug.Log("OnUnLiked passed");
+
+        _favouritePlaylist.favouriteSongs.Remove(unlikedClip);
+
+        if (_ktedtify._currPlayingPlaylist == _favouritePlaylist)
         {
-            songsList.Remove(removeSong);
-            Destroy(removeSong);
+            _audioManager.StopMusic();
+            _ktedtify.ObjectFade(_ktedtify._bottomPanel, 0, 0.01f);
+            _ktedtify._bottomPanel.SetActive(false);
         }
+
+        Debug.Log("FavSongsInstantiation");
+        _favouritePlaylist.FavSongsInstantiation();
+        
+        _ktedtify.DuplicateCheck(songsList);
     }
 }
