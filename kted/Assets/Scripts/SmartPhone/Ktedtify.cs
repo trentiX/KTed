@@ -9,10 +9,10 @@ using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
 
-public class Ktedtify : MonoBehaviour, IDataPersistence
+public class Ktedtify : MonoBehaviour
 {
     // Serialization
-    [SerializeField] private GameObject _bottomPanel;
+    [SerializeField] public GameObject _bottomPanel;
     [SerializeField] public TextMeshProUGUI _startTime;
     [SerializeField] private TextMeshProUGUI _endTime;
     [SerializeField] private TextMeshProUGUI _songName;
@@ -23,15 +23,17 @@ public class Ktedtify : MonoBehaviour, IDataPersistence
     
     // Variables
     public List<GameObject> _songsQueue;
-    public SerializableDictionary<string, bool> _favouriteSongs;
-    private Playlist _currPlaylist;
+    public Playlist _currPlaylist;
+    public Playlist _currPlayingPlaylist;
     private GameObject _currAudioClip;
     private AudioManager _audioManager;
+    private FavouritePlaylist _favouritePlaylist;
     private Timer _timer;
     private bool _songPlaying;
-    private bool _songLiked;
-    public static UnityEvent<GameObject> OnLiked = new UnityEvent<GameObject>();
-    public static UnityEvent<GameObject> OnDisLiked = new UnityEvent<GameObject>();
+    public static UnityEvent<AudioClip> _onLiked = new UnityEvent<AudioClip>();
+    public static UnityEvent<AudioClip> _onUnLiked = new UnityEvent<AudioClip>();
+    public static UnityEvent<Playlist> updatePlaylist = new UnityEvent<Playlist>();
+    private bool _liked;
     public int songIndexInHistory;
 
     // Code   
@@ -40,6 +42,7 @@ public class Ktedtify : MonoBehaviour, IDataPersistence
         gameObject.GetComponent<CanvasGroup>().alpha = 0;
         _songsQueue = new List<GameObject>();
         _audioManager = FindObjectOfType<AudioManager>();
+        _favouritePlaylist = FindObjectOfType<FavouritePlaylist>();
         _timer = FindObjectOfType<Timer>();
         
         // Bottom panel setup
@@ -52,7 +55,7 @@ public class Ktedtify : MonoBehaviour, IDataPersistence
         // In case from home to playlist
         ObjectFade(_homePage, 1, 0.3f);
         _homePage.SetActive(false);
-
+        
         // In case from playlist to playlist
         if (_currPlaylist != null) ObjectFade(_currPlaylist.gameObject, 0, 0.3f);
         
@@ -73,11 +76,15 @@ public class Ktedtify : MonoBehaviour, IDataPersistence
     {
         if (_currAudioClip != null) _currAudioClip.GetComponent<Image>().color = new Color(0.13f, 0.13f, 0.13f);
         // Play song from the start
+        _currPlayingPlaylist = _currPlaylist;
+        _songsQueue = _currPlaylist.songsList;
+
         _currAudioClip = _songsQueue[0];
         _songsQueue[0].GetComponent<Image>().color = new Color(0.07843f, 0.07843f, 0.07843f);
         _audioManager.StopMusic();
         _songsQueue[0].GetComponent<AudioSource>().time = 0;
         _audioManager.PlaySong(_songsQueue[0].GetComponent<AudioSource>().clip);
+        _currPlayingPlaylist = _currPlaylist;
 
         // Timer
         _timer.StartTimer(_songsQueue[0].GetComponent<AudioSource>().clip.length);
@@ -99,6 +106,10 @@ public class Ktedtify : MonoBehaviour, IDataPersistence
         // Bottom panel setup
         _bottomPanel.SetActive(true);
         ObjectFade(_bottomPanel, 1, 0.3f);
+        
+        CheckOnLiked(_songsQueue[songIndexInHistory]
+            .GetComponent<AudioSource>().clip);
+        DuplicateCheck(_songsQueue);
     }
     public void PlaySong(GameObject song)
     {
@@ -111,6 +122,8 @@ public class Ktedtify : MonoBehaviour, IDataPersistence
         _audioManager.StopMusic();
         song.GetComponent<AudioSource>().time = 0;
         _audioManager.PlaySong(song.GetComponent<AudioSource>().clip);
+        _currPlayingPlaylist = _currPlaylist;
+        _songsQueue = _currPlaylist.songsList;
 
         // Timer
         _timer.StartTimer(song.GetComponent<AudioSource>().clip.length);
@@ -133,16 +146,8 @@ public class Ktedtify : MonoBehaviour, IDataPersistence
         _bottomPanel.SetActive(true);
         ObjectFade(_bottomPanel, 1, 0.3f);
 
-        if (LikedCheck(song))
-        {
-            _songLiked = true;
-            _likeButton.GetComponent<Image>().color = Color.red;
-        }
-        else
-        {
-            _songLiked = false;
-            _likeButton.GetComponent<Image>().color = Color.gray;
-        }
+        CheckOnLiked(song.GetComponent<AudioSource>().clip);
+        DuplicateCheck(_songsQueue);
     }
 
     public void StopSong()
@@ -190,19 +195,12 @@ public class Ktedtify : MonoBehaviour, IDataPersistence
             // Update Timer
             _timer.StartTimer(_songsQueue[songIndexInHistory + 1]
                 .GetComponent<AudioSource>().clip.length);
-
-            // Update song index
-            if (LikedCheck(_songsQueue[songIndexInHistory + 1]))
-            {
-                _songLiked = true;
-                _likeButton.GetComponent<Image>().color = Color.red;
-            }
-            else
-            {
-                _songLiked = false;
-                _likeButton.GetComponent<Image>().color = Color.gray;
-            }
+            
+            CheckOnLiked(_songsQueue[songIndexInHistory + 1]
+                .GetComponent<AudioSource>().clip);
             songIndexInHistory++;
+            _continueButton.SetActive(false);
+            _pauseButton.SetActive(true);
         }
     }
 
@@ -228,40 +226,61 @@ public class Ktedtify : MonoBehaviour, IDataPersistence
                 .GetComponent<AudioSource>().clip.length);
 
             // Update song index
-            if (LikedCheck(_songsQueue[songIndexInHistory - 1]))
-            {
-                _songLiked = true;
-                _likeButton.GetComponent<Image>().color = Color.red;
-            }
-            else
-            {
-                _songLiked = false;
-                _likeButton.GetComponent<Image>().color = Color.gray;
-            }
+            CheckOnLiked(_songsQueue[songIndexInHistory - 1]
+                .GetComponent<AudioSource>().clip);
             songIndexInHistory--;
+            _continueButton.SetActive(false);
+            _pauseButton.SetActive(true);
         }
     }
 
-    public void LikeUnlikeSong()
+    public void LikeUnLike()
     {
-        if (_songLiked)
+        if (_liked)
         {
             // Unlike
-            _favouriteSongs[_currAudioClip.name] = false;
             _likeButton.GetComponent<Image>().color = Color.gray;
-            _songLiked = false;
-            OnDisLiked.Invoke(_currAudioClip);
+            _onUnLiked.Invoke(_currAudioClip.GetComponent<AudioSource>().clip);
+            _liked = false;
         }
         else
         {
             // Like
-            _favouriteSongs[_currAudioClip.name] = true;
             _likeButton.GetComponent<Image>().color = Color.red;
-            _songLiked = true;
-            OnLiked.Invoke(_currAudioClip);
+            _onLiked.Invoke(_currAudioClip.GetComponent<AudioSource>().clip);
+            _liked = true;
         }
     }
 
+    public void DuplicateCheck(List<GameObject> songs)
+    {
+        if (songs.Count <= 1) return;
+
+        for (int i = 0; i < songs.Count - 1; i++)  // Чтобы не выйти за границы списка
+        {
+            if (songs[i] == songs[i + 1])
+            {
+                songs.RemoveAt(i + 1);
+                i--;  // Уменьшаем индекс, чтобы не пропустить элемент после удаления
+            }
+        }
+    }
+
+    private bool CheckOnLiked(AudioClip clip)
+    {
+        if (_favouritePlaylist.favouriteSongs.Contains(clip))
+        {
+            _likeButton.GetComponent<Image>().color = Color.red;
+            _liked = true;
+            return true;
+        }
+        else
+        {
+            _likeButton.GetComponent<Image>().color = Color.gray;
+            _liked = false;
+            return false;
+        }
+    }
     private void ChangeAlpha(float value, GameObject gameObject)
     {
         Image songImage = gameObject.GetComponent<Image>();
@@ -270,15 +289,7 @@ public class Ktedtify : MonoBehaviour, IDataPersistence
         songImage.color = color; // Assign the modified color back
     }
 
-    private bool LikedCheck(GameObject clip)
-    {
-        _favouriteSongs.TryGetValue(clip.name, out var liked);
-        {
-            return liked;
-        }
-    }
-
-    private void ObjectFade(GameObject obj, float value, float dur)
+    public void ObjectFade(GameObject obj, float value, float dur)
     {
         obj.GetComponent<CanvasGroup>().DOFade(value, dur);
         if (value == 0)
@@ -291,16 +302,5 @@ public class Ktedtify : MonoBehaviour, IDataPersistence
             obj.GetComponent<CanvasGroup>().interactable = true;
             obj.GetComponent<CanvasGroup>().blocksRaycasts = true;
         }
-    }
-    
-    // DATA
-    public void LoadData(GameData gameData)
-    {
-        _favouriteSongs = gameData.favouriteSongs;
-    }
-
-    public void SaveData(ref GameData gameData)
-    {
-        gameData.favouriteSongs = _favouriteSongs;
     }
 }
