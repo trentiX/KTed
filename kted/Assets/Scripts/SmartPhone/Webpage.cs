@@ -42,6 +42,5 @@ public class Webpage : MonoBehaviour
             _canvasGroup.interactable = false;
             _canvasGroup.blocksRaycasts = false;
         }));
-
     }
 }

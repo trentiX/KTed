@@ -65,14 +65,16 @@ public class Browser : MonoBehaviour, IDataPersistence
     }
     private void AddNewTab(Sprite icon, string tabName, Webpage page)
     {
-        if (_tabsOpened.Count == 4)
+        if (page != mainPage)
         {
-            if (_extraClicksCount <= 9 && !_easterEggFound)
-            {
-                AddExtraTab(icon, tabName, page);
-                return;
-            }
-        } 
+            _tabsOpened.Remove(currTab.gameObject);
+            currTab.InitializeTab(icon, tabName, page, this,true);
+            currPage.Close(page);
+            currPage = page;
+            _tabsOpened.Add(currTab.gameObject);
+            return;
+        }
+        
         Destroy(_addNewTab);
         GameObject newTab = Instantiate(tabsTemplate, tabsbox.transform);
         _tabsOpened.Add(newTab);
@@ -152,10 +154,6 @@ public class Browser : MonoBehaviour, IDataPersistence
         {
             return;
         }
-
-        // Creating first main page tab
-        AddNewTab(mainPageButtonIcon, mainPageButtonTabName, mainPageButtonGoToPage);
-        OpenPage(mainPage, _tabsOpened[0].GetComponent<Tab>());
         
         browserOpen = true;
         _browserAnim = _canvasGroup.DOFade(1, 0.2f).OnComplete((() =>
@@ -163,6 +161,13 @@ public class Browser : MonoBehaviour, IDataPersistence
             _canvasGroup.interactable = true;
             _canvasGroup.blocksRaycasts = true;
         }));
+        
+        // Creating first main page tab
+        
+        if (_tabsOpened.Count > 0) return;
+        AddNewTab(mainPageButtonIcon, mainPageButtonTabName, mainPageButtonGoToPage);
+        OpenPage(mainPage, _tabsOpened[0].GetComponent<Tab>());
+        
     }
     
     public void CloseBrowser()
@@ -171,18 +176,6 @@ public class Browser : MonoBehaviour, IDataPersistence
         if (_browserAnim != null && _browserAnim.IsActive() && !_player.canMove())
         {
             return;
-        }
-
-        if (_tabsOpened != null)
-        {
-            // Create a copy of the list to avoid modifying while iterating
-            List<GameObject> tabsToRemove = new List<GameObject>(_tabsOpened);
-
-            foreach (var tabOpened in tabsToRemove)
-            {
-                _tabsOpened.Remove(tabOpened);
-                Destroy(tabOpened);
-            }
         }
         
         browserOpen = false;
