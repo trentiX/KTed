@@ -72,6 +72,7 @@ public class Browser : MonoBehaviour, IDataPersistence
             currPage.Close(page);
             currPage = page;
             _tabsOpened.Add(currTab.gameObject);
+            url.text = page.url;
             return;
         }
         
