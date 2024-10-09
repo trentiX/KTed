@@ -24,10 +24,12 @@ public class DialogueActivator : MonoBehaviour, IInteractable
     private GameObject sprite;
     private Messenger _messenger;
     private RingManager _ringManager;
+    private Ktedwork _ktedwork;
 
     private void Start()
     {
         _messenger = FindObjectOfType<Messenger>();
+        _ktedwork = FindObjectOfType<Ktedwork>();
         _ringManager = FindObjectOfType<RingManager>();
     }
 
@@ -65,11 +67,19 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 
     public void Interact(Player player)
     {
-        player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);
-        Interacted = true;
-        onInteracted?.Invoke(_ringManager._dialogueObjectOnInteracted, "DialogueAction");
-        
-        _messenger.AddNewChat(this);
+        if (_ktedwork.questIsGoing && _ktedwork.questChars.Contains(this))
+        {
+            _ktedwork.questChars.Remove(this);
+            _ktedwork.Interacted(this);
+        }
+        else
+        {
+            player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);
+            Interacted = true;
+            onInteracted?.Invoke(_ringManager._dialogueObjectOnInteracted, "DialogueAction");
+            
+            _messenger.AddNewChat(this);
+        }
     }
 
     private void OnPickedResponse(Response response)
