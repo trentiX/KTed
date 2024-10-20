@@ -13,11 +13,12 @@ public class Quest : MonoBehaviour
     [SerializeField] public string taskName;
     [SerializeField][TextArea] public string shortDescription;
     [SerializeField][TextArea] public string longDescription;
+    [SerializeField][TextArea] public string questObjectives;
     [SerializeField] public int taskReward;
     [SerializeField] public Sprite taskGiverImage;
 
     // Variables
-    public Ktedwork _ktedwork;
+    [HideInInspector] public Ktedwork _ktedwork;
     public bool questIsOver;
     
     // Code
