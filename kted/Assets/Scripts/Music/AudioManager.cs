@@ -6,216 +6,227 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField] private AudioMixer mixer;
-    [SerializeField] AudioSource musicSource;
-    [SerializeField] AudioSource sfxSource;
-    [SerializeField] AudioSource ambientSource;
-    [SerializeField] List<AudioClip> musicClips = new List<AudioClip>();
-    [SerializeField] List<AudioClip> sfxClips = new List<AudioClip>();
-    [SerializeField] List<AudioClip> easterEggClips = new List<AudioClip>();
-    [SerializeField] List<AudioClip> ambientClips = new List<AudioClip>();
+	[SerializeField] private AudioMixer mixer;
+	[SerializeField] AudioSource musicSource;
+	[SerializeField] AudioSource sfxSource;
+	[SerializeField] AudioSource ambientSource;
+	[SerializeField] List<AudioClip> musicClips = new List<AudioClip>();
+	[SerializeField] List<AudioClip> sfxClips = new List<AudioClip>();
+	[SerializeField] List<AudioClip> easterEggClips = new List<AudioClip>();
+	[SerializeField] List<AudioClip> ambientClips = new List<AudioClip>();
 
-    public const string MUSIC_KEY = "musicVolume";
-    public const string SFX_KEY = "sfxVolume";
-    public const string AMBIENT_KEY = "ambientVolume";
+	public const string MUSIC_KEY = "musicVolume";
+	public const string SFX_KEY = "sfxVolume";
+	public const string AMBIENT_KEY = "ambientVolume";
 
-    private static AudioManager _instance;
-    private NowPlaying _nowPlaying;
-    private string songName;
+	private static AudioManager _instance;
+	private NowPlaying _nowPlaying;
+	private string songName;
 
-    public static AudioManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<AudioManager>();
+	public static AudioManager Instance
+	{
+		get
+		{
+			if (_instance == null)
+			{
+				_instance = FindObjectOfType<AudioManager>();
 
-                if (_instance == null)
-                {
-                    GameObject obj = new GameObject("AudioManager");
-                    _instance = obj.AddComponent<AudioManager>();
-                }
-            }
-            return _instance;
-        }
-    }
+				if (_instance == null)
+				{
+					GameObject obj = new GameObject("AudioManager");
+					_instance = obj.AddComponent<AudioManager>();
+				}
+			}
+			return _instance;
+		}
+	}
 
 
-    private void Awake()
-    {
-        _nowPlaying = FindObjectOfType<NowPlaying>();
-    }
+	private void Awake()
+	{
+		_nowPlaying = FindObjectOfType<NowPlaying>();
+	}
 
-    public void SFXSound()
-    {
-        AudioClip clip = sfxClips[0];
-        
-        sfxSource.PlayOneShot(clip);
-    }
+	public void SFXSound()
+	{
+		AudioClip clip = sfxClips[0];
 
-    public void phoneRing()
-    {
-        songName = "Рингтон телефона";
-        AudioClip clip = musicClips[4];
+		sfxSource.PlayOneShot(clip);
+	}
 
-        if (musicSource.isPlaying)
-        {
-            return;
-        }
-        
-        _nowPlaying.nowPlayingAnim(songName);
-        musicSource.PlayOneShot(clip);
-    }
+	public void QuestBitCompletion()
+	{
+		AudioClip clip = sfxClips[1];
+		
+		sfxSource.PlayOneShot(clip);
+	}
 
-    public void EasterEggSound()
-    {
-        AudioClip clip = easterEggClips[UnityEngine.Random.Range(0, easterEggClips.Count)];
-        
-        sfxSource.PlayOneShot(clip);
-    }
+	public void phoneRing()
+	{
+		songName = "Рингтон телефона";
+		AudioClip clip = musicClips[4];
 
-    public void PlayFirstSong()
-    {
-        songName = "Балкадиша";
-        AudioClip clip = musicClips[0];
+		if (musicSource.isPlaying)
+		{
+			return;
+		}
 
-        if (musicSource.isPlaying)
-        {
-            return;
-        }
-        
-        _nowPlaying.nowPlayingAnim(songName);
-        musicSource.PlayOneShot(clip);
-    }
-    public void PlaySecSong()
-    {
-        songName = "Ағаш аяқ";
-        AudioClip clip = musicClips[1];
+		_nowPlaying.nowPlayingAnim(songName);
+		musicSource.PlayOneShot(clip);
+	}
 
-        if (musicSource.isPlaying)
-        {
-            return;
-        }
-        
-        _nowPlaying.nowPlayingAnim(songName);
-        musicSource.PlayOneShot(clip);
-    }
-    public void PlayThirdSong()
-    {
-        songName = "Дударай";
-        AudioClip clip = musicClips[2];
+	public void EasterEggSound()
+	{
+		AudioClip clip = easterEggClips[UnityEngine.Random.Range(0, easterEggClips.Count)];
 
-        if (musicSource.isPlaying)
-        {
-            return;
-        }
-        
-        _nowPlaying.nowPlayingAnim(songName);
-        musicSource.PlayOneShot(clip);
-    }
-    public void PlayFourthSong()
-    {
-        songName = "Үш дос";
-        AudioClip clip = musicClips[3];
+		sfxSource.PlayOneShot(clip);
+	}
 
-        if (musicSource.isPlaying)
-        {
-            return;
-        }
-        
-        _nowPlaying.nowPlayingAnim(songName);
-        musicSource.PlayOneShot(clip);
-    }
+	public void PlayFirstSong()
+	{
+		songName = "Балкадиша";
+		AudioClip clip = musicClips[0];
 
-    public void PlaySong(AudioClip clip)
-    {
-        if (musicSource.isPlaying)
-        {
-            return; // Prevent overlapping songs
-        }
+		if (musicSource.isPlaying)
+		{
+			return;
+		}
 
-        musicSource.clip = clip; // Set the clip to the AudioSource
-        musicSource.Play();      // Start playing the clip
-    }
+		_nowPlaying.nowPlayingAnim(songName);
+		musicSource.PlayOneShot(clip);
+	}
+	public void PlaySecSong()
+	{
+		songName = "Ағаш аяқ";
+		AudioClip clip = musicClips[1];
 
-    public void PauseSong()
-    {
-        if (musicSource.isPlaying)
-        {
-            musicSource.Pause(); // Pause the currently playing clip
-        }
-    }
+		if (musicSource.isPlaying)
+		{
+			return;
+		}
 
-    public void ResumeSong()
-    {
-        if (!musicSource.isPlaying && musicSource.clip != null)
-        {
-            musicSource.UnPause(); // Resume playback if it was paused
-        }
-    }
+		_nowPlaying.nowPlayingAnim(songName);
+		musicSource.PlayOneShot(clip);
+	}
+	public void PlayThirdSong()
+	{
+		songName = "Дударай";
+		AudioClip clip = musicClips[2];
 
-    public void StopMusic()
-    {
-        if (musicSource.isPlaying)
-        {
-            musicSource.Stop();
-        }
-    }
-    public void StopSfx()
-    {
-        sfxSource.Stop();
-    }
-    
-    public void AmbientSound()
-    {
-        AudioClip clip = ambientClips[UnityEngine.Random.Range(0, ambientClips.Count)];
-        
-        ambientSource.PlayOneShot(clip);
-    }
+		if (musicSource.isPlaying)
+		{
+			return;
+		}
 
-    void LoadValue()
-    {
-        float musicVolume = PlayerPrefs.GetFloat(MUSIC_KEY, 1f);
-        float sfxVolume = PlayerPrefs.GetFloat(SFX_KEY, 1f);
-        float ambientVolume = PlayerPrefs.GetFloat(AMBIENT_KEY, 1f);
+		_nowPlaying.nowPlayingAnim(songName);
+		musicSource.PlayOneShot(clip);
+	}
+	public void PlayFourthSong()
+	{
+		songName = "Үш дос";
+		AudioClip clip = musicClips[3];
 
-        mixer.SetFloat(VolumeSettings.MIXER_MUSIC, Mathf.Log10(musicVolume) * 20);
-        mixer.SetFloat(VolumeSettings.MIXER_SFX, Mathf.Log10(sfxVolume) * 20);
-        mixer.SetFloat(VolumeSettings.MIXER_AMBIENT, Mathf.Log10(ambientVolume) * 20);
-    }
-    
-    public IEnumerator FadeOut(AudioSource audioSource, float FadeTime) {
-        float startVolume = audioSource.volume;
+		if (musicSource.isPlaying)
+		{
+			return;
+		}
 
-        while (audioSource.volume > 0) {
-            audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+		_nowPlaying.nowPlayingAnim(songName);
+		musicSource.PlayOneShot(clip);
+	}
 
-            yield return null;
-        }
+	public void PlaySong(AudioClip clip)
+	{
+		if (musicSource.isPlaying)
+		{
+			return; // Prevent overlapping songs
+		}
 
-        audioSource.Stop();
-        audioSource.volume = startVolume; // Сбрасываем громкость обратно после остановки
-    }
+		musicSource.clip = clip; // Set the clip to the AudioSource
+		musicSource.Play();      // Start playing the clip
+	}
 
-    public IEnumerator FadeIn(AudioSource audioSource, float FadeTime, Action songToPlay) {
-        if (audioSource.isPlaying)
-        {
-            StartCoroutine(FadeOut(audioSource, FadeTime));
-            yield return new  WaitForSeconds(FadeTime);
-        }
-        
-        songToPlay.Invoke();
-        audioSource.volume = 0; // Начинаем с нулевой громкости
+	public void PauseSong()
+	{
+		if (musicSource.isPlaying)
+		{
+			musicSource.Pause(); // Pause the currently playing clip
+		}
+	}
 
-        float targetVolume = 1.0f; // Желаемая максимальная громкость
+	public void ResumeSong()
+	{
+		if (!musicSource.isPlaying && musicSource.clip != null)
+		{
+			musicSource.UnPause(); // Resume playback if it was paused
+		}
+	}
 
-        while (audioSource.volume < targetVolume) {
-            audioSource.volume += Time.deltaTime / FadeTime;
+	public void StopMusic()
+	{
+		if (musicSource.isPlaying)
+		{
+			musicSource.Stop();
+		}
+	}
+	public void StopSfx()
+	{
+		sfxSource.Stop();
+	}
 
-            yield return null;
-        }
+	public void AmbientSound()
+	{
+		AudioClip clip = ambientClips[UnityEngine.Random.Range(0, ambientClips.Count)];
 
-        audioSource.volume = targetVolume; // Устанавливаем максимальную громкость
-    }
+		ambientSource.PlayOneShot(clip);
+	}
+
+	void LoadValue()
+	{
+		float musicVolume = PlayerPrefs.GetFloat(MUSIC_KEY, 1f);
+		float sfxVolume = PlayerPrefs.GetFloat(SFX_KEY, 1f);
+		float ambientVolume = PlayerPrefs.GetFloat(AMBIENT_KEY, 1f);
+
+		mixer.SetFloat(VolumeSettings.MIXER_MUSIC, Mathf.Log10(musicVolume) * 20);
+		mixer.SetFloat(VolumeSettings.MIXER_SFX, Mathf.Log10(sfxVolume) * 20);
+		mixer.SetFloat(VolumeSettings.MIXER_AMBIENT, Mathf.Log10(ambientVolume) * 20);
+	}
+
+	public IEnumerator FadeOut(AudioSource audioSource, float FadeTime)
+	{
+		float startVolume = audioSource.volume;
+
+		while (audioSource.volume > 0)
+		{
+			audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+
+			yield return null;
+		}
+
+		audioSource.Stop();
+		audioSource.volume = startVolume; // Сбрасываем громкость обратно после остановки
+	}
+
+	public IEnumerator FadeIn(AudioSource audioSource, float FadeTime, Action songToPlay)
+	{
+		if (audioSource.isPlaying)
+		{
+			StartCoroutine(FadeOut(audioSource, FadeTime));
+			yield return new WaitForSeconds(FadeTime);
+		}
+
+		songToPlay.Invoke();
+		audioSource.volume = 0; // Начинаем с нулевой громкости
+
+		float targetVolume = 1.0f; // Желаемая максимальная громкость
+
+		while (audioSource.volume < targetVolume)
+		{
+			audioSource.volume += Time.deltaTime / FadeTime;
+
+			yield return null;
+		}
+
+		audioSource.volume = targetVolume; // Устанавливаем максимальную громкость
+	}
 }

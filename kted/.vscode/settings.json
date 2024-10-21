@@ -56,5 +56,8 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "kted.sln"
+    "dotnet.defaultSolution": "kted.sln",
+    "cSpell.ignoreWords": [
+        "Начинаем"
+    ]
 }
