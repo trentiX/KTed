@@ -5,6 +5,7 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 {
     [Header("Dialogue activator props")]
     [SerializeField] public DialogueObject dialogueObject;
+    [SerializeField] public DialogueObject questDialogue;
     [SerializeField] private GameObject prefab;
     [SerializeField] private Transform prefabMother;
     [SerializeField] private string id;
@@ -69,7 +70,7 @@ public class DialogueActivator : MonoBehaviour, IInteractable
     {
         if (_ktedwork.questIsGoing && _ktedwork.questChars.Contains(this))
         {
-            _ktedwork.questChars.Remove(this);
+            player.DialogueUI.showDialogue(questDialogue, questDialogue.name);
             _ktedwork.Interacted(this);
         }
         else
