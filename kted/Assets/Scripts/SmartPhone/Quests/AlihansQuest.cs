@@ -22,6 +22,8 @@ public class AlihansQuest : Quest
 		{
 			_signedPeople.TryAdd(character, false);
 		}
+		
+		questDialogueActivators = _neededChars;
 	}
 
 	private void OnDisable()

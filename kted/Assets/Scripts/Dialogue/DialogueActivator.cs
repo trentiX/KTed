@@ -3,88 +3,89 @@ using UnityEngine;
 
 public class DialogueActivator : MonoBehaviour, IInteractable
 {
-    [Header("Dialogue activator props")]
-    [SerializeField] public DialogueObject dialogueObject;
-    [SerializeField] public DialogueObject questDialogue;
-    [SerializeField] private GameObject prefab;
-    [SerializeField] private Transform prefabMother;
-    [SerializeField] private string id;
-    [SerializeField] private int interactionTurn;
-    
-    [HideInInspector] public static event Action<DialogueObject, string> onInteracted;
+	[Header("Dialogue activator props")]
+	[SerializeField] public DialogueObject dialogueObject;
+	[SerializeField] private GameObject prefab;
+	[SerializeField] private Transform prefabMother;
+	[SerializeField] private string id;
+	[SerializeField] private int interactionTurn;
+	
+	[HideInInspector] public static event Action<DialogueObject, string> onInteracted;
 
 
-    [ContextMenu("Generate guid for id")]
-    public void GenerateGuid()
-    {
-        id = System.Guid.NewGuid().ToString();
-    }
-    
-    public bool Interacted = false;
-    public Response chooseResponse;
-    private GameObject sprite;
-    private Messenger _messenger;
-    private RingManager _ringManager;
-    private Ktedwork _ktedwork;
+	[ContextMenu("Generate guid for id")]
+	public void GenerateGuid()
+	{
+		id = System.Guid.NewGuid().ToString();
+	}
+	
+	public bool Interacted = false;
+	public Response chooseResponse;
+	private GameObject sprite;
+	private Messenger _messenger;
+	private RingManager _ringManager;
+	private Ktedwork _ktedwork;
 
-    private void Start()
-    {
-        _messenger = FindObjectOfType<Messenger>();
-        _ktedwork = FindObjectOfType<Ktedwork>();
-        _ringManager = FindObjectOfType<RingManager>();
-    }
+	private void Start()
+	{
+		_messenger = FindObjectOfType<Messenger>();
+		_ktedwork = FindObjectOfType<Ktedwork>();
+		_ringManager = FindObjectOfType<RingManager>();
+	}
 
-    private void OnEnable()
-    {
-        ResponseHandler.onResponsePicked.AddListener(OnPickedResponse);
-    }
+	private void OnEnable()
+	{
+		ResponseHandler.onResponsePicked.AddListener(OnPickedResponse);
+	}
 
-    private void OnDisable()
-    {
-        ResponseHandler.onResponsePicked.AddListener(OnPickedResponse);
-    }
+	private void OnDisable()
+	{
+		ResponseHandler.onResponsePicked.AddListener(OnPickedResponse);
+	}
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
-        {
-            var position = prefabMother.position;
-            sprite = Instantiate(prefab, new Vector3(position.x , position.y + 0.75f), prefabMother.rotation, prefabMother);
-            player.Interactable = this;
-        }
-    }
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
+		{
+			var position = prefabMother.position;
+			sprite = Instantiate(prefab, new Vector3(position.x , position.y + 0.75f), prefabMother.rotation, prefabMother);
+			player.Interactable = this;
+		}
+	}
 
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
-        {
-            Destroy(sprite);
-            if (player.Interactable is DialogueActivator dialogueActivator && dialogueActivator == this)
-            {
-                player.Interactable = null;
-            }
-        }
-    }
+	private void OnTriggerExit2D(Collider2D other)
+	{
+		if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
+		{
+			Destroy(sprite);
+			if (player.Interactable is DialogueActivator dialogueActivator && dialogueActivator == this)
+			{
+				player.Interactable = null;
+			}
+		}
+	}
 
-    public void Interact(Player player)
-    {
-        if (_ktedwork.questIsGoing && _ktedwork.questChars.Contains(this))
-        {
-            player.DialogueUI.showDialogue(questDialogue, questDialogue.name);
-            _ktedwork.Interacted(this);
-        }
-        else
-        {
-            player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);
-            Interacted = true;
-            onInteracted?.Invoke(_ringManager._dialogueObjectOnInteracted, "DialogueAction");
-            
-            _messenger.AddNewChat(this);
-        }
-    }
+	public void Interact(Player player)
+	{
+		if (_ktedwork.questIsGoing && _ktedwork.questChars.Contains(this))
+		{
+			DialogueObject dialogueObject = _ktedwork._currQuest.questDialogue[_ktedwork._currQuest.questDialogueActivators.IndexOf(this)];
+			player.DialogueUI.showDialogue
+			(dialogueObject,dialogueObject.name);
+			_ktedwork.Interacted(this);
+		}
+		else
+		{
+			player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);
+			Interacted = true;
+			onInteracted?.Invoke(_ringManager._dialogueObjectOnInteracted, "DialogueAction");
+			
+			_messenger.AddNewChat(this);
+		}
+	}
 
-    private void OnPickedResponse(Response response)
-    {
-        chooseResponse = response;
-    }
+	private void OnPickedResponse(Response response)
+	{
+		chooseResponse = response;
+	}
 }

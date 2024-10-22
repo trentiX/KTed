@@ -9,6 +9,8 @@ using UnityEngine.UI;
 public class Quest : MonoBehaviour
 {
 	// Serialization
+	[SerializeField] public List<DialogueObject> questDialogue;
+	[SerializeField] public List<DialogueActivator> questDialogueActivators;
 	[SerializeField] public string taskGiverName;
 	[SerializeField] public string taskName;
 	[SerializeField] public TextMeshProUGUI completionStatus;
@@ -62,7 +64,7 @@ public class Quest : MonoBehaviour
 	private void Start()
 	{
 		gameObject.GetComponentInChildren<Image>().sprite = taskGiverImage;
-		gameObject.GetComponentInChildren<TextMeshProUGUI>(0).text = taskName;
+		gameObject.GetComponentInChildren<TextMeshProUGUI>(0).text = taskGiverName;
 		gameObject.GetComponentInChildren<TextMeshProUGUI>(1).text = shortDescription;
 		
 		EventTrigger eventTrigger = gameObject.AddComponent<EventTrigger>();
