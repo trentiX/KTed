@@ -124,6 +124,9 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 	public void LoadData(GameData gameData)
 	{
 		_quests = gameData.questsInStorage;
+		_accBalanceInt = gameData.playersMoney;
+		
+		_accBalance.text = _accBalanceInt + " KTedbux";
 		
 		foreach(var quest in _quests)
 		{
@@ -138,5 +141,6 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 	public void SaveData(ref GameData gameData)
 	{
 		gameData.questsInStorage = _quests;
+		gameData.playersMoney = _accBalanceInt;
 	}
 }
