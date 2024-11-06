@@ -93,7 +93,7 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 	{
 		_currQuest.SubmitQuest();
 		
-		audioManager.QuestBitCompletion();
+		audioManager.SFXQuestBitCompletion();
 		
 		_accBalanceInt += _currQuest.taskReward;
 		_accBalance.text = _accBalanceInt + " KTedbux";
@@ -114,6 +114,7 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 		if (_currQuest.interactedAmount == _currQuest.goalAmount)
 		{
 			_submitQuest.interactable = true;
+			audioManager.SFXNotificationSound();
 		}
 
 		_taskObjectives.text = "- " + _currQuest.questObjectives +

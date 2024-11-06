@@ -53,13 +53,19 @@ public class AudioManager : MonoBehaviour
 
 		sfxSource.PlayOneShot(clip);
 	}
-
-	public void QuestBitCompletion()
+	public void SFXQuestBitCompletion()
 	{
 		AudioClip clip = sfxClips[1];
 		
 		sfxSource.PlayOneShot(clip);
 	}
+	public void SFXNotificationSound()
+	{
+		AudioClip clip = sfxClips[2];
+
+		sfxSource.PlayOneShot(clip);
+	}
+
 
 	public void phoneRing()
 	{
