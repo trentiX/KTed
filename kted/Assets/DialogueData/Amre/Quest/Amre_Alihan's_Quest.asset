@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e049329994d79794094618d0af4407f3, type: 3}
+  m_Name: Amre_Alihan's_Quest
+  m_EditorClassIdentifier: 
+  dialogueRus:
+  - "\u0421\u04D9\u043B\u0435\u043C, \u0434\u043E\u0441\u044B\u043C"
+  dialogueKaz: []
+  sprite: {fileID: 21300000, guid: cb0ad338b6937e3489c4350ae0485625, type: 3}
+  name: "\u0410\u043C\u0440\u0435 \u041A\u0430\u0448\u0430\u0443\u0431\u0430\u0435\u0432"
+  responses:
+  - responseText: "\u0418\u043C\u043F\u0435\u0440\u0438\u044F \u043D\u0435 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044F
+      \u0441 \u043D\u0430\u0448\u0438\u043C\u0438 \u0438\u043D\u0442\u0435\u0440\u0435\u0441\u0430\u043C\u0438.
+      \u0425\u043E\u0442\u0438\u0442\u0435 \u043F\u043E\u0434\u043F\u0438\u0441\u0430\u0442\u044C
+      \u043F\u0435\u0442\u0438\u0446\u0438\u044E \u043F\u0440\u043E\u0442\u0438\u0432
+      \u0435\u0435 \u043F\u043E\u043B\u0438\u0442\u0438\u043A\u0438? "
+    dialogueObject: {fileID: 11400000, guid: 6db7e1014d685fd4ead931a9d4a0fb00, type: 2}

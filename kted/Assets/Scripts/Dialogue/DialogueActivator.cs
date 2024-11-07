@@ -8,7 +8,6 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 	[SerializeField] private GameObject prefab;
 	[SerializeField] private Transform prefabMother;
 	[SerializeField] private string id;
-	[SerializeField] private int interactionTurn;
 	
 	[HideInInspector] public static event Action<DialogueObject, string> onInteracted;
 
@@ -19,9 +18,9 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 		id = System.Guid.NewGuid().ToString();
 	}
 	
-	public bool Interacted = false;
-	public Response chooseResponse;
-	private GameObject sprite;
+	[HideInInspector] public bool Interacted = false;
+	[HideInInspector] public Response chooseResponse;
+	private GameObject sprite;	
 	private Messenger _messenger;
 	private RingManager _ringManager;
 	private Ktedwork _ktedwork;
