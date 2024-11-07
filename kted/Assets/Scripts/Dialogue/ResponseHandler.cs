@@ -2,12 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
-using DG.Tweening;
 using UnityEngine.EventSystems;
-using UnityEditor.Events;
 using UnityEngine.Events;
-using Random = UnityEngine.Random;
 
 public class ResponseHandler : MonoBehaviour
 {

@@ -14,6 +14,7 @@ public class GameData
 	public SerializableDictionary<GameObject, DialogueActivator> chatsInStorage;
 	public SerializableDictionary<string, bool> ringedActionsInStorage;
 	public SerializableDictionary<Quest, bool> questsInStorage;
+	public SerializableDictionary<TestActivator, int> testsInStorage;
 	public List<AudioClip> favouriteSongs;
 
 
@@ -27,6 +28,7 @@ public class GameData
 		responsesInStorage = new SerializableDictionary<DialogueActivator, Response>();
 		ringedActionsInStorage = new SerializableDictionary<string, bool>();
 		questsInStorage = new SerializableDictionary<Quest, bool>();
+		testsInStorage = new SerializableDictionary<TestActivator, int>();
 		favouriteSongs = new List<AudioClip>();
 	}
 }

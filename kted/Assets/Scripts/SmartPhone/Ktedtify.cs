@@ -1,12 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
 
 public class Ktedtify : MonoBehaviour
