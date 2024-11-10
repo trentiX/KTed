@@ -23,12 +23,10 @@ public class Messenger : MonoBehaviour,IDataPersistence
     [SerializeField] private CanvasGroup canvasGroup;
     
     // Variables
-    public bool messengerIsOpen = false;
     public SerializableDictionary<GameObject, DialogueActivator> chats;
     public SerializableDictionary<DialogueActivator, Response> responses;
     public List<DialogueActivator> chatsTemp;
     public List<GameObject> messagesTemp;
-    private Tweener _messengerTweener;
     
     // Instances
     private Player _player;
