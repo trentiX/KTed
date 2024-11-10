@@ -65,7 +65,7 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 			else 
 			{
 				_startQuest.interactable = true;
-				_submitQuest.interactable = true;
+				_submitQuest.interactable = false;
 			}
 		}
 	}

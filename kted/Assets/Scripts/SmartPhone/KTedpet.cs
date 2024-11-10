@@ -1,16 +1,22 @@
+using TMPro;
 using UnityEngine;
 
 public class KTedpet : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	// References
+	[Header("Messages:")]
+	[SerializeField] private GameObject messageTemplate;
+	[SerializeField] private GameObject responseTemplate;
+	[SerializeField] private GameObject messageBox;
+	
+	[Header("Other:")]
+	[SerializeField] private CanvasGroup canvasGroup;
+	
+	// Code
+	public void GenerateMessage(string message)
+	{
+		GameObject newMessage = Instantiate(messageTemplate, messageBox.transform);
+        newMessage.SetActive(true);
+        newMessage.GetComponentInChildren<TextMeshProUGUI>().text = message;
+	}
 }
