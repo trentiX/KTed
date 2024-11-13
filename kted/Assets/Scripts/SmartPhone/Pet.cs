@@ -16,6 +16,6 @@ public class Pet : MonoBehaviour
 		kTedpet = FindObjectOfType<KTedpet>();
 		
 		kTedpet.GenerateMessage(onPlayerJoin
-			[Random.Range(0 ,onPlayerJoin.Length)]);
+			[Random.Range(0 ,onPlayerJoin.Length)], "start");
 	}
 }
