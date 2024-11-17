@@ -5,17 +5,43 @@ using UnityEngine;
 public class Pet : MonoBehaviour
 {
 	// Phrases
-	private string[] onPlayerJoin = {"Hello", "Hi!"};
-	
-	
+	[Header("Pet's phrases")]
+	[SerializeField][TextArea] public string[] onPlayerJoinPetPhrases;
+	[SerializeField][TextArea] public string[] onPlayerChoseActionPetPhrases;
+	[SerializeField][TextArea] public string[] continueDialoguePetPhrases;
+	[SerializeField][TextArea] public string[] gotoSameRoomPhrases;
+
 	// References
-	private KTedpet kTedpet;
+	private KTedpet ktedpet;
+	
+	// Variables
+	
 	// Code
 	private void Start()
 	{
-		kTedpet = FindObjectOfType<KTedpet>();
+		ktedpet = FindObjectOfType<KTedpet>();
 		
-		kTedpet.GenerateMessage(onPlayerJoin
-			[Random.Range(0, onPlayerJoin.Length)], "start");
+		ktedpet.GenerateMessage(ktedpet.GetRandomPhrase(onPlayerJoinPetPhrases), "greeting");
+	}
+	
+	public void ReceiveAction(string action)
+	{
+		switch (action)
+		{
+			case "store":
+				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
+					(onPlayerChoseActionPetPhrases), "agree");
+				break;
+				
+			case "main":
+				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
+					(onPlayerChoseActionPetPhrases), "agree");
+				break;
+				
+			case "playerGreeting":
+				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
+					(continueDialoguePetPhrases), "whatToDo");
+				break;
+		}
 	}
 }

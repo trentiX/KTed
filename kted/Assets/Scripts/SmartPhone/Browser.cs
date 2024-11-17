@@ -5,10 +5,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
-using Random = UnityEngine.Random;
 
 public class Browser : MonoBehaviour, IDataPersistence
 {
