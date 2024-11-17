@@ -15,6 +15,7 @@ public class GameData
 	public SerializableDictionary<string, bool> ringedActionsInStorage;
 	public SerializableDictionary<Quest, bool> questsInStorage;
 	public SerializableDictionary<TestActivator, int> testsInStorage;
+	public SerializableDictionary<Accessory, bool> boughtAccessoriesInStorage;
 	public List<AudioClip> favouriteSongs;
 
 
@@ -29,6 +30,7 @@ public class GameData
 		ringedActionsInStorage = new SerializableDictionary<string, bool>();
 		questsInStorage = new SerializableDictionary<Quest, bool>();
 		testsInStorage = new SerializableDictionary<TestActivator, int>();
+		boughtAccessoriesInStorage = new SerializableDictionary<Accessory, bool>();
 		favouriteSongs = new List<AudioClip>();
 	}
 }

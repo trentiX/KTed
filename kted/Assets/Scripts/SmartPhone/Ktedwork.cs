@@ -19,7 +19,7 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 	
 	// Variables
 	public List<DialogueActivator> questChars;
-	private int _accBalanceInt;
+	public int _accBalanceInt;
 	public bool questIsGoing;
 	
 	public SerializableDictionary<Quest, bool> _quests = new SerializableDictionary<Quest, bool>();
@@ -119,13 +119,17 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 		 $" ( {_currQuest.interactedAmount} / {_currQuest.goalAmount} )";
 	}
 	
+	public void AccBalanceUIUpdate(int amountOfMoney)
+	{
+		_accBalanceInt = amountOfMoney;
+		
+		_accBalance.text = _accBalanceInt + " KTedbux";
+	}
 	// DATA
 	public void LoadData(GameData gameData)
 	{
 		_quests = gameData.questsInStorage;
-		_accBalanceInt = gameData.playersMoney;
-		
-		_accBalance.text = _accBalanceInt + " KTedbux";
+		AccBalanceUIUpdate(gameData.playersMoney);
 		
 		foreach(var quest in _quests)
 		{

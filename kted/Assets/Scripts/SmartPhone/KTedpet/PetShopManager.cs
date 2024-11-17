@@ -2,23 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
+using UnityEngine.UI;
 
-public class PetShopManager : MonoBehaviour
+public class PetShopManager : MonoBehaviour, IDataPersistence
 {
 	// References
 	[SerializeField] private List<GameObject> accessories;
 	
 	
 	// Variables
-	public GameObject currItem;
-	public GameObject leftItem;
-	public GameObject rightItem;
-	public List<GameObject> availableAccessories;
+	public SerializableDictionary<Accessory, bool> boughtAccessories;
+	private GameObject currItem;
+	private GameObject leftItem;
+	private GameObject rightItem;
+	private List<GameObject> availableAccessories;
 	private Tweener accessoriesAnim;
+	private Ktedwork ktedwork;
+	private AudioManager audioManager;
  	
 	// Code
 	private void Start()
 	{
+		audioManager = FindObjectOfType<AudioManager>();
+		ktedwork = FindObjectOfType<Ktedwork>();
+
 		availableAccessories = accessories;
 		
 		leftItem = availableAccessories[availableAccessories.Count - 1];
@@ -27,6 +35,7 @@ public class PetShopManager : MonoBehaviour
 		
 		foreach (var item in availableAccessories)
 		{
+			item.GetComponent<Accessory>().buttonAdjustment();
 			item.SetActive(false);
 		}
 		
@@ -42,9 +51,9 @@ public class PetShopManager : MonoBehaviour
 		leftItem.transform.localPosition = new Vector3(-500, 0, 0);
 		leftItem.transform.localScale = new Vector3(0, 0, 0); 
 		Color curItemImage 
-			= leftItem.GetComponent<UnityEngine.UI.Image>().color;
+			= leftItem.GetComponentInChildren<UnityEngine.UI.Image>().color;
 		curItemImage.a = 0;
-		ChangeItemPosition(leftItem, 0, 1f, 2f);
+		ChangeItemPosition(leftItem, 0, 1f, 1f);
 		
 		rightItem = currItem;		
 		currItem = leftItem;
@@ -64,15 +73,16 @@ public class PetShopManager : MonoBehaviour
 	public void LeftArrow()
 	{
 		if (accessoriesAnim.IsActive()) return;
+		
 		ChangeItemPosition(currItem, -500, 0, 0);
 		
 		rightItem.SetActive(true);
 		rightItem.transform.localPosition = new Vector3(500, 0, 0);
 		rightItem.transform.localScale = new Vector3(0, 0, 0); 
 		Color curItemImage 
-			= rightItem.GetComponent<UnityEngine.UI.Image>().color;
+			= rightItem.GetComponentInChildren<UnityEngine.UI.Image>().color;
 		curItemImage.a = 0;
-		ChangeItemPosition(rightItem, 0, 1f, 2f);
+		ChangeItemPosition(rightItem, 0, 1f, 1f);
 		
 		leftItem = currItem;		
 		currItem = rightItem;
@@ -84,9 +94,27 @@ public class PetShopManager : MonoBehaviour
 		}
 		else 
 		{
-			rightItem = availableAccessories
-				[0];	
+			rightItem = availableAccessories[0];	
 		}
+	}
+	
+	public void BuyItem()
+	{
+		if (ktedwork._accBalanceInt >= currItem.GetComponent<Accessory>().Value)
+		{
+			ktedwork.AccBalanceUIUpdate(
+				ktedwork._accBalanceInt - currItem.GetComponent<Accessory>().Value);
+			
+			audioManager.SFXQuestBitCompletion();
+			
+			boughtAccessories[currItem.GetComponent<Accessory>()] = true;
+			currItem.GetComponent<Accessory>().buttonAdjustment();
+		}
+	}
+	
+	public void PutOnItem()
+	{
+		// Put item on
 	}
 	
 	private void ChangeItemPosition(GameObject item, float finalMoveX,
@@ -100,5 +128,25 @@ public class PetShopManager : MonoBehaviour
 		{
 			if (finalFade == 0) item.SetActive(false);
 		});
+	}
+	
+	// Data
+	
+	public void LoadData(GameData gameData)
+	{
+		boughtAccessories = gameData.boughtAccessoriesInStorage;
+		
+		if (boughtAccessories != null)
+		{
+			foreach (var accessory in boughtAccessories)
+			{
+				accessory.Key.buttonAdjustment();
+			}
+		}
+	}
+	
+	public void SaveData(ref GameData gameData)
+	{
+		gameData.boughtAccessoriesInStorage = boughtAccessories;
 	}
 }
