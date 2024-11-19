@@ -17,7 +17,7 @@ public class Pet : MonoBehaviour
 	// Variables
 	
 	// Code
-	private void Start()
+	private void OnEnable()
 	{
 		ktedpet = FindObjectOfType<KTedpet>();
 		

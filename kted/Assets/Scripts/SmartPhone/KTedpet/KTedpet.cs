@@ -35,6 +35,7 @@ public class KTedpet : MonoBehaviour
 	// Variables
 	private List<GameObject> possibleActivities = new List<GameObject>();
 	private GameObject currRoom;
+	private AudioManager audioManager;
 	private Pet pet;
 	
 	// Code
@@ -42,19 +43,48 @@ public class KTedpet : MonoBehaviour
 	{
 		currRoom = mainRoom;
 		pet = FindObjectOfType<Pet>();
+		audioManager = FindObjectOfType<AudioManager>();
 	}
 	
 	public void GenerateMessage(string message, string typeOfMessage)
 	{
+		// Создаём сообщение, но без текста
 		GameObject newMessage = Instantiate(messageTemplate, messageBox.transform);
 		newMessage.SetActive(true);
-		newMessage.GetComponentInChildren<TextMeshProUGUI>().text = message;
-		
-		LayoutRebuilder.ForceRebuildLayoutImmediate(newMessage.GetComponent<RectTransform>());
 
+		LayoutRebuilder.ForceRebuildLayoutImmediate(newMessage.GetComponent<RectTransform>());	
+
+		// Запускаем корутину для анимации точек, затем добавляем текст и кнопки
+		StartCoroutine(MessageWithDotsAnimation(newMessage, message, typeOfMessage));
+	}
+
+	
+	private IEnumerator MessageWithDotsAnimation(GameObject message, string finalText, string typeOfMessage)
+	{
+		TextMeshProUGUI messageText = message.GetComponentInChildren<TextMeshProUGUI>();
+		
+		// Анимация точек
+		for (int i = 0; i <= 3; i++)
+		{
+			messageText.text = new string('.', i);
+			LayoutRebuilder.ForceRebuildLayoutImmediate(message.GetComponent<RectTransform>());	
+			yield return new WaitForSeconds(0.6f);
+		}
+		
+		// Устанавливаем окончательный текст
+		messageText.text = finalText;
+		audioManager.SFXNotificationSound();
+		
+		// Перестраиваем UI после изменения текста
+		LayoutRebuilder.ForceRebuildLayoutImmediate(message.GetComponent<RectTransform>());
+		
+		// Создаю уведомление
+		gameObject.GetComponent<Webpage>().shortCutButton.CreateNotification();
+
+		// Генерируем кнопки после завершения анимации
 		StartCoroutine(GenerateButton(typeOfMessage));
 	}
-	
+
 	private IEnumerator GenerateButton(string typeOfMessage)
 	{
 		// Создаем кнопки в зависимости от типа сообщения
