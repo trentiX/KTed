@@ -79,7 +79,7 @@ public class KTedpet : MonoBehaviour
 		LayoutRebuilder.ForceRebuildLayoutImmediate(message.GetComponent<RectTransform>());
 		
 		// Создаю уведомление
-		gameObject.GetComponent<Webpage>().shortCutButton.CreateNotification();
+		gameObject.GetComponent<Webpage>().shortCutButton.CreateNotification(finalText);
 
 		// Генерируем кнопки после завершения анимации
 		StartCoroutine(GenerateButton(typeOfMessage));
