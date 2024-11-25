@@ -20,7 +20,7 @@ public class Browser : MonoBehaviour, IDataPersistence
 	[SerializeField] private GameObject[] browserMainButtons;
 	
 	[Header("Main page")] 
-	[SerializeField] private Webpage mainPage;
+	[SerializeField] public Webpage mainPage;
 	[SerializeField] public Sprite mainPageButtonIcon;
 	[SerializeField] public string mainPageButtonTabName;
 	[SerializeField] public Webpage mainPageButtonGoToPage;
@@ -69,17 +69,17 @@ public class Browser : MonoBehaviour, IDataPersistence
 		}
 	}
 	
-	private void AddNewTab(Sprite icon, string tabName, Webpage page)
+	public Tab AddNewTab(Sprite icon, string tabName, Webpage page, bool firstPage)
 	{
-		if (page != mainPage)
+		if (page != mainPage && !firstPage)
 		{
 			_tabsOpened.Remove(currTab.gameObject);
-			currTab.InitializeTab(icon, tabName, page, this,true);
+			currTab.InitializeTab(icon, tabName, page, this, true);
 			currPage.Close(page);
 			currPage = page;
 			_tabsOpened.Add(currTab.gameObject);
 			url.text = page.url;
-			return;
+			return null;
 		}
 		
 		Destroy(_addNewTab);
@@ -104,6 +104,7 @@ public class Browser : MonoBehaviour, IDataPersistence
 				rectTransform.sizeDelta = new Vector2(1200/_tabsOpened.Count, rectTransform.sizeDelta.y);
 			}
 		}
+		return tabComponent;
 	}
 	
 	public void OpenPage(Webpage page, Tab tab)
@@ -155,7 +156,7 @@ public class Browser : MonoBehaviour, IDataPersistence
 		}
 	}
 
-	public void OpenBrowser()
+	public void OpenBrowser(Webpage openPage, bool firstTime)
 	{
 		if (_browserAnim.IsActive() || !_player.canMove())
 		{
@@ -171,10 +172,21 @@ public class Browser : MonoBehaviour, IDataPersistence
 		
 		// Creating first main page tab
 		
-		if (_tabsOpened.Count > 0) return;
-		AddNewTab(mainPageButtonIcon, mainPageButtonTabName, mainPageButtonGoToPage);
-		OpenPage(mainPage, _tabsOpened[0].GetComponent<Tab>());
+		if (firstTime && _tabsOpened.Count > 0) return;
+	
+		foreach (var tab in _tabsOpened)
+		{
+			if (openPage == tab.GetComponent<Tab>().itsPage)
+			{
+				OpenPage(tab.GetComponent<Tab>().itsPage, tab.GetComponent<Tab>());
+				return;
+			}
+		}
 		
+		if (currTab != null ) ChangeAlpha(0, currTab.gameObject);
+		currTab = AddNewTab(openPage.shortCutButton.icon, openPage.shortCutButton.tabName, openPage, true);
+		
+		OpenPage(openPage, currTab);
 	}
 	
 	public void CloseBrowser()
@@ -195,7 +207,7 @@ public class Browser : MonoBehaviour, IDataPersistence
 	
 	public void OnShortcutClick(ShortCutButton shortCutButton)
 	{
-		AddNewTab(shortCutButton.icon, shortCutButton.tabName, shortCutButton.goToPage);
+		AddNewTab(shortCutButton.icon, shortCutButton.tabName, shortCutButton.goToPage, false);
 	}
 	
 	private void ChangeAlpha(float value, GameObject chat)

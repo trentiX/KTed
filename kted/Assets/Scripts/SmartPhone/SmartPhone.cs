@@ -116,7 +116,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
 	private void OpenBrowser()
 	{
 		_browser.gameObject.SetActive(true);
-		_browser.OpenBrowser();
+		_browser.OpenBrowser(_browser.mainPage, true);
 	}
 
 	private void PhonePopUpAnim()
