@@ -46,8 +46,10 @@ public class NotificationManager : MonoBehaviour
 			hideAllButton.transform.SetSiblingIndex(0);
 			
 			notifications.Add(hideAllButton);
-			hideAllButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(RemoveNotifications);
+			hideAllButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(HideAllButton);
 		}
+		
+		//Cursor.visible = true;
 	}
 	
 	public void RemoveNotifications()
@@ -59,11 +61,18 @@ public class NotificationManager : MonoBehaviour
 		notifications.Clear();
 	}
 	
+	public void HideAllButton()
+	{
+		RemoveNotifications();
+		//Cursor.visible = false;
+	}
+	
 	public void OpenKtedPet()
 	{
 		browser.OpenBrowser(ktedpet, false);
 		
 		RemoveNotifications();
+		//Cursor.visible = true;
 	}
 }
 
