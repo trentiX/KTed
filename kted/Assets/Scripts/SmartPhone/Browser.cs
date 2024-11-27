@@ -63,7 +63,7 @@ public class Browser : MonoBehaviour, IDataPersistence
 	
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Escape))
 		{
 			CloseBrowser();
 		}
@@ -163,6 +163,7 @@ public class Browser : MonoBehaviour, IDataPersistence
 			return;
 		}
 		
+		//Cursor.visible = true;
 		browserOpen = true;
 		_browserAnim = _canvasGroup.DOFade(1, 0.2f).OnComplete((() =>
 		{
@@ -203,6 +204,7 @@ public class Browser : MonoBehaviour, IDataPersistence
 			_canvasGroup.interactable = false;
 			_canvasGroup.blocksRaycasts = false;
 		});
+		//Cursor.visible = false;
 	}
 	
 	public void OnShortcutClick(ShortCutButton shortCutButton)
