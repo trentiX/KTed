@@ -48,9 +48,7 @@ public class NotificationManager : MonoBehaviour
 			notifications.Add(hideAllButton);
 			hideAllButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(HideAllButton);
 		}
-		
-		//Cursor.visible = true;
-	}
+			}
 	
 	public void RemoveNotifications()
 	{
@@ -64,7 +62,6 @@ public class NotificationManager : MonoBehaviour
 	public void HideAllButton()
 	{
 		RemoveNotifications();
-		//Cursor.visible = false;
 	}
 	
 	public void OpenKtedPet()
@@ -72,7 +69,6 @@ public class NotificationManager : MonoBehaviour
 		browser.OpenBrowser(ktedpet, false);
 		
 		RemoveNotifications();
-		//Cursor.visible = true;
 	}
 }
 

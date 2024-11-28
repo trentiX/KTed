@@ -44,12 +44,14 @@ public class Browser : MonoBehaviour, IDataPersistence
 	// References
 	private Webpage _webpage;
 	private Player _player;
+	private NotificationManager notificationManager;
 
 	// Code 
 	private void Start()
 	{
 		_canvasGroup = GetComponent<CanvasGroup>();
 		_player = FindObjectOfType<Player>();
+		notificationManager = FindObjectOfType<NotificationManager>();
 		
 		_canvasGroup.alpha = 0;
 		_canvasGroup.interactable = false;
@@ -163,7 +165,8 @@ public class Browser : MonoBehaviour, IDataPersistence
 			return;
 		}
 		
-		//Cursor.visible = true;
+		notificationManager.RemoveNotifications();
+		
 		browserOpen = true;
 		_browserAnim = _canvasGroup.DOFade(1, 0.2f).OnComplete((() =>
 		{
@@ -204,7 +207,6 @@ public class Browser : MonoBehaviour, IDataPersistence
 			_canvasGroup.interactable = false;
 			_canvasGroup.blocksRaycasts = false;
 		});
-		//Cursor.visible = false;
 	}
 	
 	public void OnShortcutClick(ShortCutButton shortCutButton)
