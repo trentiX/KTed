@@ -49,7 +49,6 @@ public class Player : MonoBehaviour, IDataPersistence
 		animator = gameObject.GetComponent<Animator>();
 		_browser = FindObjectOfType<Browser>();
 		testHandler = FindObjectOfType<TestHandler>();
-		Cursor.visible = false;
 	}
 
 	private void Update()
@@ -61,14 +60,12 @@ public class Player : MonoBehaviour, IDataPersistence
 		
 			if (panel.activeSelf == true)
 			{
-				//Cursor.visible = false;
 				panel.SetActive(false);
 				Pause.isOpen = false;
 				Time.timeScale = 1f;
 			}
 			else
 			{
-				//Cursor.visible = true;
 				Pause.isOpen = true;
 				panel.SetActive(true);
 			}
