@@ -21,6 +21,7 @@ public class Webpage : MonoBehaviour
 
 	public void Open()
 	{
+		shortCutButton.DeleteNotification();
 		Debug.Log("Открытие страницы: " + url);
 		_canvasGroup.DOFade(1, 0.1f).OnComplete((() =>
 		{
