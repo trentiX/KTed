@@ -6,27 +6,34 @@ using UnityEngine;
 
 public class Games : MonoBehaviour
 {
-    // Serialization
+	// Serialization
 	[SerializeField] public GameObject image;	
-	[SerializeField] public UnityEngine.UI.Button playButton;
-	
+	[SerializeField] public GameObject pet;
 	
 	// Variables
 	private Tweener gameAnim;
 	private PlayRoomManager playRoomManager;
+	private KTedpet ktedPet;
 	
 	// Code
 	private void Awake()
 	{
 		playRoomManager = FindObjectOfType<PlayRoomManager>();
+		ktedPet = FindObjectOfType<KTedpet>();
 	}
 	
-	public void buttonAdjustment()
-	{	
-		playButton.onClick.RemoveAllListeners();
-		playButton.gameObject.GetComponentInChildren
-				<TextMeshProUGUI>().text = "Поиграть";
-			playButton.onClick.AddListener(playRoomManager.PlayGame);
+	// public void buttonAdjustment()
+	// {	
+	// 	playButton.onClick.RemoveAllListeners();
+	// 	playButton.gameObject.GetComponentInChildren
+	// 			<TextMeshProUGUI>().text = "Поиграть";
+	// 	playButton.onClick.AddListener(PlayGame);
+	// }
+	
+	virtual public void PlayGame()
+	{
+		// play game
+		Debug.Log("play game");
 	}
 	
 	private void OnEnable()

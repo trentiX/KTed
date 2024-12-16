@@ -118,17 +118,7 @@ public class CursorManager : MonoBehaviour
 			// Создаем след
 			GameObject newFootStep = Instantiate(footStep, mousePosition, Quaternion.identity);
 
-			// Выбираем шаг (левый или правый)
-			if (stepRight)
-			{
-				newFootStep.transform.rotation = Quaternion.Euler(0, 0, angle); // Правый шаг
-				stepRight = false; // Меняем на левый шаг для следующего
-			}
-			else
-			{
-				newFootStep.transform.rotation = Quaternion.Euler(0, 180, angle); // Левый шаг
-				stepRight = true; // Меняем на правый шаг для следующего
-			}
+			newFootStep.transform.rotation = Quaternion.Euler(0, 0, angle); // Правый шаг
 
 			// Анимация исчезновения и уничтожения следа
 			newFootStep.GetComponent<SpriteRenderer>().DOFade(0, 2f);

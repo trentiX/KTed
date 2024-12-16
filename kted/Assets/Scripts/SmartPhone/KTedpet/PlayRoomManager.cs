@@ -8,9 +8,8 @@ public class PlayRoomManager : MonoBehaviour
 	// References
 	[SerializeField] private List<GameObject> gamesIcons;
 	
-	
 	// Variables
-	private GameObject currGame;
+	[HideInInspector] public GameObject currGame;
 	private GameObject leftGame;
 	private GameObject rightGame;
 	private List<GameObject> availableGames;
@@ -32,7 +31,7 @@ public class PlayRoomManager : MonoBehaviour
 		
 		foreach (var item in availableGames)
 		{
-			item.GetComponent<Games>().buttonAdjustment();
+			//item.GetComponent<Games>().buttonAdjustment();
 			item.SetActive(false);
 		}
 		
@@ -93,13 +92,6 @@ public class PlayRoomManager : MonoBehaviour
 		{
 			rightGame = availableGames[0];	
 		}
-	}
-	
-	
-	public void PlayGame()
-	{
-		// play game
-		Debug.Log("play game");
 	}
 	
 	private void ChangeItemPosition(GameObject item, float finalMoveX,
