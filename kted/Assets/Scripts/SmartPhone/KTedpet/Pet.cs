@@ -43,6 +43,11 @@ public class Pet : MonoBehaviour
 					(onPlayerChoseActionPetPhrases), "agree");
 				break;
 				
+			case "chooseGame":
+				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
+					(onPlayerChoseActionPetPhrases), "agreeChooseGame");
+				break;	
+				
 			case "playerGreeting":
 				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
 					(continueDialoguePetPhrases), "whatToDo");

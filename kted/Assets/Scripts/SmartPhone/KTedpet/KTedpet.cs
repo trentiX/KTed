@@ -11,6 +11,7 @@ public class KTedpet : MonoBehaviour
 	// Phrases
 	[Header("Players phrases:")]
 	[SerializeField][TextArea] private string[] playerGreetingPhrases;
+	[SerializeField][TextArea] private string[] gotoChooseGamePhrases;
 	[SerializeField][TextArea] private string[] gotoPlayPhrases;
 	[SerializeField][TextArea] private string[] gotoStorePhrases;	
 	[SerializeField][TextArea] private string[] goBackPhrases;
@@ -19,15 +20,19 @@ public class KTedpet : MonoBehaviour
 	[Header("Messages:")]
 	[SerializeField] private GameObject messageTemplate;
 	[SerializeField] private GameObject responseTemplate;
-	[SerializeField] private GameObject messageBox;
+	[SerializeField] private GameObject messages;
+	[SerializeField] private ScrollRect messageBox;
+
 	
 	[Header("Buttons:")]
 	[SerializeField] private GameObject buttonTemplate;
 	
 	[Header("Rooms:")]
 	[SerializeField] private GameObject mainRoom;
-	[SerializeField] private GameObject playRoom;
+	[SerializeField] private GameObject chooseGameRoom;
 	[SerializeField] private GameObject storeRoom;
+	[SerializeField] private GameObject playingRoom;
+
 
 	[Header("Other:")]
 	[SerializeField] private CanvasGroup canvasGroup;
@@ -36,6 +41,7 @@ public class KTedpet : MonoBehaviour
 	private List<GameObject> possibleActivities = new List<GameObject>();
 	private GameObject currRoom;
 	private AudioManager audioManager;
+	private PlayRoomManager playRoomManager;
 	private Pet pet;
 	
 	// Code
@@ -44,16 +50,19 @@ public class KTedpet : MonoBehaviour
 		currRoom = mainRoom;
 		pet = FindObjectOfType<Pet>();
 		audioManager = FindObjectOfType<AudioManager>();
+		playRoomManager = FindObjectOfType<PlayRoomManager>();
 	}
 	
 	public void GenerateMessage(string message, string typeOfMessage)
 	{
 		// Создаём сообщение, но без текста
-		GameObject newMessage = Instantiate(messageTemplate, messageBox.transform);
+		GameObject newMessage = Instantiate(messageTemplate, messages.transform);
 		newMessage.SetActive(true);
 
 		LayoutRebuilder.ForceRebuildLayoutImmediate(newMessage.GetComponent<RectTransform>());	
-
+		LayoutRebuilder.ForceRebuildLayoutImmediate(messageBox.content);
+		messageBox.verticalNormalizedPosition = 0;
+		
 		// Запускаем корутину для анимации точек, затем добавляем текст и кнопки
 		StartCoroutine(MessageWithDotsAnimation(newMessage, message, typeOfMessage));
 	}
@@ -63,11 +72,16 @@ public class KTedpet : MonoBehaviour
 	{
 		TextMeshProUGUI messageText = message.GetComponentInChildren<TextMeshProUGUI>();
 		
+		LayoutRebuilder.ForceRebuildLayoutImmediate(messageBox.content);
+		messageBox.verticalNormalizedPosition = 0;
+		
 		// Анимация точек
 		for (int i = 0; i <= 3; i++)
 		{
 			messageText.text = new string('.', i);
 			LayoutRebuilder.ForceRebuildLayoutImmediate(message.GetComponent<RectTransform>());	
+			LayoutRebuilder.ForceRebuildLayoutImmediate(messageBox.content);
+			messageBox.verticalNormalizedPosition = 0;		
 			yield return new WaitForSeconds(0.6f);
 		}
 		
@@ -77,39 +91,56 @@ public class KTedpet : MonoBehaviour
 		
 		// Перестраиваем UI после изменения текста
 		LayoutRebuilder.ForceRebuildLayoutImmediate(message.GetComponent<RectTransform>());
+		LayoutRebuilder.ForceRebuildLayoutImmediate(messageBox.content);
+		messageBox.verticalNormalizedPosition = 0;
 		
 		// Создаю уведомление
 		gameObject.GetComponent<Webpage>().shortCutButton.CreateNotification(finalText);
 
 		// Генерируем кнопки после завершения анимации
-		StartCoroutine(GenerateButton(typeOfMessage));
+		GenerateButton(typeOfMessage);
 	}
 
-	private IEnumerator GenerateButton(string typeOfMessage)
+	private void GenerateButton(string typeOfMessage)
 	{
 		// Создаем кнопки в зависимости от типа сообщения
 		List<GameObject> buttons = typeOfMessage switch
 		{
 			"greeting" => CreateButtons(1),
 			"whatToDo" => CreateButtons(3),
+			"play" => CreateButtons(2),
 			_ => new List<GameObject>() // Если тип неизвестен, возвращаем пустой список
 		};
 
-		if (typeOfMessage == "greeting")
+		switch (typeOfMessage)
 		{
-			ConfigureButton(buttons[0], GetRandomPhrase(playerGreetingPhrases), Greet);
+			case "greeting":
+				ConfigureButton(buttons[0], GetRandomPhrase(playerGreetingPhrases), Greet);
+				break;
+
+			case "agree":
+				GenerateMessage(GetRandomPhrase(pet.continueDialoguePetPhrases), "whatToDo");
+				break;
+			case "agreeChooseGame":
+				GenerateMessage(GetRandomPhrase(pet.continueDialoguePetPhrases), "play");
+				break;
+			case "play":
+				ConfigureButton(buttons[0], GetRandomPhrase(goBackPhrases), GoBack);
+				ConfigureButton(buttons[1], GetRandomPhrase(gotoPlayPhrases), GoToPlay);
+				break;
+			case "whatToDo":
+				ConfigureButton(buttons[0], GetRandomPhrase(goBackPhrases), GoBack);
+				ConfigureButton(buttons[1], GetRandomPhrase(gotoChooseGamePhrases), GoToChooseGame);
+				ConfigureButton(buttons[2], GetRandomPhrase(gotoStorePhrases), GoToStore);
+				break;
+
+			default:
+				Debug.LogWarning($"Unhandled message type: {typeOfMessage}");
+				break;
 		}
-		else if (typeOfMessage == "agree")
-		{
-			yield return new WaitForSeconds(Random.Range(4, 8));
-			GenerateMessage(GetRandomPhrase(pet.continueDialoguePetPhrases), "whatToDo");
-		}
-		else if (typeOfMessage == "whatToDo")
-		{
-			ConfigureButton(buttons[0], GetRandomPhrase(goBackPhrases), GoBack);
-			ConfigureButton(buttons[1], GetRandomPhrase(gotoPlayPhrases), GoToPlay);	
-			ConfigureButton(buttons[2], GetRandomPhrase(gotoStorePhrases), GoToStore);	
-		}
+
+		LayoutRebuilder.ForceRebuildLayoutImmediate(messageBox.content);
+		messageBox.verticalNormalizedPosition = 0;
 	}
 	
 	private void ConfigureButton(GameObject button, string text, UnityEngine.Events.UnityAction action)
@@ -125,7 +156,7 @@ public class KTedpet : MonoBehaviour
 			
 		for (int i = 0; i < amountOfButtons; i++)
 		{
-			GameObject newButton = Instantiate(buttonTemplate, messageBox.transform);
+			GameObject newButton = Instantiate(buttonTemplate, messages.transform);
 			newButton.SetActive(true);
 			createdButtons.Add(newButton);
 			
@@ -142,12 +173,14 @@ public class KTedpet : MonoBehaviour
 		}
 		possibleActivities.Clear();
 		
-		GameObject newResponse = Instantiate(responseTemplate, messageBox.transform);
+		GameObject newResponse = Instantiate(responseTemplate, messages.transform);
 		newResponse.SetActive(true);
 		newResponse.GetComponentInChildren<TextMeshProUGUI>().text = message;
 						
 		// After adding the new response, force its layout rebuild
 		LayoutRebuilder.ForceRebuildLayoutImmediate(newResponse.GetComponent<RectTransform>());
+		LayoutRebuilder.ForceRebuildLayoutImmediate(messageBox.content);
+		messageBox.verticalNormalizedPosition = 0;
 	}
 	
 	public string GetRandomPhrase(string[] phrases)
@@ -158,26 +191,48 @@ public class KTedpet : MonoBehaviour
 	public void GoToStore()
 	{
 		GenerateResponse(GetRandomPhrase(gotoStorePhrases));
-			
-		if (RoomTransition(storeRoom))
+
+		if (CanRoomChange(storeRoom))
+		{
+	  		StartCoroutine(RoomTransition(storeRoom));
 			pet.ReceiveAction("store");
+		}
 	}
-	
-	public void GoToPlay()
+
+	public void GoToChooseGame()
 	{
-		GenerateResponse(GetRandomPhrase(gotoPlayPhrases));
-		
-		if (RoomTransition(playRoom))
-			pet.ReceiveAction("play");
+		GenerateResponse(GetRandomPhrase(gotoChooseGamePhrases));
+
+		if (CanRoomChange(chooseGameRoom))
+		{
+			StartCoroutine(RoomTransition(chooseGameRoom));
+			pet.ReceiveAction("chooseGame");
+		}
 	}
-	
+
 	public void GoBack()
 	{
 		GenerateResponse(GetRandomPhrase(goBackPhrases));
-		
-		if (RoomTransition(mainRoom))
+
+		if (CanRoomChange(mainRoom))
+		{
+			StartCoroutine(RoomTransition(mainRoom));
 			pet.ReceiveAction("main");
+		}
 	}
+
+	public void GoToPlay()
+	{
+		GenerateResponse(GetRandomPhrase(gotoPlayPhrases));
+
+		if (CanRoomChange(playingRoom))
+		{
+			StartCoroutine(RoomTransition(playingRoom));
+			pet.ReceiveAction("play");
+			playRoomManager.currGame.GetComponent<Games>().PlayGame();
+		}
+	}
+
 	
 	public void Greet()
 	{
@@ -186,25 +241,18 @@ public class KTedpet : MonoBehaviour
 		pet.ReceiveAction("playerGreeting");
 	}
 	
-	private bool RoomTransition(GameObject gotoRoom)
+	private IEnumerator RoomTransition(GameObject gotoRoom)
 	{
-		if (currRoom != null) 
+		yield return new WaitForSeconds(2.5f);
+		
+		CanvasGroup currRoomCanvas = currRoom.GetComponent<CanvasGroup>();
+		
+		currRoomCanvas.interactable = false;
+		currRoomCanvas.blocksRaycasts = false;
+		currRoomCanvas.DOFade(0, 0.4f).OnComplete(() =>
 		{
-			if (currRoom == gotoRoom)
-			{
-				GenerateMessage(GetRandomPhrase(pet.gotoSameRoomPhrases), "whatToDo");
-				return false;
-			}
-			
-			CanvasGroup currRoomCanvas = currRoom.GetComponent<CanvasGroup>();
-			
-			currRoomCanvas.interactable = false;
-			currRoomCanvas.blocksRaycasts = false;
-			currRoomCanvas.DOFade(0, 0.4f).OnComplete(() =>
-			{
-				currRoom.SetActive(false);
-			});
-		}
+			currRoom.SetActive(false);
+		});
 		
 		CanvasGroup gotoRoomCanvas = gotoRoom.GetComponent<CanvasGroup>();
 		gotoRoom.SetActive(true);
@@ -213,8 +261,19 @@ public class KTedpet : MonoBehaviour
 			currRoom = gotoRoom;
 		});
 		gotoRoomCanvas.interactable = true;
-		gotoRoomCanvas.blocksRaycasts = true;	
-		
-		return true;
+		gotoRoomCanvas.blocksRaycasts = true;		
 	}
+	
+	private bool CanRoomChange(GameObject gotoRoom)
+	{
+		if (currRoom != null) 
+		{
+			if (currRoom == gotoRoom)
+			{
+				GenerateMessage(GetRandomPhrase(pet.gotoSameRoomPhrases), "whatToDo");
+				return false;
+			}
+		}
+		return true;
+	} 
 }
