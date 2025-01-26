@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -8,7 +6,9 @@ public class Games : MonoBehaviour
 {
 	// Serialization
 	[SerializeField] public GameObject image;	
-	[SerializeField] public GameObject pet;
+	[SerializeField] public UnityEngine.UI.Button playButton;
+	[SerializeField] public string gameScene;
+
 	
 	// Variables
 	private Tweener gameAnim;
@@ -20,24 +20,28 @@ public class Games : MonoBehaviour
 	{
 		playRoomManager = FindObjectOfType<PlayRoomManager>();
 		ktedPet = FindObjectOfType<KTedpet>();
+		
+		buttonAdjustment();
 	}
 	
-	// public void buttonAdjustment()
-	// {	
-	// 	playButton.onClick.RemoveAllListeners();
-	// 	playButton.gameObject.GetComponentInChildren
-	// 			<TextMeshProUGUI>().text = "Поиграть";
-	// 	playButton.onClick.AddListener(PlayGame);
-	// }
+	public void buttonAdjustment()
+	{	
+		playButton.onClick.RemoveAllListeners();
+		playButton.gameObject.GetComponentInChildren
+				<TextMeshProUGUI>().text = "Поиграть";
+		playButton.onClick.AddListener(ktedPet.GoToPlay);
+	}
 	
-	virtual public void PlayGame()
+	public void PlayGame()
 	{
-		// play game
+		PixelatedTransition.instance.TransitionIn(gameScene);
 		Debug.Log("play game");
 	}
 	
+	
 	private void OnEnable()
 	{
+		if (image == null) return;
 		image.transform.Rotate(0, 0, -0.5f);
 		gameAnim = image.transform.DORotate(new Vector3(0, 0, 1), 1f)
 			.SetLoops(-1, LoopType.Yoyo)

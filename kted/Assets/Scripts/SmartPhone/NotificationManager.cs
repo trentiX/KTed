@@ -52,8 +52,10 @@ public class NotificationManager : MonoBehaviour
 	
 	public void RemoveNotifications()
 	{
+		if (notifications == null) return; 
 		foreach (var notif in notifications)
 		{
+			if (notif == null) return;
 			Destroy(notif);
 		}
 		notifications.Clear();

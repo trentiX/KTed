@@ -4,30 +4,31 @@ using UnityEngine;
 
 public class SmartPhone : MonoBehaviour, IDataPersistence
 {
-	//Serialization
+	// Serialization
 	[SerializeField] private Transform smartPhoneInitPos;
 	[SerializeField] private GameObject phoneImage;
 	[SerializeField] private AudioSource _audioSource;
 	
-	//Other scripts
+	// Other scripts
 	private AudioManager _audioManager;
 	private Player player;
 	private LocationCompleted _locationCompleted;
 	private Browser _browser;
 	private Messenger _messenger;
 	private DialogueUI _dialogueUI;
+	private Pet pet;
 	
-	//Animations
+	// Animations
 	private Tweener phoneImageIdleAnim;
 	private Tweener phonePopUpAnim;
 	private Tweener phoneHideAnim;
 	
-	//Variables
+	// Variables
 	public bool SmartPhonePicked;
 	private bool isRinging = false;
 	private DialogueObject tempDialogueObject;
 	
-	//String
+	// String
 	private string phoneControlls = "\"1\" - Достать/убрать телефон или ответить на звонок" +
 									"\n\"2\" - Открыть звуковой проигрыватель" +
 									"\n\"3\" - Открыть мессенджер";
@@ -43,6 +44,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
 		_browser = FindObjectOfType<Browser>();
 		_messenger = FindObjectOfType<Messenger>();
 		_dialogueUI = FindObjectOfType<DialogueUI>();
+		pet = FindObjectOfType<Pet>();
 
 		if (!SmartPhonePicked)
 		{
@@ -87,6 +89,8 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
 	{
 		SmartPhonePicked = true;
 		_locationCompleted.SmartPhonePickAnim("Вы подобрали смартфон!");
+		
+		pet.FirstInteractionMessage();
 	}
 
 	private void answerTheCall()

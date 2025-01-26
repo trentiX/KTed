@@ -121,13 +121,6 @@ public class KTedpet : MonoBehaviour
 			case "agree":
 				GenerateMessage(GetRandomPhrase(pet.continueDialoguePetPhrases), "whatToDo");
 				break;
-			case "agreeChooseGame":
-				GenerateMessage(GetRandomPhrase(pet.continueDialoguePetPhrases), "play");
-				break;
-			case "play":
-				ConfigureButton(buttons[0], GetRandomPhrase(goBackPhrases), GoBack);
-				ConfigureButton(buttons[1], GetRandomPhrase(gotoPlayPhrases), GoToPlay);
-				break;
 			case "whatToDo":
 				ConfigureButton(buttons[0], GetRandomPhrase(goBackPhrases), GoBack);
 				ConfigureButton(buttons[1], GetRandomPhrase(gotoChooseGamePhrases), GoToChooseGame);
@@ -223,14 +216,7 @@ public class KTedpet : MonoBehaviour
 
 	public void GoToPlay()
 	{
-		GenerateResponse(GetRandomPhrase(gotoPlayPhrases));
-
-		if (CanRoomChange(playingRoom))
-		{
-			StartCoroutine(RoomTransition(playingRoom));
-			pet.ReceiveAction("play");
-			playRoomManager.currGame.GetComponent<Games>().PlayGame();
-		}
+		playRoomManager.currGame.GetComponent<Games>().PlayGame();
 	}
 
 	
