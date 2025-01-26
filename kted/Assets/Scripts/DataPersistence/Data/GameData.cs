@@ -8,6 +8,7 @@ public class GameData
 {
 	public int playersMoney;
 	public bool phoneIsPicked;
+	public bool petFirstInteraction;
 	public bool browserEasterEggFound;
 	public Vector3 playerPosition;
 	public SerializableDictionary<DialogueActivator, Response> responsesInStorage;
@@ -23,6 +24,7 @@ public class GameData
 	{
 		playersMoney = new int();
 		this.phoneIsPicked = false;
+		this.petFirstInteraction = true;
 		this.browserEasterEggFound = false;
 		playerPosition = Vector3.zero;
 		chatsInStorage = new SerializableDictionary<GameObject, DialogueActivator>();
