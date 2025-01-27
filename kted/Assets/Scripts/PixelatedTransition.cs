@@ -29,6 +29,7 @@ public class PixelatedTransition : MonoBehaviour
 	}
 	public void TransitionOut()
 	{
+		Debug.Log("TransitionOUT");
 		StartCoroutine(PixelationOutAnimation());
 	}
 	
@@ -56,6 +57,7 @@ public class PixelatedTransition : MonoBehaviour
 	
 	private IEnumerator PixelationOutAnimation()
 	{
+		Debug.Log("courutine out started");
 		pixelatedPanel.SetActive(true);
 		mainCamera.GetComponent<Camera>().enabled = false;
 		transitionCamera.GetComponent<Camera>().enabled = true;
