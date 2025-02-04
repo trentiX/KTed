@@ -34,6 +34,11 @@ public class KTedpet : MonoBehaviour
 	[SerializeField] private GameObject playingRoom;
 
 
+	[Header("Minigames:")]
+	[SerializeField] Games[] games;
+	[SerializeField] private CanvasGroup[] messageBoxCanvas;
+
+	
 	[Header("Other:")]
 	[SerializeField] private CanvasGroup canvasGroup;
 	
@@ -216,9 +221,8 @@ public class KTedpet : MonoBehaviour
 
 	public void GoToPlay()
 	{
-		playRoomManager.currGame.GetComponent<Games>().PlayGame();
+		playRoomManager.currGame.GetComponent<Games>().PlayStartAnim();
 	}
-
 	
 	public void Greet()
 	{
@@ -248,6 +252,19 @@ public class KTedpet : MonoBehaviour
 		});
 		gotoRoomCanvas.interactable = true;
 		gotoRoomCanvas.blocksRaycasts = true;		
+	}
+	
+	public void StartMinigameAnim(Games game)
+	{
+		foreach (var canvas in messageBoxCanvas)
+		{
+			canvas.DOFade(0, 0.5f).OnComplete(() =>
+			{
+				canvas.gameObject.SetActive(false);
+			});
+		}
+		
+		playRoomManager.currGame.GetComponent<Games>().StartGame();
 	}
 	
 	private bool CanRoomChange(GameObject gotoRoom)
