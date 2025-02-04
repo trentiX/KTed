@@ -7,7 +7,7 @@ public class Games : MonoBehaviour
 	// Serialization
 	[SerializeField] public GameObject image;	
 	[SerializeField] public UnityEngine.UI.Button playButton;
-	[SerializeField] public string gameScene;
+	[SerializeField] private IPlayable game;
 
 	
 	// Variables
@@ -32,12 +32,16 @@ public class Games : MonoBehaviour
 		playButton.onClick.AddListener(ktedPet.GoToPlay);
 	}
 	
-	public void PlayGame()
+	public void PlayStartAnim()
 	{
-		PixelatedTransition.instance.TransitionIn(gameScene);
+		ktedPet.StartMinigameAnim(this);
 		Debug.Log("play game");
 	}
 	
+	public void StartGame()
+	{
+		game.StartGame();
+	}	
 	
 	private void OnEnable()
 	{
