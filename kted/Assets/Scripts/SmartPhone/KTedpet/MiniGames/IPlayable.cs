@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface IPlayable
 {
-    void StartGame();
+	void StartGame();
+	void EndGame();
 }

@@ -37,6 +37,7 @@ public class KTedpet : MonoBehaviour
 	[Header("Minigames:")]
 	[SerializeField] Games[] games;
 	[SerializeField] private CanvasGroup[] messageBoxCanvas;
+	[SerializeField] private CanvasGroup darkPanelCanvas;
 
 	
 	[Header("Other:")]
@@ -264,8 +265,22 @@ public class KTedpet : MonoBehaviour
 			});
 		}
 		
+		darkPanelCanvas.DOFade(0.7f, 0.5f);
+		
 		playRoomManager.currGame.GetComponent<Games>().StartGame();
 	}
+	
+	public void CloseMinigame()
+	{
+		foreach (var canvas in messageBoxCanvas)
+		{
+			canvas.gameObject.SetActive(true);
+			canvas.DOFade(1, 0.5f);
+		}
+		
+		darkPanelCanvas.DOFade(0, 0.5f);
+		playRoomManager.currGame.GetComponent<Games>().EndGame();
+	}	
 	
 	private bool CanRoomChange(GameObject gotoRoom)
 	{
