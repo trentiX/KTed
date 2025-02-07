@@ -13,13 +13,13 @@ public class Games : MonoBehaviour
 	// Variables
 	private Tweener gameAnim;
 	private PlayRoomManager playRoomManager;
-	private KTedpet ktedPet;
+	private KTedpet kTedpet;
 	
 	// Code
 	private void Awake()
 	{
 		playRoomManager = FindObjectOfType<PlayRoomManager>();
-		ktedPet = FindObjectOfType<KTedpet>();
+		kTedpet = FindObjectOfType<KTedpet>();
 		
 		buttonAdjustment();
 	}
@@ -29,12 +29,12 @@ public class Games : MonoBehaviour
 		playButton.onClick.RemoveAllListeners();
 		playButton.gameObject.GetComponentInChildren
 				<TextMeshProUGUI>().text = "Поиграть";
-		playButton.onClick.AddListener(ktedPet.GoToPlay);
+		playButton.onClick.AddListener(kTedpet.GoToPlay);
 	}
 	
 	public void PlayStartAnim()
 	{
-		ktedPet.StartMinigameAnim(this);
+		kTedpet.StartMinigameAnim(this);
 		Debug.Log("play game");
 	}
 	

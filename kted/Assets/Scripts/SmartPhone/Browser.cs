@@ -187,7 +187,7 @@ public class Browser : MonoBehaviour, IDataPersistence
 			}
 		}
 		
-		if (currTab != null ) ChangeAlpha(0, currTab.gameObject);
+		if (currTab != null) ChangeAlpha(0, currTab.gameObject);
 		currTab = AddNewTab(openPage.shortCutButton.icon, openPage.shortCutButton.tabName, openPage, true);
 		
 		OpenPage(openPage, currTab);
