@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPlayable
+public class IPlayable : MonoBehaviour 
 {
-	void StartGame();
-	void EndGame();
+	public virtual void StartGame(){}
+	
+	public virtual void EndGame(){}
 }

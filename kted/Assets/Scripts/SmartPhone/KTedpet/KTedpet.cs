@@ -44,15 +44,18 @@ public class KTedpet : MonoBehaviour
 	[SerializeField] private CanvasGroup canvasGroup;
 	
 	// Variables
+	public static KTedpet instance;
 	private List<GameObject> possibleActivities = new List<GameObject>();
 	private GameObject currRoom;
 	private AudioManager audioManager;
 	private PlayRoomManager playRoomManager;
 	private Pet pet;
+	public bool gameMode = false;
 	
 	// Code
 	private void Start()
 	{
+		instance = this;
 		currRoom = mainRoom;
 		pet = FindObjectOfType<Pet>();
 		audioManager = FindObjectOfType<AudioManager>();
@@ -267,6 +270,7 @@ public class KTedpet : MonoBehaviour
 		
 		darkPanelCanvas.DOFade(0.7f, 0.5f);
 		
+		gameMode = true;
 		playRoomManager.currGame.GetComponent<Games>().StartGame();
 	}
 	
@@ -279,6 +283,8 @@ public class KTedpet : MonoBehaviour
 		}
 		
 		darkPanelCanvas.DOFade(0, 0.5f);
+		
+		gameMode = false;
 		playRoomManager.currGame.GetComponent<Games>().EndGame();
 	}	
 	

@@ -53,6 +53,8 @@ public class Player : MonoBehaviour, IDataPersistence
 
 	private void Update()
 	{
+		if (!CaptureInput()) return;
+		
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			Pause.isOpen = true;
@@ -155,6 +157,16 @@ public class Player : MonoBehaviour, IDataPersistence
 	{
 		if (dialogueUI.DialogueOpen || musicUI.MusicOpen || pictureBoxUI.PictureOpen || _cameraController.transition 
 			|| Pause.isOpen || _browser.browserOpen || testHandler.TestOpen)
+		{
+			return false;
+		}
+		else
+			return true;
+	}
+	
+	public bool CaptureInput()
+	{
+		if (KTedpet.instance.gameMode)
 		{
 			return false;
 		}
