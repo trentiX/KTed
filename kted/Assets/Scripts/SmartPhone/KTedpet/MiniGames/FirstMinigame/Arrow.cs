@@ -7,6 +7,12 @@ public class Arrow : MonoBehaviour
 	// Variables
 	public int direction;
 	
+	/*
+	0 = left
+	1 = down
+	2 = up
+	3 = right
+	*/
 	
 	// Code
 	void Update()
