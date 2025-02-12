@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
 	// Variables
 	public int direction;
+	public GameObject killPos;
 	
 	/*
 	0 = left
@@ -15,8 +14,8 @@ public class Arrow : MonoBehaviour
 	*/
 	
 	// Code
-	void Update()
+	void FixedUpdate()
 	{
-		this.transform.position += new Vector3(0, 1f, 0);
+		this.transform.position += new Vector3(0, 5f, 0);
 	}
 }
