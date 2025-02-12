@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RythmGame : IPlayable
 {
 	// Serialization
 	[SerializeField] private CanvasGroup[] gameObjects;	
 	[SerializeField] private GameObject arrow;
+	[SerializeField] private GameObject hitFlash;
 	[SerializeField] private GameObject[] spawnPoints;
-	[SerializeField] private Collider2D[] hitbox;
+	[SerializeField] private GameObject[] killPoints;
 	[SerializeField] private GameObject scoreText;
 	[SerializeField] private GameObject comboText;
 	
@@ -22,32 +25,26 @@ public class RythmGame : IPlayable
 	
 	
 	// Variables
-	private GameObject currArrow;
+	private List<GameObject> arrows = new List<GameObject>();
 	private bool lastArrowKilled = false;
-	private float spawnDelay = 4;
+	private float spawnDelay = 2;
 	private int combo;
 	private int score;
 	
-	private Vector3 scoreTextStartPos;
-	private Vector3 comboTextStartPos;
-	
 	// Code
 
-	private void Start()
-	{
-		scoreTextStartPos = scoreText.transform.localPosition;
-		comboTextStartPos = comboText.transform.localPosition;
-	}
 	private void Update()
 	{
 		if (!KTedpet.instance.gameMode) return;
 
-		if (Input.GetKey(KeyCode.LeftArrow))TryKillArrow(0);
-		if (Input.GetKey(KeyCode.DownArrow))TryKillArrow(1);
-		if (Input.GetKey(KeyCode.UpArrow))TryKillArrow(2);
-		if (Input.GetKey(KeyCode.RightArrow))TryKillArrow(3);
+		if (Input.GetKeyDown(KeyCode.LeftArrow))TryKillArrow(0);
+		if (Input.GetKeyDown(KeyCode.DownArrow))TryKillArrow(1);
+		if (Input.GetKeyDown(KeyCode.UpArrow))TryKillArrow(2);
+		if (Input.GetKeyDown(KeyCode.RightArrow))TryKillArrow(3);
 		
-		TextRainbowSwingAnimation();
+		DestroyArrow();
+		
+		TextRainbowAnimation();
 	}
 	public override void StartGame()
 	{
@@ -80,16 +77,33 @@ public class RythmGame : IPlayable
 		GameObject newArrow = Instantiate(arrow, spawnPoints[i].transform.position, Quaternion.identity, gameObjects[0].transform);
 		
 		newArrow.GetComponent<Arrow>().direction = i;
+		newArrow.GetComponent<Arrow>().killPos = killPoints[i];
 		
-		if (lastArrowKilled)
+		arrows.Add(newArrow);
+		
+		switch(i)
 		{
-			currArrow = newArrow;	
-		}	
+			case 0:
+				newArrow.transform.Rotate(0, 0, 180);
+				break;
+			case 1:
+				newArrow.transform.Rotate(0, 0, 270);
+				break;
+			case 2:
+				newArrow.transform.Rotate(0, 0, 90);
+				break;
+			case 3:
+				break;
+			default:
+				break;
+		}
 	}
 	
 	private void TryKillArrow(int arrowDirection)
 	{
-		if (currArrow.GetComponent<Arrow>().direction == arrowDirection)
+		if (arrows.Count == 0) return;
+
+		if (arrows[0].GetComponent<Arrow>().direction == arrowDirection && CheckArrowPosition())
 		{
 			SuccessfullyKillArrow();
 		}
@@ -99,36 +113,154 @@ public class RythmGame : IPlayable
 		}
 	}
 	
+	private bool CheckArrowPosition()
+	{
+		if (arrows[0].GetComponent<Arrow>().killPos.transform.position.y - arrows[0].transform.position.y <= 70f)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	private void DestroyArrow()
+	{
+		if (arrows.Count == 0) return;
+
+		GameObject arrowToDestroy = arrows[0];
+
+		if (arrowToDestroy.transform.position.y >= arrowToDestroy.GetComponent<Arrow>().killPos.transform.position.y + 80f)
+		{
+			StartCoroutine(DestroyWithDelay(arrowToDestroy));
+		}
+	}
+
+	private IEnumerator DestroyWithDelay(GameObject arrowToDestroy)
+	{
+		yield return new WaitForSeconds(0.2f); // Задержка перед удалением
+		if (arrows.Count > 0 && arrows[0] == arrowToDestroy) 
+		{
+			UnsuccessfullyKillArrow();
+		}
+	}
+
+	
 	private void SuccessfullyKillArrow()
 	{
+		if (arrows.Count == 0) return;
+
+		Debug.Log("Killed");
+
+		GameObject arrowToRemove = arrows[0];
+		arrows.RemoveAt(0); // Удаляем из списка сразу, но объект пока остается
+
+		float distance = Mathf.Abs(arrowToRemove.GetComponent<Arrow>().killPos.transform.position.y - arrowToRemove.transform.position.y);
+
+		arrowToRemove.GetComponent<CanvasGroup>().DOFade(0, 0.2f).OnComplete(() =>
+		{
+			Destroy(arrowToRemove);
+		});
+
+		combo++;
+
+		// Базовое количество очков за попадание
+		int baseScore = 10 * combo;
+
+		// Дополнительные бонусы за точность
+		int accuracyBonus = 0;
 		
+		if (distance <= 5f) // Идеальное попадание
+		{
+			accuracyBonus = 50;
+			PerferctShot();
+		}
+		else if (distance <= 15f) // Хорошее попадание
+		{
+			accuracyBonus = 30;
+		}
+		else if (distance <= 30f) // Среднее попадание
+		{
+			accuracyBonus = 10;
+		}
+
+		score += baseScore + accuracyBonus;
+
+		AudioManager.Instance.SFXQuestBitCompletion();
+
+		FlashEffect(false);
+		UpdateUI();
 	}
+
 	
 	private void UnsuccessfullyKillArrow()
 	{
+		Debug.Log("Missed");
+
+		if (arrows.Count == 0) return;
+
+		GameObject arrowToRemove = arrows[0];
+		arrows.RemoveAt(0); // Удаляем из списка сразу, но объект пока остается
+
+		arrowToRemove.GetComponent<CanvasGroup>().DOFade(0, 0.2f).OnComplete(() =>
+		{
+			Destroy(arrowToRemove);
+		});
+
+		combo = 0;
+		
+		AudioManager.Instance.SFXFailedSound();
+		
+		FlashEffect(true);
+		UpdateUI();
+	}
+
+	
+	private void UpdateUI()
+	{
+		comboText.GetComponentInChildren<TextMeshProUGUI>(0).text = combo.ToString() + "X";
+		scoreText.GetComponentInChildren<TextMeshProUGUI>(0).text = score.ToString();
+	}
+	
+	private void PerferctShot()
+	{
+	
+
+	}
+	
+	private void ComboPopUpAnimation()
+	{
 		
 	}
 	
-	private void TextRainbowSwingAnimation()
+	private void FlashEffect(bool miss)
 	{
-		float hue = Mathf.Repeat(Time.time * 0.2f, 1f); // Меняет оттенок по кругу
-		Color rainbowColor = Color.HSVToRGB(hue, 1f, 1f); // Создает насыщенный цвет
+		if (miss)
+		{
+			hitFlash.GetComponent<Image>().color = Color.red;
+		}
+		else
+		{
+			hitFlash.GetComponent<Image>().color = Color.green;
+		}
+		
+		hitFlash.GetComponent<CanvasGroup>().DOFade(0.4f, 0.05f) // Быстро увеличиваем прозрачность до 50%
+			.OnComplete(() => hitFlash.GetComponent<CanvasGroup>().DOFade(0, 0.1f)); // Затем плавно исчезаем
+	}
 
-		// Применяем цвет ко всем дочерним текстовым объектам
+	private void TextRainbowAnimation()
+	{
+		float hue = Mathf.Repeat(Time.time * 0.2f, 1f); // 0.2f - скорость изменения цвета
+		Color rainbowColor = Color.HSVToRGB(hue, 1f, 1f); // Полностью насыщенный и яркий цвет
+
 		foreach (var text in scoreText.GetComponentsInChildren<TextMeshProUGUI>())
 		{
 			text.color = rainbowColor;
 		}
-		
 		foreach (var text in comboText.GetComponentsInChildren<TextMeshProUGUI>())
 		{
 			text.color = rainbowColor;
 		}
-
-		// Создаем качание относительно стартовой позиции
-		float swingOffset = Mathf.Sin(Time.time * 2f) * 10f; // 10 - амплитуда качания
-		scoreText.transform.localPosition = scoreTextStartPos + new Vector3(swingOffset, 0, 0);
-		comboText.transform.localPosition = comboTextStartPos + new Vector3(swingOffset, 0, 0);
 	}
-
 }

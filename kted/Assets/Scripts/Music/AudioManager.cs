@@ -65,13 +65,19 @@ public class AudioManager : MonoBehaviour
 
 		sfxSource.PlayOneShot(clip);
 	}
-
 	public void ClickSound()
 	{
 		AudioClip clip = sfxClips[3];
 
 		sfxSource.PlayOneShot(clip);
 	}
+	public void SFXFailedSound()
+	{
+		AudioClip clip = sfxClips[4];
+
+		sfxSource.PlayOneShot(clip);
+	}
+	
 
 	public void phoneRing()
 	{
