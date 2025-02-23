@@ -34,6 +34,7 @@ public class Games : MonoBehaviour
 	
 	public void PlayStartAnim()
 	{
+		if (kTedpet.gameMode) return;
 		kTedpet.StartMinigameAnim(this);
 		Debug.Log("play game");
 	}

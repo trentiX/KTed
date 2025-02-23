@@ -9,12 +9,14 @@ public class RythmGame : IPlayable
 {
 	// Serialization
 	[SerializeField] private CanvasGroup[] gameObjects;	
+	[SerializeField] private CanvasGroup[] MenuObjects;
 	[SerializeField] private GameObject arrow;
 	[SerializeField] private GameObject hitFlash;
 	[SerializeField] private GameObject[] spawnPoints;
 	[SerializeField] private GameObject[] killPoints;
 	[SerializeField] private GameObject scoreText;
 	[SerializeField] private GameObject comboText;
+	[SerializeField] private GameObject timeText;
 	
 	/*
 	0 = left
@@ -48,21 +50,41 @@ public class RythmGame : IPlayable
 	}
 	public override void StartGame()
 	{
+		foreach (CanvasGroup obj in MenuObjects)
+		{
+			obj.alpha = 1;
+		}
+	}
+	
+	private void LaunchGameLoop()
+	{
 		foreach (CanvasGroup obj in gameObjects)
 		{
 			obj.alpha = 1;
 		}	
 		
+		foreach (CanvasGroup obj in MenuObjects)
+		{
+			obj.alpha = 0;
+			obj.blocksRaycasts = false;
+			obj.interactable = false;
+		}
+
 		StartCoroutine(GameLoop());
 	}
-	
+
 	private IEnumerator GameLoop()
 	{
 		while (true)
 		{
 			yield return new WaitForSeconds(spawnDelay);
 			SpawnArrow();
-			spawnDelay = spawnDelay - 0.05f;
+
+			if (spawnDelay > 0.6f)
+			{
+			 	spawnDelay = spawnDelay - 0.05f;
+				Debug.Log(spawnDelay);   
+			}
 		}
 	}
 	
@@ -245,7 +267,7 @@ public class RythmGame : IPlayable
 			hitFlash.GetComponent<Image>().color = Color.green;
 		}
 		
-		hitFlash.GetComponent<CanvasGroup>().DOFade(0.4f, 0.05f) // Быстро увеличиваем прозрачность до 50%
+		hitFlash.GetComponent<CanvasGroup>().DOFade(0.1f, 0.1f) // Быстро увеличиваем прозрачность до 50%
 			.OnComplete(() => hitFlash.GetComponent<CanvasGroup>().DOFade(0, 0.1f)); // Затем плавно исчезаем
 	}
 
@@ -259,6 +281,10 @@ public class RythmGame : IPlayable
 			text.color = rainbowColor;
 		}
 		foreach (var text in comboText.GetComponentsInChildren<TextMeshProUGUI>())
+		{
+			text.color = rainbowColor;
+		}
+		foreach (var text in timeText.GetComponentsInChildren<TextMeshProUGUI>())
 		{
 			text.color = rainbowColor;
 		}
