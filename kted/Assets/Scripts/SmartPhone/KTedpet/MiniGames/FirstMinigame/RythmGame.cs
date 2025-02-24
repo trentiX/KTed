@@ -9,7 +9,8 @@ public class RythmGame : IPlayable
 {
 	// Serialization
 	[SerializeField] private CanvasGroup[] gameObjects;	
-	[SerializeField] private CanvasGroup[] MenuObjects;
+	[SerializeField] private CanvasGroup[] menuObjects;
+	[SerializeField] private CanvasGroup[] songs;
 	[SerializeField] private GameObject arrow;
 	[SerializeField] private GameObject hitFlash;
 	[SerializeField] private GameObject[] spawnPoints;
@@ -50,25 +51,21 @@ public class RythmGame : IPlayable
 	}
 	public override void StartGame()
 	{
-		foreach (CanvasGroup obj in MenuObjects)
-		{
-			obj.alpha = 1;
-		}
+		CanvasFade(menuObjects, 1, 0.6f);
 	}
 	
-	private void LaunchGameLoop()
+	public void ChooseSong()
 	{
-		foreach (CanvasGroup obj in gameObjects)
-		{
-			obj.alpha = 1;
-		}	
+		CanvasFade(songs, 1, 0.6f);
 		
-		foreach (CanvasGroup obj in MenuObjects)
-		{
-			obj.alpha = 0;
-			obj.blocksRaycasts = false;
-			obj.interactable = false;
-		}
+		CanvasFade(menuObjects, 0, 0.6f);
+	}
+
+	public void LaunchGameLoop()
+	{
+		CanvasFade(gameObjects, 1, 0.6f);
+		
+		CanvasFade(songs, 0, 0.6f);
 
 		StartCoroutine(GameLoop());
 	}
@@ -287,6 +284,25 @@ public class RythmGame : IPlayable
 		foreach (var text in timeText.GetComponentsInChildren<TextMeshProUGUI>())
 		{
 			text.color = rainbowColor;
+		}
+	}
+
+	private void CanvasFade(CanvasGroup[] canvasGroups, int value, float time)
+	{
+	    foreach (CanvasGroup obj in canvasGroups)
+		{
+			obj.DOFade(value, time);
+
+			if (value == 0)
+			{
+				obj.blocksRaycasts = false;
+				obj.interactable = false;
+			}
+			else
+			{
+				obj.blocksRaycasts = true;
+				obj.interactable = true;
+			}
 		}
 	}
 }
