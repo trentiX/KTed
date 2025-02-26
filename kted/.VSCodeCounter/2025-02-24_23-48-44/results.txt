@@ -1,0 +1,38 @@
+Date : 2025-02-24 23:48:44
+Directory : c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\KTedpet
+Total : 10 files,  903 codes, 58 comments, 215 blanks, all 1176 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C#       |         10 |        903 |         58 |        215 |      1,176 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                               | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                  |         10 |        903 |         58 |        215 |      1,176 |
+| . (Files)                                                                                                          |          6 |        611 |         33 |        132 |        776 |
+| MiniGames                                                                                                          |          4 |        292 |         25 |         83 |        400 |
+| MiniGames (Files)                                                                                                  |          1 |          8 |          0 |          3 |         11 |
+| MiniGames\FirstMinigame                                                                                            |          3 |        284 |         25 |         80 |        389 |
++--------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                           | language | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\KTedpet\Accessory.cs                          | C#       |         50 |          3 |          8 |         61 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\KTedpet\Games.cs                              | C#       |         51 |          3 |         11 |         65 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\KTedpet\KTedpet.cs                            | C#       |        235 |         13 |         55 |        303 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\KTedpet\MiniGames\FirstMinigame\Arrow.cs      | C#       |         16 |          8 |          5 |         29 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\KTedpet\MiniGames\FirstMinigame\ChooseSong.cs | C#       |         34 |          6 |         11 |         51 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\KTedpet\MiniGames\FirstMinigame\RythmGame.cs  | C#       |        234 |         11 |         64 |        309 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\KTedpet\MiniGames\IPlayable.cs                | C#       |          8 |          0 |          3 |         11 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\KTedpet\Pet.cs                                | C#       |         66 |          5 |         13 |         84 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\KTedpet\PetShopManager.cs                     | C#       |        121 |          5 |         27 |        153 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\KTedpet\PlayRoomManager.cs                    | C#       |         88 |          4 |         18 |        110 |
+| Total                                                                                                              |          |        903 |         58 |        215 |      1,176 |
++--------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

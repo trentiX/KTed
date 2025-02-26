@@ -33,8 +33,7 @@ public class ChooseSong : MonoBehaviour
 
 
             // Add AudioSource and assign AudioClip
-            AudioSource audioSource = newSong.AddComponent<AudioSource>();
-            audioSource.clip = song;
+            newSong.GetComponent<AudioSource>().clip = song;
 
             // Song name
             newSong.GetComponentInChildren<TextMeshProUGUI>(0).text

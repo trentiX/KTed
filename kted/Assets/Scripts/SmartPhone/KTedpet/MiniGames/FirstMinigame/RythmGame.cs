@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -18,6 +19,7 @@ public class RythmGame : IPlayable
 	[SerializeField] private GameObject scoreText;
 	[SerializeField] private GameObject comboText;
 	[SerializeField] private GameObject timeText;
+	[SerializeField] private TextMeshProUGUI pregameDelayText;
 	
 	/*
 	0 = left
@@ -28,15 +30,27 @@ public class RythmGame : IPlayable
 	
 	
 	// Variables
+	public static RythmGame instance {get; private set;}
+
 	private List<GameObject> arrows = new List<GameObject>();
+	private ChooseSong chooseSong;
 	private bool lastArrowKilled = false;
 	private float spawnDelay = 2;
 	private int combo;
 	private int score;
-	
-	// Code
 
-	private void Update()
+    // Code
+
+    void Awake()
+    {
+		if (instance == null)
+		{
+			instance = this;   
+		}
+        chooseSong = GetComponent<ChooseSong>();
+    }
+
+    private void Update()
 	{
 		if (!KTedpet.instance.gameMode) return;
 
@@ -51,48 +65,101 @@ public class RythmGame : IPlayable
 	}
 	public override void StartGame()
 	{
-		CanvasFade(menuObjects, 1, 0.6f);
+		CanvasFade(menuObjects, 1, 0.4f);
 	}
 	
 	public void ChooseSong()
 	{
-		CanvasFade(songs, 1, 0.6f);
+		CanvasFade(songs, 1, 0.4f);
 		
-		CanvasFade(menuObjects, 0, 0.6f);
+		CanvasFade(menuObjects, 0, 0.4f);
 	}
 
-	public void LaunchGameLoop()
+	public void LaunchGameLoop(AudioSource audioSource)
 	{
-		CanvasFade(gameObjects, 1, 0.6f);
+		CanvasFade(gameObjects, 1, 0.4f);
 		
-		CanvasFade(songs, 0, 0.6f);
+		CanvasFade(songs, 0, 0.4f);
 
-		StartCoroutine(GameLoop());
+		StartCoroutine(GameLoop(audioSource));
 	}
 
-	private IEnumerator GameLoop()
+	private IEnumerator GameLoop(AudioSource audioSource)
 	{
-		while (true)
+		audioSource.PlayOneShot(audioSource.clip);
+		StartCoroutine(PregameDelay());
+		yield return new WaitForSeconds(3);
+
+		float totalTime = audioSource.clip.length;
+		float timeLeft = totalTime;
+		float startTime = Time.time;
+
+		/* int totalArrows = Mathf.FloorToInt(totalTime / 0.5f); // Количество стрелок за игру
+		float[] spawnTimes = new float[totalArrows];
+
+		// Заполняем массив времени появления стрелок
+		for (int i = 0; i < totalArrows; i++)
 		{
-			yield return new WaitForSeconds(spawnDelay);
+			float t = (float)i / (totalArrows - 1);
+			spawnTimes[i] = Mathf.Lerp(0.7f, 0.35f, Mathf.Pow(t, 1.5f)); // Чем ближе к концу, тем чаще
+		}
+
+		int arrowIndex = 0;
+		while (timeLeft > 0 && arrowIndex < totalArrows)
+		{
+			timeLeft = totalTime - (Time.time - startTime);
+			timeText.GetComponent<TextMeshProUGUI>().text = Mathf.CeilToInt(timeLeft).ToString();
+
+			yield return new WaitForSeconds(spawnTimes[arrowIndex]); // Ждём рассчитанное время перед спавном стрелки
 			SpawnArrow();
 
-			if (spawnDelay > 0.6f)
+			arrowIndex++;
+		} 
+
+		yield return new WaitForSeconds(1f); // Даем немного времени перед очисткой
+		ClearAllArrows();
+		EndGame();*/
+	}
+
+	private IEnumerator PregameDelay()
+	{
+	    for (int i = 3; i > 0; i--)
+	    {
+			pregameDelayText.DOFade(1, 0.1f);
+
+	        pregameDelayText.text = i.ToString();
+			yield return new WaitForSeconds(1);
+
+			pregameDelayText.DOFade(0, 0.1f);
+	    }
+	}
+
+	private void ClearAllArrows()
+	{
+		foreach (GameObject arrow in arrows)
+		{
+			if (arrow != null)
 			{
-			 	spawnDelay = spawnDelay - 0.05f;
-				Debug.Log(spawnDelay);   
+				arrow.GetComponent<CanvasGroup>().DOFade(0, 0.2f).OnComplete(() =>
+				{
+					Destroy(arrow);
+				});
 			}
 		}
+		arrows.Clear(); // Очищаем список стрелок
 	}
-	
+
 	public override void EndGame()
 	{
-		
+		CanvasFade(gameObjects, 0, 0.4f);
+		CanvasFade(menuObjects, 1, 0.4f);
 	}
 	
-	private void SpawnArrow()
+	public IEnumerator SpawnArrow(int delayTime)
 	{
-		int i = Random.Range(0, spawnPoints.Length);
+		int i = UnityEngine.Random.Range(0, spawnPoints.Length);
+		yield return new WaitForSeconds(delayTime);
+
 		GameObject newArrow = Instantiate(arrow, spawnPoints[i].transform.position, Quaternion.identity, gameObjects[0].transform);
 		
 		newArrow.GetComponent<Arrow>().direction = i;
