@@ -1,0 +1,41 @@
+Date : 2025-02-24 23:49:03
+Directory : c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone
+Total : 15 files,  1476 codes, 110 comments, 329 blanks, all 1915 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C#       |         15 |      1,476 |        110 |        329 |      1,915 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                        | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                           |         15 |      1,476 |        110 |        329 |      1,915 |
+| . (Files)                                                                                   |         14 |      1,432 |        107 |        317 |      1,856 |
+| Quests                                                                                      |          1 |         44 |          3 |         12 |         59 |
++---------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                    | language | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Browser.cs             | C#       |        259 |         14 |         54 |        327 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\FavouritePlaylist.cs   | C#       |         19 |          1 |          5 |         25 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Ktedtify.cs            | C#       |        231 |         28 |         44 |        303 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Ktedwork.cs            | C#       |        114 |          5 |         31 |        150 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Messenger.cs           | C#       |        165 |         14 |         36 |        215 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\NotificationManager.cs | C#       |         59 |          3 |         15 |         77 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Playlist.cs            | C#       |        123 |         10 |         34 |        167 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Quest.cs               | C#       |         81 |          3 |         18 |        102 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Quests\AlihansQuest.cs | C#       |         44 |          3 |         12 |         59 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\RingManager.cs         | C#       |         61 |         10 |         18 |         89 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\ShortCutButton.cs      | C#       |         26 |          0 |          5 |         31 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\SmartPhone.cs          | C#       |        139 |          8 |         29 |        176 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Tab.cs                 | C#       |         64 |          4 |         12 |         80 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Timer.cs               | C#       |         55 |          5 |          8 |         68 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Webpage.cs             | C#       |         36 |          2 |          8 |         46 |
+| Total                                                                                       |          |      1,476 |        110 |        329 |      1,915 |
++---------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

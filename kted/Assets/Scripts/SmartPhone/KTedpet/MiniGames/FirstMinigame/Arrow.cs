@@ -18,7 +18,7 @@ public class Arrow : MonoBehaviour
 	private void Start()
 	{
 		this.transform.localScale = new Vector3(0, 0, 0);
-		this.transform.DOScale(new Vector3(1, 1, 1), 1f);
+		this.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 1.5f).SetEase(Ease.InSine);
 	}
 	
 	void FixedUpdate()

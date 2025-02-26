@@ -1,0 +1,113 @@
+Date : 2025-02-24 23:48:44
+Directory : c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\KTedpet
+Total : 66 files,  -3885 codes, -195 comments, -807 blanks, all -4887 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| XML      |          2 |        -14 |          0 |          0 |        -14 |
+| C#       |         64 |     -3,871 |       -195 |       -807 |     -4,873 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                              | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                 |         66 |     -3,885 |       -195 |       -807 |     -4,887 |
+| ..                                                                                                                |         66 |     -3,885 |       -195 |       -807 |     -4,887 |
+| .. (Files)                                                                                                        |         14 |     -1,432 |       -107 |       -317 |     -1,856 |
+| ..\..                                                                                                             |         51 |     -2,409 |        -85 |       -478 |     -2,972 |
+| ..\.. (Files)                                                                                                     |         13 |       -665 |        -20 |       -120 |       -805 |
+| ..\..\CursorChanger                                                                                               |          1 |       -106 |        -12 |        -23 |       -141 |
+| ..\..\DataPersistence                                                                                             |          5 |       -200 |          0 |        -39 |       -239 |
+| ..\..\DataPersistence (Files)                                                                                     |          4 |       -165 |          0 |        -36 |       -201 |
+| ..\..\DataPersistence\Data                                                                                        |          1 |        -35 |          0 |         -3 |        -38 |
+| ..\..\Dialogue                                                                                                    |          9 |       -351 |         -7 |        -85 |       -443 |
+| ..\..\Dialogue (Files)                                                                                            |          7 |       -337 |         -7 |        -85 |       -429 |
+| ..\..\Dialogue\.idea                                                                                              |          2 |        -14 |          0 |          0 |        -14 |
+| ..\..\Dialogue\.idea\.idea.Dialogue.dir                                                                           |          2 |        -14 |          0 |          0 |        -14 |
+| ..\..\Dialogue\.idea\.idea.Dialogue.dir\.idea                                                                     |          2 |        -14 |          0 |          0 |        -14 |
+| ..\..\EasterEggs                                                                                                  |          4 |       -182 |         -5 |        -33 |       -220 |
+| ..\..\Language                                                                                                    |          2 |        -48 |          0 |        -11 |        -59 |
+| ..\..\Locations                                                                                                   |          4 |       -192 |         -6 |        -29 |       -227 |
+| ..\..\Mobile                                                                                                      |          1 |        -46 |          0 |         -8 |        -54 |
+| ..\..\Music                                                                                                       |          6 |       -375 |         -4 |        -80 |       -459 |
+| ..\..\PictureBox                                                                                                  |          2 |        -74 |          0 |        -14 |        -88 |
+| ..\..\StartGameMenu                                                                                               |          2 |        -28 |        -30 |        -10 |        -68 |
+| ..\..\Test                                                                                                        |          2 |       -142 |         -1 |        -26 |       -169 |
+| ..\Quests                                                                                                         |          1 |        -44 |         -3 |        -12 |        -59 |
++-------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                          | language | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\BeutifullButtons.cs                                     | C#       |        -77 |         -5 |        -12 |        -94 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\CursorChanger\CursorManager.cs                          | C#       |       -106 |        -12 |        -23 |       -141 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\CutScene.cs                                             | C#       |        -31 |          0 |         -5 |        -36 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\DOTweenManager.cs                                       | C#       |        -18 |          0 |         -4 |        -22 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\DataPersistence\DataPersistenceManager.cs               | C#       |        -63 |          0 |        -16 |        -79 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\DataPersistence\Data\GameData.cs                        | C#       |        -35 |          0 |         -3 |        -38 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\DataPersistence\FileDataHandler.cs                      | C#       |        -63 |          0 |        -10 |        -73 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\DataPersistence\IDataPersistence.cs                     | C#       |         -8 |          0 |         -2 |        -10 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\DataPersistence\SerializableDictionary.cs               | C#       |        -31 |          0 |         -8 |        -39 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Dialogue\.idea\.idea.Dialogue.dir\.idea\indexLayout.xml | XML      |         -8 |          0 |          0 |         -8 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Dialogue\.idea\.idea.Dialogue.dir\.idea\vcs.xml         | XML      |         -6 |          0 |          0 |         -6 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Dialogue\DialogueActivator.cs                           | C#       |        -77 |          0 |        -13 |        -90 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Dialogue\DialogueObject.cs                              | C#       |        -16 |          0 |         -6 |        -22 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Dialogue\DialogueUI.cs                                  | C#       |        -94 |          0 |        -22 |       -116 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Dialogue\IInteractable.cs                               | C#       |         -4 |          0 |          0 |         -4 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Dialogue\Response.cs                                    | C#       |         -9 |          0 |         -3 |        -12 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Dialogue\ResponseHandler.cs                             | C#       |        -64 |         -7 |        -21 |        -92 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Dialogue\TypewriterEffect.cs                            | C#       |        -73 |          0 |        -20 |        -93 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\EasterEggs\CameraController.cs                          | C#       |        -33 |         -2 |        -10 |        -45 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\EasterEggs\EasterEggManager.cs                          | C#       |        -52 |         -2 |         -7 |        -61 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\EasterEggs\EasterEggMenuUpdater.cs                      | C#       |        -22 |         -1 |         -4 |        -27 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\EasterEggs\EasterEggPickUp.cs                           | C#       |        -75 |          0 |        -12 |        -87 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\KeysActivator.cs                                        | C#       |        -50 |         -1 |         -7 |        -58 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Language\ChooseLanguageScript.cs                        | C#       |        -24 |          0 |         -5 |        -29 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Language\LanguageTextScript.cs                          | C#       |        -24 |          0 |         -6 |        -30 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Locations\LocationCompleted.cs                          | C#       |        -59 |         -2 |        -11 |        -72 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Locations\LocationText.cs                               | C#       |        -31 |          0 |         -4 |        -35 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Locations\LocationTrigger.cs                            | C#       |        -30 |          0 |         -4 |        -34 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Locations\LocationsManager.cs                           | C#       |        -72 |         -4 |        -10 |        -86 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Mobile\MobileInput.cs                                   | C#       |        -46 |          0 |         -8 |        -54 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Music\AudioManager.cs                                   | C#       |       -203 |          0 |        -48 |       -251 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Music\MusicActivator.cs                                 | C#       |        -32 |          0 |         -6 |        -38 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Music\MusicPlayer.cs                                    | C#       |        -24 |          0 |         -3 |        -27 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Music\MusicUI.cs                                        | C#       |        -30 |          0 |         -8 |        -38 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Music\NowPlaying.cs                                     | C#       |        -40 |         -4 |         -8 |        -52 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Music\VolumeSettings.cs                                 | C#       |        -46 |          0 |         -7 |        -53 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\NPC.cs                                                  | C#       |        -35 |          0 |         -7 |        -42 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\NoExitEffect.cs                                         | C#       |        -53 |         -3 |        -10 |        -66 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\NonInteractibleButtons.cs                               | C#       |        -34 |         -3 |         -7 |        -44 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Pause.cs                                                | C#       |        -30 |         -2 |         -6 |        -38 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\PictureBox\PictureBoxActivator.cs                       | C#       |        -34 |          0 |         -6 |        -40 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\PictureBox\PictureBoxUI.cs                              | C#       |        -40 |          0 |         -8 |        -48 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\PixelatedTransition.cs                                  | C#       |        -91 |         -2 |        -22 |       -115 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\PlatformsChangesForText.cs                              | C#       |        -19 |          0 |         -2 |        -21 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Player.cs                                               | C#       |       -158 |         -4 |        -26 |       -188 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\ReturnToBase.cs                                         | C#       |        -33 |          0 |         -6 |        -39 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Browser.cs                                   | C#       |       -259 |        -14 |        -54 |       -327 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\FavouritePlaylist.cs                         | C#       |        -19 |         -1 |         -5 |        -25 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Ktedtify.cs                                  | C#       |       -231 |        -28 |        -44 |       -303 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Ktedwork.cs                                  | C#       |       -114 |         -5 |        -31 |       -150 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Messenger.cs                                 | C#       |       -165 |        -14 |        -36 |       -215 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\NotificationManager.cs                       | C#       |        -59 |         -3 |        -15 |        -77 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Playlist.cs                                  | C#       |       -123 |        -10 |        -34 |       -167 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Quest.cs                                     | C#       |        -81 |         -3 |        -18 |       -102 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Quests\AlihansQuest.cs                       | C#       |        -44 |         -3 |        -12 |        -59 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\RingManager.cs                               | C#       |        -61 |        -10 |        -18 |        -89 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\ShortCutButton.cs                            | C#       |        -26 |          0 |         -5 |        -31 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\SmartPhone.cs                                | C#       |       -139 |         -8 |        -29 |       -176 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Tab.cs                                       | C#       |        -64 |         -4 |        -12 |        -80 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Timer.cs                                     | C#       |        -55 |         -5 |         -8 |        -68 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\SmartPhone\Webpage.cs                                   | C#       |        -36 |         -2 |         -8 |        -46 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\StartGameMenu\Button.cs                                 | C#       |        -19 |          0 |         -4 |        -23 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\StartGameMenu\MainMenuPartEnable.cs                     | C#       |         -9 |        -30 |         -6 |        -45 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Test\TestActivator.cs                                   | C#       |        -90 |          0 |        -17 |       -107 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\Test\TestHandler.cs                                     | C#       |        -52 |         -1 |         -9 |        -62 |
+| c:\Users\Кайсар\Documents\GitHub\KTed\kted\Assets\Scripts\TipPanel.cs                                             | C#       |        -36 |          0 |         -6 |        -42 |
+| Total                                                                                                             |          |     -3,885 |       -195 |       -807 |     -4,887 |
++-------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
