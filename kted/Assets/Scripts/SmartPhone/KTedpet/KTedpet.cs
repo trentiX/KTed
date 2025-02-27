@@ -26,6 +26,7 @@ public class KTedpet : MonoBehaviour
 	
 	[Header("Buttons:")]
 	[SerializeField] private GameObject buttonTemplate;
+	[SerializeField] private UnityEngine.UI.Button[] buttonToDisable;
 	
 	[Header("Rooms:")]
 	[SerializeField] private GameObject mainRoom;
@@ -271,6 +272,18 @@ public class KTedpet : MonoBehaviour
 		darkPanelCanvas.DOFade(0.7f, 0.5f);
 		
 		gameMode = true;
+		foreach (var but in Browser.instance._tabsOpened)
+		{
+			but.GetComponent<Tab>()._clickable = false;	
+			but.GetComponentInChildren<UnityEngine.UI.Button>(2).interactable = false; // Close tab button    
+			Browser.instance._addNewTab.GetComponent<UnityEngine.UI.Button>().interactable = false;
+		}
+
+		foreach (var but in Browser.instance.browserMainButtons)
+		{
+		    but.GetComponent<UnityEngine.UI.Button>().interactable = false;
+		}
+
 		playRoomManager.currGame.GetComponent<Games>().StartGame();
 	}
 	
@@ -285,7 +298,17 @@ public class KTedpet : MonoBehaviour
 		darkPanelCanvas.DOFade(0, 0.5f);
 		
 		gameMode = false;
-		playRoomManager.currGame.GetComponent<Games>().EndGame();
+		foreach (var but in Browser.instance._tabsOpened)
+		{
+			but.GetComponent<Tab>()._clickable = true;	
+			but.GetComponentInChildren<UnityEngine.UI.Button>(2).interactable = true; // Close tab button    
+			Browser.instance._addNewTab.GetComponent<UnityEngine.UI.Button>().interactable = true;
+		}
+
+		foreach (var but in Browser.instance.browserMainButtons)
+		{
+		    but.GetComponent<UnityEngine.UI.Button>().interactable = true;
+		}
 	}	
 	
 	private bool CanRoomChange(GameObject gotoRoom)

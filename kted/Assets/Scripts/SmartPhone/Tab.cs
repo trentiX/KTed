@@ -11,7 +11,7 @@ public class Tab : MonoBehaviour
     
     // Variables
     private Browser _browser;
-    private bool _clickable;
+    [HideInInspector] public bool _clickable;
     [HideInInspector] public Webpage itsPage;
 
     public void InitializeTab(Sprite iconSprite, string tabNameText, Webpage goToPage, Browser browser, bool clickable)

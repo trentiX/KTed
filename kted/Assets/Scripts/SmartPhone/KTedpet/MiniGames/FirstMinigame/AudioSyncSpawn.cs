@@ -13,6 +13,6 @@ public class AudioSyncSpawn : AudioSyncer
 	{
 		base.OnBeat();
 
-		StartCoroutine(RythmGame.instance.SpawnArrow(3));
+		StartCoroutine(RythmGame.instance.SpawnArrow(0));
 	}
 }
