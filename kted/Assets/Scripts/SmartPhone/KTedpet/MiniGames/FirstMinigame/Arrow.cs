@@ -6,6 +6,7 @@ public class Arrow : MonoBehaviour
 	// Variables
 	public int direction;
 	public GameObject killPos;
+	public Color color;
 	
 	/*
 	0 = left
@@ -17,8 +18,8 @@ public class Arrow : MonoBehaviour
 	// Code
 	private void Start()
 	{
-		this.transform.localScale = new Vector3(0, 0, 0);
-		this.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 1.5f).SetEase(Ease.InSine);
+		GetComponent<CanvasGroup>().alpha = 0;
+		GetComponent<CanvasGroup>().DOFade(1, 0.4f);
 	}
 	
 	void FixedUpdate()

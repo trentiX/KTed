@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: e23c5add20fb87a47b17817abef0a0eb, type: 3}
+  m_Texture: {fileID: 2800000, guid: 2f0d698983a94ef43ab83049c438c81f, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -97,6 +97,6 @@ CanvasGroup:
   m_GameObject: {fileID: 2438067861090108486}
   m_Enabled: 1
   m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0

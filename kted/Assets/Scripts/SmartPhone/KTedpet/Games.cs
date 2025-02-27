@@ -44,11 +44,6 @@ public class Games : MonoBehaviour
 		game.StartGame();
 	}	
 	
-	public void EndGame()
-	{
-		game.EndGame();
-	}
-	
 	private void OnEnable()
 	{
 		if (image == null) return;

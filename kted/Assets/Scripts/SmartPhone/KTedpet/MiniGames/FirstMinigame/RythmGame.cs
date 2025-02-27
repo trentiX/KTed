@@ -16,6 +16,7 @@ public class RythmGame : IPlayable
 	[SerializeField] private GameObject hitFlash;
 	[SerializeField] private GameObject[] spawnPoints;
 	[SerializeField] private GameObject[] killPoints;
+	[SerializeField] private GameObject[] bitRects;
 	[SerializeField] private GameObject scoreText;
 	[SerializeField] private GameObject comboText;
 	[SerializeField] private GameObject timeText;
@@ -94,45 +95,40 @@ public class RythmGame : IPlayable
 		float timeLeft = totalTime;
 		float startTime = Time.time;
 
-		/* int totalArrows = Mathf.FloorToInt(totalTime / 0.5f); // Количество стрелок за игру
-		float[] spawnTimes = new float[totalArrows];
-
-		// Заполняем массив времени появления стрелок
-		for (int i = 0; i < totalArrows; i++)
-		{
-			float t = (float)i / (totalArrows - 1);
-			spawnTimes[i] = Mathf.Lerp(0.7f, 0.35f, Mathf.Pow(t, 1.5f)); // Чем ближе к концу, тем чаще
-		}
-
-		int arrowIndex = 0;
-		while (timeLeft > 0 && arrowIndex < totalArrows)
+		while (timeLeft > 0)
 		{
 			timeLeft = totalTime - (Time.time - startTime);
 			timeText.GetComponent<TextMeshProUGUI>().text = Mathf.CeilToInt(timeLeft).ToString();
 
-			yield return new WaitForSeconds(spawnTimes[arrowIndex]); // Ждём рассчитанное время перед спавном стрелки
-			SpawnArrow();
-
-			arrowIndex++;
+		    yield return null; // Добавлено, чтобы не зависать
 		} 
 
 		yield return new WaitForSeconds(1f); // Даем немного времени перед очисткой
 		ClearAllArrows();
-		EndGame();*/
+		EndGame();
 	}
 
 	private IEnumerator PregameDelay()
 	{
-	    for (int i = 3; i > 0; i--)
-	    {
-			pregameDelayText.DOFade(1, 0.1f);
+		for (int i = 3; i > 0; i--)
+		{
+			pregameDelayText.text = i.ToString();
+			pregameDelayText.DOFade(1, 0.2f);
 
-	        pregameDelayText.text = i.ToString();
-			yield return new WaitForSeconds(1);
+			yield return new WaitForSeconds(0.8f); // Ждём 0.9 сек, прежде чем начать исчезновение
 
-			pregameDelayText.DOFade(0, 0.1f);
-	    }
+			pregameDelayText.DOFade(0, 0.2f);
+			yield return new WaitForSeconds(0.1f); // Оставшееся время перед следующим числом
+		}
+
+		// Показываем "GO!" перед началом игры
+		pregameDelayText.text = "GO!";
+		pregameDelayText.DOFade(1, 0.2f);
+		yield return new WaitForSeconds(0.5f); // Короткая пауза на "GO!"
+		
+		pregameDelayText.DOFade(0, 0.3f);
 	}
+
 
 	private void ClearAllArrows()
 	{
@@ -147,6 +143,12 @@ public class RythmGame : IPlayable
 			}
 		}
 		arrows.Clear(); // Очищаем список стрелок
+	}
+	
+	public void CloseMinigame()
+	{
+	    KTedpet.instance.CloseMinigame();
+		CanvasFade(menuObjects, 0, 0.4f);
 	}
 
 	public override void EndGame()
@@ -171,14 +173,18 @@ public class RythmGame : IPlayable
 		{
 			case 0:
 				newArrow.transform.Rotate(0, 0, 180);
+				newArrow.GetComponent<Arrow>().color = Color.red;
 				break;
 			case 1:
 				newArrow.transform.Rotate(0, 0, 270);
+				newArrow.GetComponent<Arrow>().color = Color.blue;
 				break;
 			case 2:
 				newArrow.transform.Rotate(0, 0, 90);
+				newArrow.GetComponent<Arrow>().color = Color.yellow;
 				break;
 			case 3:
+				newArrow.GetComponent<Arrow>().color = Color.green;
 				break;
 			default:
 				break;
@@ -351,6 +357,10 @@ public class RythmGame : IPlayable
 		foreach (var text in timeText.GetComponentsInChildren<TextMeshProUGUI>())
 		{
 			text.color = rainbowColor;
+		}
+		foreach (var rect in bitRects)
+		{
+			rect.GetComponent<Image>().color = rainbowColor;
 		}
 	}
 

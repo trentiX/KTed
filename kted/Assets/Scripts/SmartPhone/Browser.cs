@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using TMPro;
+using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 
 public class Browser : MonoBehaviour, IDataPersistence
@@ -17,7 +19,7 @@ public class Browser : MonoBehaviour, IDataPersistence
 	[SerializeField] private TextMeshProUGUI url;
 
 	[Header("Browser main buttons:")] 
-	[SerializeField] private GameObject[] browserMainButtons;
+	[SerializeField] public GameObject[] browserMainButtons;
 	
 	[Header("Main page")] 
 	[SerializeField] public Webpage mainPage;
@@ -26,8 +28,9 @@ public class Browser : MonoBehaviour, IDataPersistence
 	[SerializeField] public Webpage mainPageButtonGoToPage;
 
 	// Variables
-	private List<GameObject> _tabsOpened = new List<GameObject>();
-	private GameObject _addNewTab;
+	public static Browser instance { get; private set; }
+	public List<GameObject> _tabsOpened = new List<GameObject>();
+	public GameObject _addNewTab;
 	private Tweener _browserAnim;
 	private CanvasGroup _canvasGroup;
 	private GameObject _extraTab;
@@ -49,6 +52,8 @@ public class Browser : MonoBehaviour, IDataPersistence
 	// Code 
 	private void Start()
 	{
+		instance = this;
+
 		_canvasGroup = GetComponent<CanvasGroup>();
 		_player = FindObjectOfType<Player>();
 		notificationManager = FindObjectOfType<NotificationManager>();
