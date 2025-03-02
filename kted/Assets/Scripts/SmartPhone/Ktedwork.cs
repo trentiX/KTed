@@ -27,7 +27,9 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 		
 	public Quest _pointerClicked;
 	public Quest _currQuest;
-	
+
+	public static Ktedwork instance { get; private set; }
+ 	
 	// References
 	
 	private AudioManager audioManager;
@@ -36,6 +38,10 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 	
 	private void Start()
 	{
+		if (instance == null)
+		{
+			instance = this;
+		}
 		audioManager = FindObjectOfType<AudioManager>();	
 	}
 	
