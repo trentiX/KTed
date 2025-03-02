@@ -18,6 +18,8 @@ public class GameData
 	public SerializableDictionary<TestActivator, int> testsInStorage;
 	public SerializableDictionary<Accessory, bool> boughtAccessoriesInStorage;
 	public List<AudioClip> favouriteSongs;
+	public int MaxCombo;
+	public int MaxScore;
 
 
 	public GameData()
@@ -34,5 +36,7 @@ public class GameData
 		testsInStorage = new SerializableDictionary<TestActivator, int>();
 		boughtAccessoriesInStorage = new SerializableDictionary<Accessory, bool>();
 		favouriteSongs = new List<AudioClip>();
+		MaxCombo = new int();
+		MaxScore = new int();
 	}
 }

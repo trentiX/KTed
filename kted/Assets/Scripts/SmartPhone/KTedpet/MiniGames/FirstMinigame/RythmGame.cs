@@ -6,17 +6,20 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RythmGame : IPlayable
+public class RythmGame : IPlayable, IDataPersistence
 {
 	// Serialization
 	[SerializeField] private CanvasGroup[] gameObjects;	
 	[SerializeField] private CanvasGroup[] menuObjects;
+	[SerializeField] private CanvasGroup[] afterGameMenuObjects;
 	[SerializeField] private CanvasGroup[] songs;
 	[SerializeField] private GameObject arrow;
 	[SerializeField] private GameObject hitFlash;
 	[SerializeField] private GameObject[] spawnPoints;
 	[SerializeField] private GameObject[] killPoints;
-	[SerializeField] private GameObject[] bitRects;
+	[SerializeField] private GameObject[] hearts;
+	[SerializeField] private TextMeshProUGUI maxCombo;
+	[SerializeField] private TextMeshProUGUI maxScore;
 	[SerializeField] private GameObject scoreText;
 	[SerializeField] private GameObject comboText;
 	[SerializeField] private GameObject timeText;
@@ -32,13 +35,15 @@ public class RythmGame : IPlayable
 	
 	// Variables
 	public static RythmGame instance {get; private set;}
-
 	private List<GameObject> arrows = new List<GameObject>();
 	private ChooseSong chooseSong;
 	private bool lastArrowKilled = false;
 	private float spawnDelay = 2;
 	private int combo;
 	private int score;
+	private int health;
+	private int ComboRecord;
+	private int ScoreRecord;
 
     // Code
 
@@ -64,6 +69,36 @@ public class RythmGame : IPlayable
 		
 		TextRainbowAnimation();
 	}
+
+	private void Win(int reward)
+	{
+		Ktedwork.instance.AccBalanceUIUpdate(Ktedwork.instance._accBalanceInt + reward);
+		SetNewRecord();
+	    CanvasFade(afterGameMenuObjects, 1, 0.4f);
+		CanvasFade(gameObjects, 0, 0.4f);
+	}
+
+	private void Lose()
+	{
+	    CanvasFade(afterGameMenuObjects, 1, 0.4f);
+		CanvasFade(gameObjects, 0, 0.4f);
+	}
+
+	private void SetNewRecord()
+	{
+		if (combo > ComboRecord)
+		{
+			ComboRecord = combo;
+			maxCombo.text = combo.ToString();
+		}
+
+		if (score > ScoreRecord)
+		{
+			ScoreRecord = score;
+			maxScore.text = score.ToString();
+		}
+	}
+
 	public override void StartGame()
 	{
 		CanvasFade(menuObjects, 1, 0.4f);
@@ -87,9 +122,13 @@ public class RythmGame : IPlayable
 
 	private IEnumerator GameLoop(AudioSource audioSource)
 	{
+		health = 3;
+		score = 0;
+		combo = 0;
+		UpdateUI();
+
 		audioSource.PlayOneShot(audioSource.clip);
 		StartCoroutine(PregameDelay());
-		yield return new WaitForSeconds(3);
 
 		float totalTime = audioSource.clip.length;
 		float timeLeft = totalTime;
@@ -97,6 +136,11 @@ public class RythmGame : IPlayable
 
 		while (timeLeft > 0)
 		{
+			if (health == 0)
+	    	{
+				Lose();
+				yield break;
+			}
 			timeLeft = totalTime - (Time.time - startTime);
 			timeText.GetComponent<TextMeshProUGUI>().text = Mathf.CeilToInt(timeLeft).ToString();
 
@@ -105,7 +149,9 @@ public class RythmGame : IPlayable
 
 		yield return new WaitForSeconds(1f); // Даем немного времени перед очисткой
 		ClearAllArrows();
-		EndGame();
+		
+		Debug.Log("player won" + audioSource.gameObject.GetComponent<SongForRhythmGame>().bounty);
+		Win(audioSource.gameObject.GetComponent<SongForRhythmGame>().bounty);
 	}
 
 	private IEnumerator PregameDelay()
@@ -173,18 +219,14 @@ public class RythmGame : IPlayable
 		{
 			case 0:
 				newArrow.transform.Rotate(0, 0, 180);
-				newArrow.GetComponent<Arrow>().color = Color.red;
 				break;
 			case 1:
 				newArrow.transform.Rotate(0, 0, 270);
-				newArrow.GetComponent<Arrow>().color = Color.blue;
 				break;
 			case 2:
 				newArrow.transform.Rotate(0, 0, 90);
-				newArrow.GetComponent<Arrow>().color = Color.yellow;
 				break;
 			case 3:
-				newArrow.GetComponent<Arrow>().color = Color.green;
 				break;
 			default:
 				break;
@@ -207,15 +249,11 @@ public class RythmGame : IPlayable
 	
 	private bool CheckArrowPosition()
 	{
-		if (arrows[0].GetComponent<Arrow>().killPos.transform.position.y - arrows[0].transform.position.y <= 70f)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		float distance = Mathf.Abs(arrows[0].GetComponent<Arrow>().killPos.transform.position.y - arrows[0].transform.position.y);
+
+		return distance <= 70f; // Теперь учитывается только диапазон ±70f
 	}
+
 	
 	private void DestroyArrow()
 	{
@@ -223,7 +261,7 @@ public class RythmGame : IPlayable
 
 		GameObject arrowToDestroy = arrows[0];
 
-		if (arrowToDestroy.transform.position.y >= arrowToDestroy.GetComponent<Arrow>().killPos.transform.position.y + 80f)
+		if (arrowToDestroy.transform.position.y >= arrowToDestroy.GetComponent<Arrow>().killPos.transform.position.y + 60f)
 		{
 			StartCoroutine(DestroyWithDelay(arrowToDestroy));
 		}
@@ -304,6 +342,9 @@ public class RythmGame : IPlayable
 		
 		AudioManager.Instance.SFXFailedSound();
 		
+		ClearAllArrows();
+		health--;
+
 		FlashEffect(true);
 		UpdateUI();
 	}
@@ -313,6 +354,13 @@ public class RythmGame : IPlayable
 	{
 		comboText.GetComponentInChildren<TextMeshProUGUI>(0).text = combo.ToString() + "X";
 		scoreText.GetComponentInChildren<TextMeshProUGUI>(0).text = score.ToString();
+
+		int heartNumber = health;
+		while (heartNumber > 0)
+		{
+			hearts[-heartNumber].SetActive(false);
+			heartNumber--;
+		}
 	}
 	
 	private void PerferctShot()
@@ -334,7 +382,7 @@ public class RythmGame : IPlayable
 		}
 		else
 		{
-			hitFlash.GetComponent<Image>().color = Color.green;
+			hitFlash.GetComponent<Image>().color = Color.white;
 		}
 		
 		hitFlash.GetComponent<CanvasGroup>().DOFade(0.1f, 0.1f) // Быстро увеличиваем прозрачность до 50%
@@ -346,7 +394,7 @@ public class RythmGame : IPlayable
 		float hue = Mathf.Repeat(Time.time * 0.2f, 1f); // 0.2f - скорость изменения цвета
 		Color rainbowColor = Color.HSVToRGB(hue, 1f, 1f); // Полностью насыщенный и яркий цвет
 
-		foreach (var text in scoreText.GetComponentsInChildren<TextMeshProUGUI>())
+/* 		foreach (var text in scoreText.GetComponentsInChildren<TextMeshProUGUI>())
 		{
 			text.color = rainbowColor;
 		}
@@ -360,8 +408,8 @@ public class RythmGame : IPlayable
 		}
 		foreach (var rect in bitRects)
 		{
-			rect.GetComponent<Image>().color = rainbowColor;
-		}
+			rect.GetComponent<RawImage>().color = rainbowColor;
+		}*/
 	}
 
 	private void CanvasFade(CanvasGroup[] canvasGroups, int value, float time)
@@ -381,5 +429,18 @@ public class RythmGame : IPlayable
 				obj.interactable = true;
 			}
 		}
+	}
+
+	// DATA
+	public void LoadData(GameData gameData)
+	{
+		ComboRecord = gameData.MaxCombo;
+		ScoreRecord = gameData.MaxScore;
+	}
+
+	public void SaveData(ref GameData gameData)
+	{
+		gameData.MaxCombo = ComboRecord;
+		gameData.MaxScore = ScoreRecord;
 	}
 }

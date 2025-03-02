@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Arrow : MonoBehaviour
 {
@@ -19,11 +20,16 @@ public class Arrow : MonoBehaviour
 	private void Start()
 	{
 		GetComponent<CanvasGroup>().alpha = 0;
-		GetComponent<CanvasGroup>().DOFade(1, 0.4f);
+		GetComponent<CanvasGroup>().DOFade(1, 2f);
 	}
 	
 	void FixedUpdate()
 	{
 		this.transform.position += new Vector3(0, 5f, 0);
+	}
+
+	public void SetColor(Color32 color)
+	{
+	    this.GetComponent<RawImage>().color = color;
 	}
 }

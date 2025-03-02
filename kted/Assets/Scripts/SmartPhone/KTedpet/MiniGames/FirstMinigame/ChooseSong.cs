@@ -1,49 +1,34 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class ChooseSong : MonoBehaviour
 {
-    // Serialization
-
     [Header("List Songs")] 
-    [SerializeField] public List<AudioClip> songs = new List<AudioClip>();
+    [SerializeField] private List<AudioClip> songs = new List<AudioClip>();
 
     [Header("List UI")]
     [SerializeField] private GameObject _songTemplate;
-    [SerializeField] private GameObject _songsBox;
+    [SerializeField] private Transform _songsBox;
 
-    // Code
     void Start()
     {
-        SongsInstantiation(songs);
+        SongsInstantiation();
     }
 
-
-    public void SongsInstantiation(List<AudioClip> songsInst)
+    private void SongsInstantiation()
     {
-        // Songs instantiation
-        foreach (var song in songsInst)
+        foreach (var song in songs)
         {
-            GameObject newSong = Instantiate
-                (_songTemplate, _songsBox.transform);
+            GameObject newSong = Instantiate(_songTemplate, _songsBox);
             newSong.SetActive(true);
 
+            // Получаем компонент SongForRhythmGame
+            SongForRhythmGame songComponent = newSong.GetComponent<SongForRhythmGame>();
+            if (songComponent == null)
+                songComponent = newSong.AddComponent<SongForRhythmGame>();
 
-            // Add AudioSource and assign AudioClip
-            newSong.GetComponent<AudioSource>().clip = song;
-
-            // Song name
-            newSong.GetComponentInChildren<TextMeshProUGUI>(0).text
-                = song.name;
-
-            // Song Duration
-            TimeSpan t = TimeSpan.FromSeconds(song.length);
-            string answer = string.Format("{0:D2}:{1:D2}", t.Minutes, t.Seconds);
-            newSong.GetComponentInChildren<TextMeshProUGUI>(1).text
-                = answer;
+            // Устанавливаем песню
+            songComponent.SetSong(song);
         }
     }
 }
