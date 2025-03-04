@@ -65,6 +65,7 @@ public class AudioManager : MonoBehaviour
 
 		sfxSource.PlayOneShot(clip);
 	}
+
 	public void ClickSound()
 	{
 		AudioClip clip = sfxClips[3];
@@ -77,7 +78,12 @@ public class AudioManager : MonoBehaviour
 
 		sfxSource.PlayOneShot(clip);
 	}
-	
+	public void SFXExplosionSound()
+	{
+		AudioClip clip = sfxClips[5];
+
+		sfxSource.PlayOneShot(clip);
+	}	
 
 	public void phoneRing()
 	{

@@ -9,21 +9,37 @@ using UnityEngine.UI;
 public class RythmGame : IPlayable, IDataPersistence
 {
 	// Serialization
+
+	// CanvasGroups
+	[Header("CanvasGroups")]
 	[SerializeField] private CanvasGroup[] gameObjects;	
 	[SerializeField] private CanvasGroup[] menuObjects;
 	[SerializeField] private CanvasGroup[] afterGameMenuObjects;
 	[SerializeField] private CanvasGroup[] songs;
+
+	// Gameobjects
+	[Header("Gameobjects")]
 	[SerializeField] private GameObject arrow;
 	[SerializeField] private GameObject hitFlash;
 	[SerializeField] private GameObject[] spawnPoints;
 	[SerializeField] private GameObject[] killPoints;
 	[SerializeField] private GameObject[] hearts;
-	[SerializeField] private TextMeshProUGUI maxCombo;
-	[SerializeField] private TextMeshProUGUI maxScore;
 	[SerializeField] private GameObject scoreText;
 	[SerializeField] private GameObject comboText;
 	[SerializeField] private GameObject timeText;
+
+	// Texts
+	[Header("Texts")]
+	[SerializeField] private TextMeshProUGUI yourCombo;
+	[SerializeField] private TextMeshProUGUI yourScore;
+	[SerializeField] private TextMeshProUGUI winOrLoseText;
+	[SerializeField] private TextMeshProUGUI maxCombo;
+	[SerializeField] private TextMeshProUGUI maxScore;
 	[SerializeField] private TextMeshProUGUI pregameDelayText;
+	
+	// Other
+	[Header("Other")]
+	[SerializeField] private Toggle easyModeToggle;
 	
 	/*
 	0 = left
@@ -37,13 +53,14 @@ public class RythmGame : IPlayable, IDataPersistence
 	public static RythmGame instance {get; private set;}
 	private List<GameObject> arrows = new List<GameObject>();
 	private ChooseSong chooseSong;
-	private bool lastArrowKilled = false;
-	private float spawnDelay = 2;
+	private bool gameIsGoing;
 	private int combo;
+	private int maxMatchCombo;
 	private int score;
 	private int health;
 	private int ComboRecord;
 	private int ScoreRecord;
+	private AudioSource lastAudioSource;
 
     // Code
 
@@ -72,7 +89,12 @@ public class RythmGame : IPlayable, IDataPersistence
 
 	private void Win(int reward)
 	{
+		gameIsGoing = false;
 		Ktedwork.instance.AccBalanceUIUpdate(Ktedwork.instance._accBalanceInt + reward);
+		yourCombo.text = combo.ToString() + "X";
+		yourScore.text = score.ToString();
+		winOrLoseText.text = "Вы выйграли!";
+
 		SetNewRecord();
 	    CanvasFade(afterGameMenuObjects, 1, 0.4f);
 		CanvasFade(gameObjects, 0, 0.4f);
@@ -80,8 +102,14 @@ public class RythmGame : IPlayable, IDataPersistence
 
 	private void Lose()
 	{
-	    CanvasFade(afterGameMenuObjects, 1, 0.4f);
-		CanvasFade(gameObjects, 0, 0.4f);
+		gameIsGoing = false;
+		lastAudioSource.Stop();
+		yourCombo.text = maxMatchCombo.ToString() + "X";
+		yourScore.text = score.ToString();
+		winOrLoseText.text = "Вы проиграли(";
+
+		ClearAllArrows();
+	    EndGame();
 	}
 
 	private void SetNewRecord()
@@ -89,13 +117,13 @@ public class RythmGame : IPlayable, IDataPersistence
 		if (combo > ComboRecord)
 		{
 			ComboRecord = combo;
-			maxCombo.text = combo.ToString();
+			yourCombo.text = combo.ToString() + "X"+ " (Новый рекорд!)";
 		}
 
 		if (score > ScoreRecord)
 		{
 			ScoreRecord = score;
-			maxScore.text = score.ToString();
+			yourScore.text = score.ToString() + " (Новый рекорд!)";
 		}
 	}
 
@@ -120,11 +148,21 @@ public class RythmGame : IPlayable, IDataPersistence
 		StartCoroutine(GameLoop(audioSource));
 	}
 
+	public void StartAgain()
+	{
+	    CanvasFade(afterGameMenuObjects, 0, 0.4f);
+
+	    LaunchGameLoop(lastAudioSource);
+	}
+
 	private IEnumerator GameLoop(AudioSource audioSource)
 	{
+		gameIsGoing = true;
+		lastAudioSource = audioSource;
 		health = 3;
 		score = 0;
 		combo = 0;
+		maxMatchCombo = 0;
 		UpdateUI();
 
 		audioSource.PlayOneShot(audioSource.clip);
@@ -178,6 +216,7 @@ public class RythmGame : IPlayable, IDataPersistence
 
 	private void ClearAllArrows()
 	{
+		//AudioManager.Instance.SFXExplosionSound();
 		foreach (GameObject arrow in arrows)
 		{
 			if (arrow != null)
@@ -197,14 +236,22 @@ public class RythmGame : IPlayable, IDataPersistence
 		CanvasFade(menuObjects, 0, 0.4f);
 	}
 
+	public void BackToMenu()
+	{
+	    CanvasFade(afterGameMenuObjects, 0, 0.4f);
+		CanvasFade(menuObjects, 1, 0.4f);
+	}
+
 	public override void EndGame()
 	{
 		CanvasFade(gameObjects, 0, 0.4f);
-		CanvasFade(menuObjects, 1, 0.4f);
+		CanvasFade(afterGameMenuObjects, 1, 0.4f);
 	}
 	
 	public IEnumerator SpawnArrow(int delayTime)
 	{
+		if (!gameIsGoing) yield break;
+
 		int i = UnityEngine.Random.Range(0, spawnPoints.Length);
 		yield return new WaitForSeconds(delayTime);
 
@@ -251,7 +298,7 @@ public class RythmGame : IPlayable, IDataPersistence
 	{
 		float distance = Mathf.Abs(arrows[0].GetComponent<Arrow>().killPos.transform.position.y - arrows[0].transform.position.y);
 
-		return distance <= 70f; // Теперь учитывается только диапазон ±70f
+		return distance <= 90f; // Теперь учитывается только диапазон ±70f
 	}
 
 	
@@ -317,7 +364,7 @@ public class RythmGame : IPlayable, IDataPersistence
 
 		score += baseScore + accuracyBonus;
 
-		AudioManager.Instance.SFXQuestBitCompletion();
+		//AudioManager.Instance.SFXQuestBitCompletion();
 
 		FlashEffect(false);
 		UpdateUI();
@@ -338,12 +385,17 @@ public class RythmGame : IPlayable, IDataPersistence
 			Destroy(arrowToRemove);
 		});
 
+		if (combo > maxMatchCombo)
+		{
+			maxMatchCombo = combo;
+		}
 		combo = 0;
 		
-		AudioManager.Instance.SFXFailedSound();
+		//AudioManager.Instance.SFXFailedSound();
 		
 		ClearAllArrows();
-		health--;
+		
+		if (!easyModeToggle.isOn) health--;
 
 		FlashEffect(true);
 		UpdateUI();
@@ -355,11 +407,16 @@ public class RythmGame : IPlayable, IDataPersistence
 		comboText.GetComponentInChildren<TextMeshProUGUI>(0).text = combo.ToString() + "X";
 		scoreText.GetComponentInChildren<TextMeshProUGUI>(0).text = score.ToString();
 
-		int heartNumber = health;
-		while (heartNumber > 0)
+		if (easyModeToggle.isOn) return;
+
+		foreach (var heart in hearts)
 		{
-			hearts[-heartNumber].SetActive(false);
-			heartNumber--;
+			heart.SetActive(false); // Сначала скрываем все сердца
+		}
+
+		for (int i = 0; i < health; i++)
+		{
+			hearts[i].SetActive(true);
 		}
 	}
 	
@@ -436,11 +493,20 @@ public class RythmGame : IPlayable, IDataPersistence
 	{
 		ComboRecord = gameData.MaxCombo;
 		ScoreRecord = gameData.MaxScore;
+
+		maxCombo.text = ComboRecord.ToString() + "X";
+		maxScore.text = ScoreRecord.ToString();
 	}
 
 	public void SaveData(ref GameData gameData)
 	{
-		gameData.MaxCombo = ComboRecord;
-		gameData.MaxScore = ScoreRecord;
+		if (gameData.MaxCombo < combo)
+		{
+			gameData.MaxCombo = ComboRecord;
+		}
+		if (gameData.MaxScore < score)
+		{
+			gameData.MaxScore = ScoreRecord;
+		}
 	}
 }
