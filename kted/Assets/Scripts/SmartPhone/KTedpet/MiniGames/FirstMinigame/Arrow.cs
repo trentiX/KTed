@@ -8,6 +8,7 @@ public class Arrow : MonoBehaviour
 	public int direction;
 	public GameObject killPos;
 	public Color color;
+	public float speed = 10f;
 	
 	/*
 	0 = left
@@ -25,7 +26,7 @@ public class Arrow : MonoBehaviour
 	
 	void FixedUpdate()
 	{
-		this.transform.position += new Vector3(0, 5f, 0);
+		this.transform.position += new Vector3(0, speed, 0);
 	}
 
 	public void SetColor(Color32 color)
