@@ -19,6 +19,7 @@ public class RythmGame : IPlayable, IDataPersistence
 
 	// Gameobjects
 	[Header("Gameobjects")]
+	[SerializeField] private GameObject popUpPrefab;
 	[SerializeField] private GameObject arrow;
 	[SerializeField] private GameObject hitFlash;
 	[SerializeField] private GameObject[] spawnPoints;
@@ -91,7 +92,7 @@ public class RythmGame : IPlayable, IDataPersistence
 	{
 		gameIsGoing = false;
 		Ktedwork.instance.AccBalanceUIUpdate(Ktedwork.instance._accBalanceInt + reward);
-		yourCombo.text = combo.ToString() + "X";
+		yourCombo.text = maxMatchCombo.ToString() + "X";
 		yourScore.text = score.ToString();
 		winOrLoseText.text = "Вы выйграли!";
 
@@ -117,12 +118,14 @@ public class RythmGame : IPlayable, IDataPersistence
 		if (combo > ComboRecord)
 		{
 			ComboRecord = combo;
+			maxCombo.text = combo.ToString() + "X";
 			yourCombo.text = combo.ToString() + "X"+ " (Новый рекорд!)";
 		}
 
 		if (score > ScoreRecord)
 		{
 			ScoreRecord = score;
+			maxScore.text = score.ToString();
 			yourScore.text = score.ToString() + " (Новый рекорд!)";
 		}
 	}
@@ -298,7 +301,7 @@ public class RythmGame : IPlayable, IDataPersistence
 	{
 		float distance = Mathf.Abs(arrows[0].GetComponent<Arrow>().killPos.transform.position.y - arrows[0].transform.position.y);
 
-		return distance <= 90f; // Теперь учитывается только диапазон ±70f
+		return distance <= 90f; // Теперь учитывается только диапазон ±90f
 	}
 
 	
@@ -335,23 +338,16 @@ public class RythmGame : IPlayable, IDataPersistence
 
 		float distance = Mathf.Abs(arrowToRemove.GetComponent<Arrow>().killPos.transform.position.y - arrowToRemove.transform.position.y);
 
-		arrowToRemove.GetComponent<CanvasGroup>().DOFade(0, 0.2f).OnComplete(() =>
-		{
-			Destroy(arrowToRemove);
-		});
-
-		combo++;
-
 		// Базовое количество очков за попадание
 		int baseScore = 10 * combo;
 
 		// Дополнительные бонусы за точность
 		int accuracyBonus = 0;
 		
-		if (distance <= 5f) // Идеальное попадание
+		if (distance <= 10f) // Идеальное попадание
 		{
 			accuracyBonus = 50;
-			PerferctShot();
+			PerferctShot(arrowToRemove);
 		}
 		else if (distance <= 15f) // Хорошее попадание
 		{
@@ -362,7 +358,13 @@ public class RythmGame : IPlayable, IDataPersistence
 			accuracyBonus = 10;
 		}
 
+		arrowToRemove.GetComponent<CanvasGroup>().DOFade(0, 0.2f).OnComplete(() =>
+		{
+			Destroy(arrowToRemove);
+		});
+		
 		score += baseScore + accuracyBonus;
+		combo++;
 
 		//AudioManager.Instance.SFXQuestBitCompletion();
 
@@ -420,10 +422,20 @@ public class RythmGame : IPlayable, IDataPersistence
 		}
 	}
 	
-	private void PerferctShot()
+	private void PerferctShot(GameObject deletedArrow)
 	{
-	
-
+		GameObject prefab = Instantiate(popUpPrefab, deletedArrow.transform.position, Quaternion.identity, gameObjects[0].transform);
+		
+		string[] idealHits = {"Идеально!", "Вау!", "Круто!", "Топ!"};
+		int i = UnityEngine.Random.Range(0, idealHits.Length);
+		prefab.GetComponentInChildren<TextMeshProUGUI>().text = idealHits[i];
+		
+		prefab.transform.DOMoveY(prefab.transform.position.y + 100f, 1f);
+		
+		prefab.GetComponent<CanvasGroup>().DOFade(0, 1f).OnComplete(() =>
+		{
+			Destroy(prefab);
+		});
 	}
 	
 	private void ComboPopUpAnimation()

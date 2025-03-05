@@ -68,6 +68,11 @@ public class Pet : MonoBehaviour, IDataPersistence
 		}
 	}
 	
+	public void CommentGamePlay()
+	{
+	    
+	}
+	
 	// DATA
 	public void LoadData(GameData gameData)
 	{
