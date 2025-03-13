@@ -7,11 +7,14 @@ using UnityEngine;
 public class NotificationManager : MonoBehaviour
 {
 	// Serialization
+	// Player can move notification
 	[SerializeField] private GameObject notificationTemplate;
 	[SerializeField] private GameObject hideAllButtonTemplate;
 	[SerializeField] private GameObject notificationsBox;
 	[SerializeField] private Webpage ktedpet;
 	
+	// Player cant move notification
+	[SerializeField] private GameObject smallWinTemplate;
 	
 	// Variables
 	private List<GameObject> notifications;
@@ -28,27 +31,34 @@ public class NotificationManager : MonoBehaviour
 	
 	public void SendNotification(string message)
 	{
-		if (!player.canMove()) return;
-		GameObject newNotification = Instantiate(notificationTemplate, 
-			notificationsBox.transform);
-		newNotification.SetActive(true);
-		
-		newNotification.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(OpenKtedPet);
-		newNotification.GetComponentInChildren<TextMeshProUGUI>().text = message;
-		
-		notifications.Add(newNotification);
-		
-		if (notifications.Count > 1)
-		{
-			GameObject hideAllButton = Instantiate(hideAllButtonTemplate,
-				notificationsBox.transform);
-			hideAllButton.SetActive(true);
-			hideAllButton.transform.SetSiblingIndex(0);
-			
-			notifications.Add(hideAllButton);
-			hideAllButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(HideAllButton);
+		if (!player.canMove())
+		{ 
+			smallWinTemplate.SetActive(true);
+			smallWinTemplate.GetComponentInChildren<TextMeshProUGUI>().text = message;
 		}
-			}
+		else
+		{
+			GameObject newNotification = Instantiate(notificationTemplate, 
+				notificationsBox.transform);
+			newNotification.SetActive(true);
+			
+			newNotification.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(OpenKtedPet);
+			newNotification.GetComponentInChildren<TextMeshProUGUI>().text = message;
+			
+			notifications.Add(newNotification);
+			
+			if (notifications.Count > 1)
+			{
+				GameObject hideAllButton = Instantiate(hideAllButtonTemplate,
+					notificationsBox.transform);
+				hideAllButton.SetActive(true);
+				hideAllButton.transform.SetSiblingIndex(0);
+				
+				notifications.Add(hideAllButton);
+				hideAllButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(HideAllButton);
+			}		    
+		}
+	}
 	
 	public void RemoveNotifications()
 	{
