@@ -3,6 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using TMPro;
 using Image = UnityEngine.UI.Image;
+using System;
 
 public class DialogueUI : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class DialogueUI : MonoBehaviour
 
     
     public bool DialogueOpen { get; private set; }
+    public static event Action OnDialogueClosed;
 
     private TypewriterEffect typewriterEffect;
     private ResponseHandler _responseHandler;
@@ -111,5 +113,6 @@ public class DialogueUI : MonoBehaviour
         {
             _locationsManager.CheckIfCompleted(nameOfPerson);
         }
+        OnDialogueClosed?.Invoke();
     }
 }

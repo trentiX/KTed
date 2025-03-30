@@ -34,6 +34,7 @@ public class Webpage : MonoBehaviour
 	{
 		if (_ClosePageAnimation.IsActive()) return;
 
+		CheckOnInteraction(webpage);
 		Debug.Log("Закрытие страницы: " + url);
 		_ClosePageAnimation = _canvasGroup.DOFade(0, 0.1f).OnComplete((() =>
 		{
@@ -41,5 +42,20 @@ public class Webpage : MonoBehaviour
 			_canvasGroup.interactable = false;
 			_canvasGroup.blocksRaycasts = false;
 		}));
+	}
+	private void CheckOnInteraction(Webpage page)
+	{
+		switch (page.shortCutButton.tabName)
+		{
+		    case "KTedwork":
+		        Pet.instance.FirstKtedWorkEnterMessage();
+		        break;
+		    case "KTedgram":
+		        Pet.instance.FirstKtedGramEnterMessage();
+		        break;
+		    case "KTedtify":
+		        Pet.instance.FirstKtedTifyEnterMessage();
+		        break;
+		}
 	}
 }
