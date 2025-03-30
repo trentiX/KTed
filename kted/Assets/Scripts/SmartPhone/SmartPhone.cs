@@ -108,7 +108,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
 		if (CheckPhoneAnim() && player.canMove())
 		{
 			//_audioManager.StartCoroutine(_audioManager.FadeOut(_audioSource,3));
-			_audioManager.StartCoroutine(_audioManager.FadeIn(_audioSource,2, _audioManager.phoneRing));
+			_audioManager.StartCoroutine(_audioManager.FadeIn(_audioSource, 2, _audioManager.phoneRing));
 			
 			PhonePopUpAnim();
 		   
@@ -146,7 +146,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
 			})).SetEase(Ease.InCubic);
 		}
 		
-		_audioManager.StartCoroutine(_audioManager.FadeOut(_audioSource,3));
+		_audioManager.StartCoroutine(_audioManager.FadeOut(_audioSource, 3));
 
 		yield return new WaitForSeconds(2);
 			
@@ -154,6 +154,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
 
 		isRinging = false;
 	}
+	
 	private bool CheckPhoneAnim()
 	{
 		if (!phoneHideAnim.IsActive() && !phonePopUpAnim.IsActive())

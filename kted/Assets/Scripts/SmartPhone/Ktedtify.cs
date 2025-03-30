@@ -18,6 +18,7 @@ public class Ktedtify : MonoBehaviour
     [SerializeField] private GameObject _homePage;
     
     // Variables
+    public static Ktedtify instance;
     public List<GameObject> _songsQueue;
     public Playlist _currPlaylist;
     public Playlist _currPlayingPlaylist;
@@ -25,7 +26,7 @@ public class Ktedtify : MonoBehaviour
     private AudioManager _audioManager;
     private FavouritePlaylist _favouritePlaylist;
     private Timer _timer;
-    private bool _songPlaying;
+    public bool _songPlaying;
     public static UnityEvent<AudioClip> _onLiked = new UnityEvent<AudioClip>();
     public static UnityEvent<AudioClip> _onUnLiked = new UnityEvent<AudioClip>();
     public static UnityEvent<Playlist> updatePlaylist = new UnityEvent<Playlist>();
@@ -35,6 +36,7 @@ public class Ktedtify : MonoBehaviour
     // Code   
     private void Start()
     {
+        instance = this;
         gameObject.GetComponent<CanvasGroup>().alpha = 0;
         _songsQueue = new List<GameObject>();
         _audioManager = FindObjectOfType<AudioManager>();

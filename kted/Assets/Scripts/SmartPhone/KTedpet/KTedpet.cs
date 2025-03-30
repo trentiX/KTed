@@ -50,6 +50,7 @@ public class KTedpet : MonoBehaviour
 	private GameObject currRoom;
 	private AudioManager audioManager;
 	private PlayRoomManager playRoomManager;
+	private PetShopManager petShopManager;
 	private Pet pet;
 	public bool gameMode = false;
 	
@@ -61,6 +62,7 @@ public class KTedpet : MonoBehaviour
 		pet = FindObjectOfType<Pet>();
 		audioManager = FindObjectOfType<AudioManager>();
 		playRoomManager = FindObjectOfType<PlayRoomManager>();
+		petShopManager = FindObjectOfType<PetShopManager>();
 	}
 	
 	public void GenerateMessage(string message, string typeOfMessage)
@@ -199,6 +201,10 @@ public class KTedpet : MonoBehaviour
 		{
 	  		StartCoroutine(RoomTransition(storeRoom));
 			pet.ReceiveAction("store");
+			foreach (GameObject accesory in petShopManager.accessories)
+			{
+				accesory.GetComponent<Accessory>().buyButton.interactable = true;
+			}
 		}
 	}
 
@@ -210,6 +216,10 @@ public class KTedpet : MonoBehaviour
 		{
 			StartCoroutine(RoomTransition(chooseGameRoom));
 			pet.ReceiveAction("chooseGame");
+			foreach (GameObject game in playRoomManager.gamesIcons)
+			{
+				game.GetComponent<Games>().playButton.interactable = true;
+			}
 		}
 	}
 

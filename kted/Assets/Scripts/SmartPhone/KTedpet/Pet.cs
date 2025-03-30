@@ -5,22 +5,43 @@ using UnityEngine;
 public class Pet : MonoBehaviour, IDataPersistence
 {
 	// Phrases
+	
+	// References
 	[Header("Pet's phrases")]
-	[SerializeField][TextArea] public string[] onPlayerFirstInteraction;
 	[SerializeField][TextArea] public string[] onPlayerJoinPetPhrases;
 	[SerializeField][TextArea] public string[] onPlayerChoseActionPetPhrases;
 	[SerializeField][TextArea] public string[] continueDialoguePetPhrases;
 	[SerializeField][TextArea] public string[] gotoSameRoomPhrases;
+	
+	[Header("Interaction phrases")]
+	[SerializeField][TextArea] public string[] onPlayerFirstInteraction;
+	[SerializeField][TextArea] public string[] onFirstKtedWorkEnterInteraction;
+	[SerializeField][TextArea] public string[] onFirstKtedGramEnterInteraction;
+	[SerializeField][TextArea] public string[] onFirstKtedTifyEnterInteraction;
+	[SerializeField][TextArea] public string[] onFirstRythmGameEnterInteraction;
 
-	// References
+
+    // Variables
+	private List<string> possibleInteractions = new List<string>()
+	{
+		"firstInteraction",
+		"firstKtedWorkEnter",
+		"firstKtedGramEnter",
+		"firstKtedTifyEnter",
+		"firstRythmGameEnter"
+	};
+	
+	public static Pet instance;
 	private KTedpet ktedpet;
 	private SmartPhone smartPhone;
-	private bool firstInteraction;
-	
-	// Variables
-	
-	// Code
-	private void OnEnable()
+	private SerializableDictionary<string, bool> interactions = new SerializableDictionary<string, bool>();
+
+    // Code
+    void Awake()
+    {
+        instance = this;
+    }
+    private void OnEnable()
 	{
 		ktedpet = FindObjectOfType<KTedpet>();
 		smartPhone = FindObjectOfType<SmartPhone>();
@@ -52,14 +73,17 @@ public class Pet : MonoBehaviour, IDataPersistence
 		}
 	}
 	
+	// Метод для первого взаимодействия с игроком (оставляем без изменений)
 	public void FirstInteractionMessage()
 	{
 		if (smartPhone.SmartPhonePicked)
 		{
-			if (firstInteraction)
+			interactions.TryGetValue("firstInteraction", out bool value);
+			
+			if (value)
 			{
 				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase(onPlayerFirstInteraction), "greeting");
-				firstInteraction = false;	
+				interactions["firstInteraction"] = false;
 			}
 			else
 			{
@@ -67,22 +91,74 @@ public class Pet : MonoBehaviour, IDataPersistence
 			}
 		}
 	}
-	
-	public void CommentGamePlay()
+
+	// Универсальный метод для обработки первых взаимодействий
+	public void HandleFirstInteraction(string interactionKey, string[] phrases)
 	{
-	    
+		if (smartPhone.SmartPhonePicked)
+		{
+			interactions.TryGetValue(interactionKey, out bool value);
+			
+			if (value)
+			{
+				NotificationManager.instance.SendSmallWindowText(ktedpet.GetRandomPhrase(phrases));
+				interactions[interactionKey] = false;
+			}
+		}
+	}
+
+	// Примеры использования универсального метода
+	public void FirstKtedWorkEnterMessage()
+	{
+		HandleFirstInteraction("firstKtedWorkEnter", onFirstKtedWorkEnterInteraction);
+	}
+
+	public void FirstKtedGramEnterMessage()
+	{
+		HandleFirstInteraction("firstKtedGramEnter", onFirstKtedGramEnterInteraction);
+	}
+
+	public void FirstKtedTifyEnterMessage()
+	{
+		HandleFirstInteraction("firstKtedTifyEnter", onFirstKtedTifyEnterInteraction);
+	}
+
+	public void FirstRythmGameEnterMessage()
+	{
+		HandleFirstInteraction("firstRythmGameEnter", onFirstRythmGameEnterInteraction);
+	}
+	
+	public void CommentGamePlay(string message)
+	{
+	    NotificationManager.instance.SendSmallWindowText(message);
 	}
 	
 	// DATA
 	public void LoadData(GameData gameData)
 	{
-		firstInteraction = gameData.petFirstInteraction;
+		for (int i = 0; i < possibleInteractions.Count; i++)
+		{
+			if (gameData.interactionsWithPet.TryGetValue(possibleInteractions[i], out bool value))
+			{
+				interactions.Add(possibleInteractions[i], value);
+			}
+			else
+			{
+				interactions.Add(possibleInteractions[i], true);
+			}
+		}
 		
 		FirstInteractionMessage();
 	}
 
 	public void SaveData(ref GameData gameData)
 	{
-		gameData.petFirstInteraction = firstInteraction;
+		for(int i = 0; i < possibleInteractions.Count; i++)
+		{
+			if (interactions.TryGetValue(possibleInteractions[i], out bool value))
+			{
+				gameData.interactionsWithPet[possibleInteractions[i]] = value;
+			}
+		}
 	}
 }

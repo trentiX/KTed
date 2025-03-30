@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class WindowDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private Canvas canvas;
+    [SerializeField] private RectTransform messageBox;
     [SerializeField] private float followSpeed = 10f;
     [SerializeField] private float maxRotation = 30f;
     [SerializeField] private float stabilizationSpeed = 5f;
@@ -19,12 +21,15 @@ public class WindowDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private Vector3 lastMousePosition;
     private RectTransform panelRect;
     private RectTransform canvasRect;
+    public static WindowDrag instance;
 
     private void Start()
     {
+        instance = this;
         panelRect = GetComponent<RectTransform>();
         canvasRect = canvas.GetComponent<RectTransform>();
         targetPosition = transform.position;
+        gameObject.SetActive(false);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -116,5 +121,27 @@ public class WindowDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             correctedPosition.y -= topEdge - maxBounds.y;
 
         transform.position = correctedPosition;
+    }
+    
+    public void UpdateWindowSize()
+    {
+        StartCoroutine(UpdateSizeNextFrame());
+    }
+
+    private IEnumerator UpdateSizeNextFrame()
+    {
+        yield return new WaitForEndOfFrame(); // Ждём, пока ContentSizeFitter пересчитает размеры
+
+        RectTransform parentRect = GetComponent<RectTransform>();
+        
+        // Принудительно пересчитываем все размеры
+        LayoutRebuilder.ForceRebuildLayoutImmediate(messageBox);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(parentRect);
+
+        // Берём реальную высоту
+        float newHeight = messageBox.rect.height;
+
+        // Устанавливаем родителю
+        parentRect.sizeDelta = new Vector2(parentRect.sizeDelta.x, newHeight * 2.55f);
     }
 }

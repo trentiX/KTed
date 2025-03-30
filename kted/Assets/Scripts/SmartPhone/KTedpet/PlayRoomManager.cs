@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayRoomManager : MonoBehaviour
 {
 	// References
-	[SerializeField] private List<GameObject> gamesIcons;
+	[SerializeField] public List<GameObject> gamesIcons;
 	
 	// Variables
 	[HideInInspector] public GameObject currGame;

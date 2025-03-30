@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class PetShopManager : MonoBehaviour, IDataPersistence
 {
 	// References
-	[SerializeField] private List<GameObject> accessories;
+	[SerializeField] public List<GameObject> accessories;
 	
 	
 	// Variables

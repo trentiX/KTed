@@ -77,11 +77,11 @@ public class RythmGame : IPlayable, IDataPersistence
     private void Update()
 	{
 		if (!KTedpet.instance.gameMode) return;
-
-		if (Input.GetKeyDown(KeyCode.LeftArrow))TryKillArrow(0);
-		if (Input.GetKeyDown(KeyCode.DownArrow))TryKillArrow(1);
-		if (Input.GetKeyDown(KeyCode.UpArrow))TryKillArrow(2);
-		if (Input.GetKeyDown(KeyCode.RightArrow))TryKillArrow(3);
+		
+		if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) TryKillArrow(0);
+		if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) TryKillArrow(1);
+		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) TryKillArrow(2);
+		if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) TryKillArrow(3);
 		
 		DestroyArrow();
 		
@@ -133,6 +133,7 @@ public class RythmGame : IPlayable, IDataPersistence
 	public override void StartGame()
 	{
 		CanvasFade(menuObjects, 1, 0.4f);
+		Pet.instance.FirstRythmGameEnterMessage();
 	}
 	
 	public void ChooseSong()

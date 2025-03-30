@@ -115,7 +115,7 @@ public class Browser : MonoBehaviour, IDataPersistence
 	}
 	
 	public void OpenPage(Webpage page, Tab tab)
-	{
+	{	
 		currPage.Close(page); // Close currPage and open page
 		prevPage = currPage;
 		currPage = page;
@@ -257,6 +257,7 @@ public class Browser : MonoBehaviour, IDataPersistence
 			eventTrigger.triggers.Add(onExit);
 		}
 	}
+	
 	private void AddExtraTab(Sprite icon, string tabName, Webpage page)
 	{
 		if (_extraTab != null)
