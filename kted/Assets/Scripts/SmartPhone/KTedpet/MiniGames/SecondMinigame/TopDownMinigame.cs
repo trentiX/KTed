@@ -37,9 +37,10 @@ public class TopDownMinigame : IPlayable, IDataPersistence
 
 	    LaunchGameLoop();
 	}
+	
     private IEnumerator GameLoop()
     {
-        
+        yield return null;
     }
     
     public void CloseMinigame()
@@ -59,6 +60,7 @@ public class TopDownMinigame : IPlayable, IDataPersistence
 		CanvasFade(gameObjects, 0, 0.4f);
 		CanvasFade(afterGameMenuObjects, 1, 0.4f);
 	}
+	
     private void CanvasFade(CanvasGroup[] canvasGroups, int value, float time)
 	{
 	    foreach (CanvasGroup obj in canvasGroups)
