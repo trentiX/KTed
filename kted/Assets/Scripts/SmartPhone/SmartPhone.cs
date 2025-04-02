@@ -80,9 +80,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
 			}    
 			if (Input.GetKeyDown(KeyCode.Alpha2))
 			{
-#if !UNITY_ANDROID && !UNITY_IOS
 				OpenBrowser();
-#endif
 			}   
 		}
 	}

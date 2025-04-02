@@ -69,6 +69,7 @@ public class TestActivator : MonoBehaviour, IInteractable
 		}
 		else
 		{
+			currentQuestion = 0;
 			testHandler.TestGoing = true;
 			player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);	
 		}
