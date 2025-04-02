@@ -34,6 +34,7 @@ public class RingManager : MonoBehaviour, IDataPersistence
 
 	private void Ring(DialogueObject dialogueObject, string action)
 	{
+		if (_smartPhone == null) return;
 		if (_smartPhone.SmartPhonePicked == false) return;
 		
 		ringedActions.TryGetValue(action, out var alreadyRinged);

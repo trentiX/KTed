@@ -76,6 +76,7 @@ public class Pet : MonoBehaviour, IDataPersistence
 	// Метод для первого взаимодействия с игроком (оставляем без изменений)
 	public void FirstInteractionMessage()
 	{
+		if (smartPhone == null) return;
 		if (smartPhone.SmartPhonePicked)
 		{
 			interactions.TryGetValue("firstInteraction", out bool value);
