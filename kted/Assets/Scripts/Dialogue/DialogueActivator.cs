@@ -79,7 +79,7 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 			Interacted = true;
 			onInteracted?.Invoke(_ringManager._dialogueObjectOnInteracted, "DialogueAction");
 			
-			_messenger.AddNewChat(this);
+			if (SmartPhone.instance != null ) _messenger.AddNewChat(this);
 		}
 	}
 

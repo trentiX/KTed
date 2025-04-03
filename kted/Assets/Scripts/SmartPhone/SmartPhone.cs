@@ -24,6 +24,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
 	private Tweener phoneHideAnim;
 	
 	// Variables
+	public static SmartPhone instance { get; private set; }
 	public bool SmartPhonePicked;
 	private bool isRinging = false;
 	private DialogueObject tempDialogueObject;
@@ -38,6 +39,7 @@ public class SmartPhone : MonoBehaviour, IDataPersistence
 	//Code
 	private void Start()
 	{
+		instance = this;
 		player = FindObjectOfType<Player>();
 		_audioManager = FindObjectOfType<AudioManager>();
 		_locationCompleted = FindObjectOfType<LocationCompleted>();
