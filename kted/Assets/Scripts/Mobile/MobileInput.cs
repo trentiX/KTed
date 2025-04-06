@@ -16,8 +16,8 @@ public class MobileInput : MonoBehaviour
 #if UNITY_ANDROID
         Application.targetFrameRate = 60;
 #elif !UNITY_ANDROID
-        _joystick.gameObject.SetActive(false);
-        _joystickButton.gameObject.SetActive(false);
+        //_joystick.gameObject.SetActive(false);
+        //_joystickButton.gameObject.SetActive(false);
 #endif
     }
 

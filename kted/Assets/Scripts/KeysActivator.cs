@@ -6,6 +6,7 @@ public class KeysActivator : MonoBehaviour, IInteractable
 {
     [SerializeField] private GameObject[] keys;
     [SerializeField] private TextMeshProUGUI[] text;
+    [SerializeField] private GameObject interactButton;
     [SerializeField] private GameObject prefab;
     [SerializeField] private Transform prefabMother;
 
@@ -15,6 +16,7 @@ public class KeysActivator : MonoBehaviour, IInteractable
     {
         if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
         {
+			interactButton.SetActive(true);
             var position = prefabMother.position;
             sprite = Instantiate(prefab, new Vector3(position.x, position.y + 0.75f), prefabMother.rotation,
                 prefabMother);
@@ -26,6 +28,7 @@ public class KeysActivator : MonoBehaviour, IInteractable
     {
         if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
         {
+			interactButton.SetActive(false);
             Destroy(sprite);
             if (player.Interactable is KeysActivator keysActivator && keysActivator == this)
             {

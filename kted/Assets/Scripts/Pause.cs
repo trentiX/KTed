@@ -29,7 +29,7 @@ public class Pause : MonoBehaviour
 	
 	public void Resume()
 	{
-		//sCursor.visible = false;
+		//Cursor.visible = false;
 		isOpen = false;
 		panel.SetActive(false);
 		Time.timeScale = 1f;

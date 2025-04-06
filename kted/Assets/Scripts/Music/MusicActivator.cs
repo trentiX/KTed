@@ -4,7 +4,10 @@ public class MusicActivator : MonoBehaviour, IInteractable
 {
     [SerializeField] private GameObject musicMenu;
     [SerializeField] private GameObject prefab;
+    [SerializeField] private GameObject interactButton;
+
     [SerializeField] private Transform prefabMother;
+    
 
     private GameObject sprite;
 
@@ -13,6 +16,8 @@ public class MusicActivator : MonoBehaviour, IInteractable
         if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
         {
             var position = prefabMother.position;
+			interactButton.SetActive(true);         
+			Player.skipButton.SetActive(true);   
             sprite = Instantiate(prefab, new Vector3(position.x , position.y + 0.75f), prefabMother.rotation, prefabMother);
             player.Interactable = this;
         }
@@ -22,6 +27,8 @@ public class MusicActivator : MonoBehaviour, IInteractable
     {
         if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
         {
+			interactButton.SetActive(false);
+			Player.skipButton.SetActive(false);
             Destroy(sprite);
             if (player.Interactable is MusicActivator musicActivator && musicActivator == this)
             {
