@@ -29,7 +29,7 @@ public class MusicUI : MonoBehaviour
         CloseMusicBox();
     }
          
-    private void CloseMusicBox()
+    public void CloseMusicBox()
     {
         MusicBox.SetActive(false);
         MusicOpen = false;

@@ -8,7 +8,12 @@ public class Player : MonoBehaviour, IDataPersistence
 	[SerializeField] private MusicUI musicUI;
 	[SerializeField] private PictureBoxUI pictureBoxUI;
 	[SerializeField] private GameObject panel;
+	[SerializeField] private Joystick movementJoystick; // Reference to the joystick
+	[SerializeField] private GameObject skipButtonPrefab;
 
+
+
+	private bool onButtonCliked = false;
 	public string location = "none";
 	public DialogueUI DialogueUI => dialogueUI;
 	public MusicUI MusicUI => musicUI;
@@ -19,6 +24,8 @@ public class Player : MonoBehaviour, IDataPersistence
 	private CameraController _cameraController;
 	private Browser _browser;
 	private TestHandler testHandler;
+	public static GameObject skipButton;
+
 
 	public IInteractable Interactable { get; set; }
 
@@ -44,33 +51,40 @@ public class Player : MonoBehaviour, IDataPersistence
 
 	private void Start()
 	{
-		_cameraController = FindObjectOfType<CameraController>(); // Find and assign the CameraController
+	    skipButton = skipButtonPrefab;
+		_cameraController 
+		= FindObjectOfType<CameraController>(); // Find and assign the CameraController
 		rb = GetComponent<Rigidbody2D>();
 		animator = gameObject.GetComponent<Animator>();
 		_browser = FindObjectOfType<Browser>();
 		testHandler = FindObjectOfType<TestHandler>();
 	}
 
+	public void PauseGame()
+	{
+	    Pause.isOpen = true;
+		Time.timeScale = 0f;
+		
+		if (panel.activeSelf == true)
+		{
+			panel.SetActive(false);
+			Pause.isOpen = false;
+			Time.timeScale = 1f;
+		}
+		else
+		{
+			Pause.isOpen = true;
+			panel.SetActive(true);
+		}
+	}
+	
 	private void Update()
 	{
 		if (!CaptureInput()) return;
 		
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			Pause.isOpen = true;
-			Time.timeScale = 0f;
-		
-			if (panel.activeSelf == true)
-			{
-				panel.SetActive(false);
-				Pause.isOpen = false;
-				Time.timeScale = 1f;
-			}
-			else
-			{
-				Pause.isOpen = true;
-				panel.SetActive(true);
-			}
+			PauseGame();
 		}
 		
 		if (!canMove())
@@ -80,13 +94,14 @@ public class Player : MonoBehaviour, IDataPersistence
 			return;
 		}
 
-		inputHorizontal = Input.GetAxisRaw("Horizontal") + MobileInput.HorizontalAxis;
-		inputVertical = Input.GetAxisRaw("Vertical") + MobileInput.VerticalAxis;
+		inputHorizontal = movementJoystick.Horizontal;
+        inputVertical = movementJoystick.Vertical;
 
-		if (Input.GetKeyDown(KeyCode.E))
-		{
-			Interactable?.Interact(this);
-		}
+		if (Input.GetKeyDown(KeyCode.E) || onButtonCliked)
+        {
+            Interactable?.Interact(this);
+            onButtonCliked = false;
+        }
 		
 		if (inputHorizontal != 0 || inputVertical != 0)
 		{
@@ -173,6 +188,11 @@ public class Player : MonoBehaviour, IDataPersistence
 		else
 			return true;
 	}
+	
+	public void OnPointerDown()
+    {
+        onButtonCliked = true;
+    }
 	
 	// DATA
 	public void LoadData(GameData data)

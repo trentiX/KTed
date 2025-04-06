@@ -40,7 +40,7 @@ public class PictureBoxUI : MonoBehaviour
         ClosePictureBox();
     }
          
-    private void ClosePictureBox()
+    public void ClosePictureBox()
     {
         PictureBox.SetActive(false);
         PictureOpen = false;

@@ -18,6 +18,7 @@ public class DialogueUI : MonoBehaviour
 
     private TypewriterEffect typewriterEffect;
     private ResponseHandler _responseHandler;
+    private bool onButtonCliked = false;
     private LocationsManager _locationsManager;
 
     private void Awake()
@@ -46,11 +47,12 @@ public class DialogueUI : MonoBehaviour
     }
 
     private IEnumerator StepThroughDialogue(DialogueObject dialogueObject)
-    {
+    {   
         if (ChooseLanguageScript.Language == "russian")
         {
             for (int i = 0; i < dialogueObject.DialogueRus.Length; i++)
             {
+                onButtonCliked = false;
                 string dialogue = dialogueObject.DialogueRus[i];
                 yield return RunTypingEffect(dialogue);
 
@@ -58,7 +60,7 @@ public class DialogueUI : MonoBehaviour
 
                 if (i == dialogueObject.DialogueRus.Length - 1 && dialogueObject.HasResponses) break;
                 yield return null;
-                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space) || onButtonCliked);
             }
         }
         
@@ -66,12 +68,13 @@ public class DialogueUI : MonoBehaviour
         {
             foreach(string dialogue in dialogueObject.DialogueKaz)
             {
+                onButtonCliked = false;
                 yield return RunTypingEffect(dialogue);
 
                 textLabel.text = dialogue;
 
                 yield return null;
-                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space) || onButtonCliked);
             }
         }
 
@@ -91,9 +94,10 @@ public class DialogueUI : MonoBehaviour
 
         while (typewriterEffect.IsRunning)
         {
+            onButtonCliked = false;
             yield return null;
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) || onButtonCliked)
             {
                 typewriterEffect.Stop();
             }
@@ -114,5 +118,10 @@ public class DialogueUI : MonoBehaviour
             _locationsManager.CheckIfCompleted(nameOfPerson);
         }
         OnDialogueClosed?.Invoke();
+    }
+    
+    public void OnPointerDown()
+    {
+         onButtonCliked = true;
     }
 }

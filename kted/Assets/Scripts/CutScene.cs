@@ -10,6 +10,8 @@ public class CutScene : MonoBehaviour
 {
     [SerializeField] private CanvasGroup prefab;
     [SerializeField] private PlayableDirector director;
+    
+    private bool onButtonCliked = false;
 
     public void StartGame()
     {
@@ -23,8 +25,9 @@ public class CutScene : MonoBehaviour
     
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || onButtonCliked)
         {
+            onButtonCliked = false;
             director.playableGraph.GetRootPlayable(0).SetSpeed(0);
             prefab.DOFade(1, 1).SetEase(Ease.OutCubic).OnComplete(() =>
             {
@@ -32,4 +35,9 @@ public class CutScene : MonoBehaviour
             }); 
         }
     }
+    
+    public void OnPointerDown()
+     {
+         onButtonCliked = true;
+     }
 }

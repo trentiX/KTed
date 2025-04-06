@@ -6,6 +6,7 @@ public class TestActivator : MonoBehaviour, IInteractable
 	[SerializeField] public DialogueObject dialogueObject;
 	[SerializeField] public string nameOfTest;
 	[SerializeField] private GameObject prefab;
+	[SerializeField] private GameObject interactButton;
 	[SerializeField] private int questionAmount;
 	[SerializeField] private Transform prefabMother;
 	[SerializeField] public List<string> testAnswers; 
@@ -42,6 +43,9 @@ public class TestActivator : MonoBehaviour, IInteractable
 		if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
 		{
 			var position = prefabMother.position;
+			interactButton.SetActive(true);
+			Player.skipButton.SetActive(true);
+
 			sprite = Instantiate(prefab, new Vector3(position.x, position.y + 0.75f), prefabMother.rotation,
 				prefabMother);
 			player.Interactable = this;
@@ -52,6 +56,8 @@ public class TestActivator : MonoBehaviour, IInteractable
 	{
 		if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
 		{
+			interactButton.SetActive(false);
+			Player.skipButton.SetActive(false);
 			Destroy(sprite);
 			if (player.Interactable is KeysActivator keysActivator && keysActivator == this)
 			{
