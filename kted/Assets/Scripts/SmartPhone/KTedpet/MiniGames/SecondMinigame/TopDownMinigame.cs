@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TopDownMinigame : IPlayable, IDataPersistence
 {   
@@ -12,15 +14,32 @@ public class TopDownMinigame : IPlayable, IDataPersistence
     [SerializeField] private CanvasGroup[] gameObjects;	
 	[SerializeField] private CanvasGroup[] menuObjects;
 	[SerializeField] private CanvasGroup[] afterGameMenuObjects;
-    
-    // Variables
-    
+        
     // Gameobjects
 	[Header("Gameobjects")]
 	[SerializeField] private GameObject EnemyMeleePrefab;
 	[SerializeField] private GameObject EnemyRangedPrefab;
     [SerializeField] private GameObject PlayerPrefab;
-    
+	[SerializeField] private GameObject[] hearts;
+	[SerializeField] private GameObject inGameScoreText;
+	[SerializeField] private GameObject inGameKillsText;
+	[SerializeField] private GameObject timeText;
+	
+	// Texts
+	[Header("Texts")]
+	[SerializeField] private TextMeshProUGUI inMenuYourTime;
+	[SerializeField] private TextMeshProUGUI inMenuYourScore;
+	
+	
+	// Variables
+	private bool gameIsGoing;
+	private int score;
+	private int kills;
+	private int health;
+	private int TimeRecord;
+	private int ScoreRecord;	
+
+
     // Code
     public void LaunchGameLoop()
 	{
@@ -38,9 +57,25 @@ public class TopDownMinigame : IPlayable, IDataPersistence
 	    LaunchGameLoop();
 	}
 	
+	private void Win()
+	{
+	    
+	}
+	
+	private void Lose()
+	{
+	    
+	}
+	
     private IEnumerator GameLoop()
     {
-        yield return null;
+    	UpdateUI();
+
+        while (gameIsGoing)
+		{
+			// Game loop logic here
+			yield return null;
+		}
     }
     
     public void CloseMinigame()
@@ -59,6 +94,27 @@ public class TopDownMinigame : IPlayable, IDataPersistence
 	{
 		CanvasFade(gameObjects, 0, 0.4f);
 		CanvasFade(afterGameMenuObjects, 1, 0.4f);
+	}
+	
+	private void SpawnEnemy()
+	{
+	    
+	}
+	
+	private void UpdateUI()
+	{
+	    inGameKillsText.GetComponentInChildren<TextMeshProUGUI>(0).text = kills.ToString();
+		inGameScoreText.GetComponentInChildren<TextMeshProUGUI>(0).text = score.ToString();
+
+		foreach (var heart in hearts)
+		{
+			heart.SetActive(false); // Сначала скрываем все сердца
+		}
+
+		for (int i = 0; i < health; i++)
+		{
+			hearts[i].SetActive(true);
+		}
 	}
 	
     private void CanvasFade(CanvasGroup[] canvasGroups, int value, float time)
