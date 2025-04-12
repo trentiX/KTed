@@ -181,6 +181,7 @@ public class Player : MonoBehaviour, IDataPersistence
 	
 	public bool CaptureInput()
 	{
+		if (KTedpet.instance == null) return true;
 		if (KTedpet.instance.gameMode)
 		{
 			return false;
