@@ -100,6 +100,7 @@ public class DialogueUI : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) || onButtonCliked)
             {
                 typewriterEffect.Stop();
+                onButtonCliked = false;
             }
         }
     }
@@ -122,6 +123,6 @@ public class DialogueUI : MonoBehaviour
     
     public void OnPointerDown()
     {
-         onButtonCliked = true;
+        onButtonCliked = true;
     }
 }

@@ -77,38 +77,46 @@ public class TestActivator : MonoBehaviour, IInteractable
 		{
 			currentQuestion = 0;
 			testHandler.TestGoing = true;
-			player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);	
+			testHandler.currTestActivator = this;
+			ResponseHandler.onResponsePicked.AddListener(OnChoseAnswer);
+			player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);
 		}
 	}
 
-	
 
-	private void OnChoseAnswer(Response answer)
+	public void OnChoseAnswer(Response answer)
 	{
 		if (!testHandler.TestGoing) return;
-		
+
 		choseAnswer = answer;
 
-		if (currentQuestion > 0)
+		if (currentQuestion > 0 && currentQuestion - 1 < testAnswers.Count)
 		{
-			if (choseAnswer.ResponseText == testAnswers[currentQuestion-1])
+			if (choseAnswer.ResponseText == testAnswers[currentQuestion - 1])
 			{
 				correctAnswers++;
 			}
 		}
-		
+
 		currentQuestion++;
-		
+
 		if (currentQuestion == testAnswers.Count + 1)
 		{
 			Debug.Log("Test is over");
 			TestOver();
 		}
 	}
+
+
 	
 	private void TestOver()
 	{
-		testHandler.ShowResults(this);
-		testHandler.tests[this] = correctAnswers;
+		if (testHandler.TestGoing)
+		{
+			testHandler.ShowResults(this);
+			testHandler.TestGoing = false;
+			testHandler.tests[this] = correctAnswers;
+			ResponseHandler.onResponsePicked.RemoveListener(OnChoseAnswer);
+		}
 	}
 }
