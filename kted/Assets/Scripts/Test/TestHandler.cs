@@ -10,7 +10,7 @@ public class TestHandler : MonoBehaviour, IDataPersistence
 	public SerializableDictionary<TestActivator, int> tests;
 	public bool TestOpen = false;
 	public bool TestGoing = false;
-	private TestActivator currTestActivator;
+	public TestActivator currTestActivator;
 	
 	private void Update()
 	{
@@ -40,15 +40,20 @@ public class TestHandler : MonoBehaviour, IDataPersistence
 	}
 	
 	public void TestAgain()
-	{	
-		currTestActivator.currentQuestion = 0;
-		currTestActivator.correctAnswers = 0;
+	{
+		if (currTestActivator != null)
+		{
+			currTestActivator.correctAnswers = 0;
+			currTestActivator.currentQuestion = 0;
+			ResponseHandler.onResponsePicked.AddListener(currTestActivator.OnChoseAnswer);
+		}
+
 		CloseResults();
-		
+
 		TestGoing = true;
 		FindObjectOfType<Player>().DialogueUI.showDialogue(currTestActivator.dialogueObject, currTestActivator.dialogueObject.name);
 	}
-	
+
 	// DATA
 	public void SaveData(ref GameData  gameData)
 	{

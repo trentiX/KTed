@@ -37,11 +37,11 @@ public class ResponseHandler : MonoBehaviour
                 */
             
             responseButton.SetActive(true);
-            responseButton.GetComponent<TMP_Text>().text = response.ResponseText;
-            responseButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnPickedResponse(response));
+            responseButton.GetComponentInChildren<TMP_Text>().text = response.ResponseText;
+            responseButton.GetComponentInChildren<UnityEngine.UI.Button>().onClick.AddListener(() => OnPickedResponse(response));
             
             // Add PointerEnter event to change text
-            EventTrigger eventTrigger = responseButton.GetComponent<EventTrigger>();
+            EventTrigger eventTrigger = responseButton.GetComponentInChildren<EventTrigger>();
             if (eventTrigger == null)
             {
                 eventTrigger = responseButton.AddComponent<EventTrigger>();
@@ -67,11 +67,11 @@ public class ResponseHandler : MonoBehaviour
 
     private void OnPointerEnter(GameObject responseButton, Response response)
     {
-        responseButton.GetComponent<TMP_Text>().text = "-> " + response.ResponseText;
+        responseButton.GetComponentInChildren<TMP_Text>().text = "-> " + response.ResponseText;
     }
     private void OnPointerExit(GameObject responseButton, Response response)
     {
-        responseButton.GetComponent<TMP_Text>().text = response.ResponseText;
+        responseButton.GetComponentInChildren<TMP_Text>().text = response.ResponseText;
     }
 
 
