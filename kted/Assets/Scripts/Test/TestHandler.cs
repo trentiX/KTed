@@ -35,6 +35,8 @@ public class TestHandler : MonoBehaviour, IDataPersistence
 	
 	public void CloseResults()
 	{
+   	 	if (TestGoing) return; // Не закрываем результаты, если тест идет
+
 		testResultsPanel.SetActive(false);
 		TestOpen = false;
 	}

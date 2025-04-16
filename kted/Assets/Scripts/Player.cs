@@ -171,7 +171,7 @@ public class Player : MonoBehaviour, IDataPersistence
 	public bool canMove()
 	{
 		if (dialogueUI.DialogueOpen || musicUI.MusicOpen || pictureBoxUI.PictureOpen || _cameraController.transition 
-			|| Pause.isOpen || _browser.browserOpen || testHandler.TestOpen)
+			|| Pause.isOpen || testHandler.TestOpen || _browser.browserOpen )
 		{
 			return false;
 		}
