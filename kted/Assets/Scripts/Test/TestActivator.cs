@@ -28,16 +28,6 @@ public class TestActivator : MonoBehaviour, IInteractable
 		}
 	}
 	
-	private void OnEnable()
-	{
-		ResponseHandler.onResponsePicked.AddListener(OnChoseAnswer);
-	}
-
-	private void OnDisable()
-	{
-		ResponseHandler.onResponsePicked.RemoveListener(OnChoseAnswer);
-	}
-	
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
@@ -86,7 +76,9 @@ public class TestActivator : MonoBehaviour, IInteractable
 
 	public void OnChoseAnswer(Response answer)
 	{
-		if (!testHandler.TestGoing) return;
+		// Проверяем, что это текущий активный тест
+		if (!testHandler.TestGoing || testHandler.currTestActivator != this) 
+			return;
 
 		choseAnswer = answer;
 
@@ -106,12 +98,10 @@ public class TestActivator : MonoBehaviour, IInteractable
 			TestOver();
 		}
 	}
-
-
 	
 	private void TestOver()
 	{
-		if (testHandler.TestGoing)
+		if (testHandler.TestGoing && testHandler.currTestActivator == this)
 		{
 			testHandler.ShowResults(this);
 			testHandler.TestGoing = false;
