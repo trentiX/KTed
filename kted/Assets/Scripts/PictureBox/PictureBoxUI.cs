@@ -18,14 +18,9 @@ public class PictureBoxUI : MonoBehaviour
     {
         image.GetComponent<Image>();
     }
-
-    private void Start()
-    {
-        ClosePictureBox();
-    }
-
     public void showPictureBox(Sprite photo, string _text)
     {
+        Player.interactButton.SetActive(false);
         image.sprite = photo;
         text.text = _text;
         PictureOpen = true;
@@ -42,6 +37,9 @@ public class PictureBoxUI : MonoBehaviour
          
     public void ClosePictureBox()
     {
+        if (DialogueUI.instance.DialogueOpen) return;
+        
+        Player.interactButton.SetActive(true);
         PictureBox.SetActive(false);
         PictureOpen = false;
     }

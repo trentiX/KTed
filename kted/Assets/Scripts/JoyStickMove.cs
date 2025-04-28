@@ -31,7 +31,7 @@ public class JoystickMove : MonoBehaviour
             return;
         }
 
-        if (dialogueUI.DialogueOpen || musicUI.MusicOpen || pictureBoxUI.PictureOpen)
+        if (dialogueUI.DialogueOpen || musicUI.MusicOpen || pictureBoxUI.PictureOpen || TestHandler.instance.TestOpen)
         {
             rb.velocity = Vector2.zero;
             return;

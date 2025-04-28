@@ -12,8 +12,8 @@ public class DialogueUI : MonoBehaviour
     [SerializeField] private GameObject icon;
     [SerializeField] private TextMeshProUGUI text;
 
-    
-    public bool DialogueOpen { get; private set; }
+    public static DialogueUI instance;
+    public bool DialogueOpen { get; set; } = false;
     public static event Action OnDialogueClosed;
 
     private TypewriterEffect typewriterEffect;
@@ -23,6 +23,7 @@ public class DialogueUI : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
         _locationsManager = FindObjectOfType<LocationsManager>();
     }
     
@@ -30,11 +31,11 @@ public class DialogueUI : MonoBehaviour
     {
         typewriterEffect = GetComponent<TypewriterEffect>();
         _responseHandler = GetComponent<ResponseHandler>(); 
-        CloseDialogueBox(text.text);
     }
 
     public void showDialogue(DialogueObject dialogueObject, string nameOfPerson)
-    {
+    {        
+        Player.interactButton.SetActive(false);
         icon.GetComponent<Image>().sprite = dialogueObject.Sprite;
         text.text = nameOfPerson;
         DialogueOpen = true;
@@ -84,7 +85,7 @@ public class DialogueUI : MonoBehaviour
         }
         else
         {
-            CloseDialogueBox(text.text);
+            StartCoroutine(CloseDialogueBox(text.text));
         }
     }
 
@@ -105,7 +106,7 @@ public class DialogueUI : MonoBehaviour
         }
     }
          
-    private void CloseDialogueBox(string nameOfPerson)
+    private IEnumerator CloseDialogueBox(string nameOfPerson)
     {
         DialogueOpen = false;
         
@@ -118,6 +119,9 @@ public class DialogueUI : MonoBehaviour
         {
             _locationsManager.CheckIfCompleted(nameOfPerson);
         }
+        
+        yield return new WaitForSeconds(0.5f);
+        Player.interactButton.SetActive(true);
         OnDialogueClosed?.Invoke();
     }
     

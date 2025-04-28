@@ -7,7 +7,6 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 	[Header("Dialogue activator props")]
 	[SerializeField] public DialogueObject dialogueObject;
 	[SerializeField] private GameObject prefab;
-	[SerializeField] private GameObject interactButton;
 	[SerializeField] private Transform prefabMother;
 	[SerializeField] private string id;
 	
@@ -49,7 +48,9 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 		if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
 		{
 			var position = prefabMother.position;
-			interactButton.SetActive(true);
+			
+			if (Player.interactButton != null) Player.interactButton.SetActive(true);
+
 			Player.skipButton.SetActive(true);
 			
 			sprite = Instantiate(prefab, new Vector3(position.x , position.y + 0.75f), prefabMother.rotation, prefabMother);
@@ -61,7 +62,7 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 	{
 		if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
 		{
-			interactButton.SetActive(false);
+			if (Player.interactButton != null) Player.interactButton.SetActive(false);
 			Player.skipButton.SetActive(false);
 			Destroy(sprite);
 			if (player.Interactable is DialogueActivator dialogueActivator && dialogueActivator == this)
@@ -72,7 +73,9 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 	}
 
 	public void Interact(Player player)
-	{
+	{    
+		if (DialogueUI.instance.DialogueOpen) return;
+
 		if (_ktedwork.questIsGoing && _ktedwork.questChars.Contains(this))
 		{
 			DialogueObject dialogueObject = _ktedwork._currQuest.questDialogue[_ktedwork._currQuest.questDialogueActivators.IndexOf(this)];

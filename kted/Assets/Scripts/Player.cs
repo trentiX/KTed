@@ -10,6 +10,7 @@ public class Player : MonoBehaviour, IDataPersistence
 	[SerializeField] private GameObject panel;
 	[SerializeField] private Joystick movementJoystick; // Reference to the joystick
 	[SerializeField] private GameObject skipButtonPrefab;
+	[SerializeField] private GameObject interactButtonPrefab;
 
 
 
@@ -25,6 +26,8 @@ public class Player : MonoBehaviour, IDataPersistence
 	private Browser _browser;
 	private TestHandler testHandler;
 	public static GameObject skipButton;
+	public static GameObject interactButton;
+	public static Player playerInstance { get; private set; }
 
 
 	public IInteractable Interactable { get; set; }
@@ -51,7 +54,9 @@ public class Player : MonoBehaviour, IDataPersistence
 
 	private void Start()
 	{
+		playerInstance = this;
 	    skipButton = skipButtonPrefab;
+	    interactButton = interactButtonPrefab;
 		_cameraController 
 		= FindObjectOfType<CameraController>(); // Find and assign the CameraController
 		rb = GetComponent<Rigidbody2D>();
@@ -94,8 +99,17 @@ public class Player : MonoBehaviour, IDataPersistence
 			return;
 		}
 
-		inputHorizontal = movementJoystick.Horizontal;
-        inputVertical = movementJoystick.Vertical;
+		if (movementJoystick != null && movementJoystick.gameObject.activeInHierarchy)
+		{
+			inputHorizontal = movementJoystick.Horizontal;
+			inputVertical = movementJoystick.Vertical;
+		}
+		else
+		{
+			inputHorizontal = Input.GetAxisRaw("Horizontal");
+			inputVertical = Input.GetAxisRaw("Vertical");
+		}
+
 
 		if (Input.GetKeyDown(KeyCode.E) || onButtonCliked)
         {
