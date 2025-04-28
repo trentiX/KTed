@@ -9,14 +9,10 @@ public class MusicUI : MonoBehaviour
     [SerializeField] public UnityEngine.UI.Button[] buttons;
 
     public bool MusicOpen { get; private set; }
-    
-    private void Start()
-    {
-        CloseMusicBox();
-    }
 
     public void showMusicBox()
     {
+        Player.interactButton.SetActive(false);
         MusicOpen= true;
         MusicBox.SetActive(true);
         StartCoroutine(waitForExit());
@@ -31,6 +27,9 @@ public class MusicUI : MonoBehaviour
          
     public void CloseMusicBox()
     {
+        if (DialogueUI.instance.DialogueOpen) return;
+
+        Player.interactButton.SetActive(true);
         MusicBox.SetActive(false);
         MusicOpen = false;
     }

@@ -6,7 +6,6 @@ public class TestActivator : MonoBehaviour, IInteractable
 	[SerializeField] public DialogueObject dialogueObject;
 	[SerializeField] public string nameOfTest;
 	[SerializeField] private GameObject prefab;
-	[SerializeField] private GameObject interactButton;
 	[SerializeField] private int questionAmount;
 	[SerializeField] private Transform prefabMother;
 	[SerializeField] public List<string> testAnswers; 
@@ -24,6 +23,7 @@ public class TestActivator : MonoBehaviour, IInteractable
 		
 		testHandler.tests.TryGetValue(this, out var corr);
 		{
+			Debug.Log(gameObject.name + "Already has correct answers: " + corr);
 			correctAnswers = corr;
 		}
 	}
@@ -33,7 +33,7 @@ public class TestActivator : MonoBehaviour, IInteractable
 		if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
 		{
 			var position = prefabMother.position;
-			interactButton.SetActive(true);
+			Player.interactButton.SetActive(true);
 			Player.skipButton.SetActive(true);
 
 			sprite = Instantiate(prefab, new Vector3(position.x, position.y + 0.75f), prefabMother.rotation,
@@ -46,7 +46,7 @@ public class TestActivator : MonoBehaviour, IInteractable
 	{
 		if (other.CompareTag("Player") && other.TryGetComponent(out Player player))
 		{
-			interactButton.SetActive(false);
+			Player.interactButton.SetActive(false);
 			Player.skipButton.SetActive(false);
 			Destroy(sprite);
 			if (player.Interactable is KeysActivator keysActivator && keysActivator == this)
@@ -59,18 +59,12 @@ public class TestActivator : MonoBehaviour, IInteractable
 
 	public void Interact(Player player)
 	{
-		if (correctAnswers != 0)
-		{
-			testHandler.ShowResults(this);
-		}
-		else
-		{
-			currentQuestion = 0;
-			testHandler.TestGoing = true;
-			testHandler.currTestActivator = this;
-			ResponseHandler.onResponsePicked.AddListener(OnChoseAnswer);
-			player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);
-		}
+		currentQuestion = 0;
+		testHandler.TestGoing = true;
+		testHandler.currTestActivator = this;
+		ResponseHandler.onResponsePicked.RemoveListener(OnChoseAnswer); // 👈 Удаляем старую подписку
+		ResponseHandler.onResponsePicked.AddListener(OnChoseAnswer);
+		player.DialogueUI.showDialogue(dialogueObject, dialogueObject.name);
 	}
 
 
@@ -81,9 +75,13 @@ public class TestActivator : MonoBehaviour, IInteractable
 			return;
 
 		choseAnswer = answer;
-
+		Debug.Log("Chose answer: " + choseAnswer.ResponseText);
 		if (currentQuestion > 0 && currentQuestion - 1 < testAnswers.Count)
 		{
+			if (choseAnswer.ResponseText == "Откажусь")
+			{
+			    TestOver();
+			}
 			if (choseAnswer.ResponseText == testAnswers[currentQuestion - 1])
 			{
 				correctAnswers++;
@@ -103,10 +101,13 @@ public class TestActivator : MonoBehaviour, IInteractable
 	{
 		if (testHandler.TestGoing && testHandler.currTestActivator == this)
 		{
-			testHandler.ShowResults(this);
+			Debug.Log("Test is over, correct answers: " + correctAnswers);
 			testHandler.TestGoing = false;
 			testHandler.tests[this] = correctAnswers;
 			ResponseHandler.onResponsePicked.RemoveListener(OnChoseAnswer);
+			
+			// Показываем результаты после завершения теста
+			testHandler.ShowResults(this);
 		}
 	}
 }
