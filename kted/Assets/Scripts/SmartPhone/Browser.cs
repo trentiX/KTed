@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using TMPro;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 
 public class Browser : MonoBehaviour, IDataPersistence

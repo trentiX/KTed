@@ -2,17 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeEnemy : MonoBehaviour
+public class MeleeEnemy : Enemy
 {
-    // Start is called before the first frame update
     void Start()
     {
-        
+        health = 3; // Example health value
+        damage = 1; // Example damage value
+        speed = 2f; // Example speed value
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    public override void Move()
     {
-        
+        if (target == null) return;
+
+        // Направление к игроку
+        Vector3 direction = (target.position - transform.position).normalized;
+
+        // Двигаем врага
+        transform.position += direction * speed * Time.deltaTime;
+
+        // Поворот к игроку (опционально, если хочешь чтобы он смотрел на игрока)
+        transform.forward = direction;
     }
 }

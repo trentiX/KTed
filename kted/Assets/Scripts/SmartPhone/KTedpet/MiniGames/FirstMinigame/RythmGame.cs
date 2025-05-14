@@ -120,6 +120,7 @@ public class RythmGame : IPlayable, IDataPersistence
 			ComboRecord = combo;
 			maxCombo.text = combo.ToString() + "X";
 			yourCombo.text = combo.ToString() + "X"+ " (Новый рекорд!)";
+			Pet.instance.CommentGamePlay("Поздравляю с новым рекордом!");
 		}
 
 		if (score > ScoreRecord)

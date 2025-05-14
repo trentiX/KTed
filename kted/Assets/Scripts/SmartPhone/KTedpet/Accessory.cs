@@ -11,10 +11,11 @@ public class Accessory : MonoBehaviour
 	[SerializeField] public int Value;
 	[SerializeField] public GameObject image;	
 	[SerializeField] public UnityEngine.UI.Button buyButton;
-	
-	
+	[SerializeField] public PetAppearance petAppearance;
+		
 	// Variables
 	public bool purchased;
+	public bool equipped;
 	private Tweener itemAnim;
 	private PetShopManager petShopManager;
 	
@@ -30,13 +31,20 @@ public class Accessory : MonoBehaviour
 	public void buttonAdjustment()
 	{	
 		buyButton.onClick.RemoveAllListeners();
-		if (petShopManager.boughtAccessories[this])
+		if (!equipped && petShopManager.boughtAccessories[this])
 		{
 			purchased = true;
 			buyButton.gameObject.GetComponentInChildren
 				<TextMeshProUGUI>().text = "Надеть";
-			buyButton.onClick.AddListener(petShopManager.PutOnItem);
+			buyButton.onClick.AddListener(() => petShopManager.PutOnItem(this));
 		}	
+		else if (equipped && petShopManager.boughtAccessories[this])
+		{
+			purchased = true;
+			buyButton.gameObject.GetComponentInChildren
+				<TextMeshProUGUI>().text = "Снять";
+			buyButton.onClick.AddListener(() => petShopManager.TakeOffItem(this));
+		}
 		else
 		{
 			purchased = false;
