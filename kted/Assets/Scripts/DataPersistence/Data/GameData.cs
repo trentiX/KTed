@@ -20,6 +20,7 @@ public class GameData
 	public List<AudioClip> favouriteSongs;
 	public int MaxCombo;
 	public int MaxScore;
+	public List<PetAppearance> petAppearance; // Добавленное поле для внешнего вида питомца
 
 
 	public GameData()
@@ -38,5 +39,6 @@ public class GameData
 		favouriteSongs = new List<AudioClip>();
 		MaxCombo = new int();
 		MaxScore = new int();
+		petAppearance = new List<PetAppearance>(); // Инициализация значения по умолчанию
 	}
 }

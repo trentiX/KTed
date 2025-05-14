@@ -12,6 +12,13 @@ public class Pet : MonoBehaviour, IDataPersistence
 	[SerializeField][TextArea] public string[] onPlayerChoseActionPetPhrases;
 	[SerializeField][TextArea] public string[] continueDialoguePetPhrases;
 	[SerializeField][TextArea] public string[] gotoSameRoomPhrases;
+	[SerializeField][TextArea] public string[] onItemPurchasedPetPhrases;
+	[SerializeField][TextArea] public string[] onTalkPetPhrases;
+	[SerializeField][TextArea] public string[] onChangeRoomPetPhrases;
+	[SerializeField][TextArea] public string[] advicePetPhrases;
+	[SerializeField][TextArea] public string[] factPetPhrases;
+	[SerializeField][TextArea] public string[] walkPetPhrases;
+
 	
 	[Header("Interaction phrases")]
 	[SerializeField][TextArea] public string[] onPlayerFirstInteraction;
@@ -51,6 +58,31 @@ public class Pet : MonoBehaviour, IDataPersistence
 	{
 		switch (action)
 		{
+			case "walk":
+				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
+					(walkPetPhrases), "whatToDo");
+				break;
+				
+			case "advice":
+				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
+					(advicePetPhrases), "intersection");
+				break;
+				
+			case "fact":
+				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
+					(factPetPhrases), "intersection");
+				break;
+				
+			case "changeRoom":
+				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
+					(onChangeRoomPetPhrases), "whatToDo");
+				break;
+				
+			case "talk":
+				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
+					(onTalkPetPhrases), "talk");
+				break;
+
 			case "store":
 				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
 					(onPlayerChoseActionPetPhrases), "agree");
@@ -68,7 +100,7 @@ public class Pet : MonoBehaviour, IDataPersistence
 				
 			case "playerGreeting":
 				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
-					(continueDialoguePetPhrases), "whatToDo");
+					(continueDialoguePetPhrases), "intersection");
 				break;
 		}
 	}

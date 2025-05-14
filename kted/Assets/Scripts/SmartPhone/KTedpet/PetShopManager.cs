@@ -109,12 +109,24 @@ public class PetShopManager : MonoBehaviour, IDataPersistence
 			
 			boughtAccessories[currItem.GetComponent<Accessory>()] = true;
 			currItem.GetComponent<Accessory>().buttonAdjustment();
+			
+			int i = Random.Range(0, Pet.instance.onItemPurchasedPetPhrases.Length);
+			KTedpet.instance.GenerateMessage(Pet.instance.onItemPurchasedPetPhrases[i], "whatToDo");
 		}
 	}
 	
-	public void PutOnItem()
+	public void PutOnItem(Accessory accessory)
 	{
-		// Put item on
+		PetAnimations.instance.ChangePetAppearance(accessory.petAppearance);
+		accessory.equipped = true;
+		accessory.buttonAdjustment();
+	}
+	
+	public void TakeOffItem(Accessory accessory)
+	{
+		PetAnimations.instance.RemovePetAppearance(accessory.petAppearance);
+		accessory.equipped = false;
+		accessory.buttonAdjustment();
 	}
 	
 	private void ChangeItemPosition(GameObject item, float finalMoveX,
