@@ -152,9 +152,9 @@ TextureImporter:
       name: kazhimukan-sheet_0
       rect:
         serializedVersion: 2
-        x: 10
+        x: 0
         y: 0
-        width: 29
+        width: 48
         height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -173,10 +173,10 @@ TextureImporter:
       name: kazhimukan-sheet_1
       rect:
         serializedVersion: 2
-        x: 58
+        x: 48
         y: 0
-        width: 29
-        height: 47
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -194,10 +194,10 @@ TextureImporter:
       name: kazhimukan-sheet_2
       rect:
         serializedVersion: 2
-        x: 106
+        x: 96
         y: 0
-        width: 29
-        height: 47
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -215,10 +215,10 @@ TextureImporter:
       name: kazhimukan-sheet_3
       rect:
         serializedVersion: 2
-        x: 154
+        x: 144
         y: 0
-        width: 29
-        height: 47
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -236,9 +236,9 @@ TextureImporter:
       name: kazhimukan-sheet_4
       rect:
         serializedVersion: 2
-        x: 202
+        x: 192
         y: 0
-        width: 29
+        width: 48
         height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
