@@ -19,4 +19,14 @@ public class Button : MonoBehaviour
     {
         Application.OpenURL("https://www.instagram.com/kted_game/");
     }
+    
+    public void TikTok()
+    {
+        Application.OpenURL("https://www.tiktok.com/@kted_yap?_t=ZM-8wNTVEYCbp9&_r=1");
+    }
+
+    public void Github()
+    {
+        Application.OpenURL("https://github.com/trentiX/KTed");
+    }
 }
