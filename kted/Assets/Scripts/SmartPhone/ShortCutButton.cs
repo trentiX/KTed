@@ -16,7 +16,7 @@ public class ShortCutButton : MonoBehaviour
 	}
 	public void CreateNotification(string message)
 	{
-		if (notificationMark == null || Browser.instance.currPage == goToPage) return;
+		if (notificationMark == null || Browser.instance.currPage == goToPage && Browser.instance.browserOpen) return;
 		notificationMark.SetActive(true);
 		notificationManager.SendNotification(message);
 	}

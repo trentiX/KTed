@@ -13,6 +13,7 @@ public class PetShopManager : MonoBehaviour, IDataPersistence
 	
 	// Variables
 	public SerializableDictionary<Accessory, bool> boughtAccessories;
+	public SerializableDictionary<Accessory, bool> equippedAccessories;
 	private GameObject currItem;
 	private GameObject leftItem;
 	private GameObject rightItem;
@@ -119,6 +120,8 @@ public class PetShopManager : MonoBehaviour, IDataPersistence
 	{
 		PetAnimations.instance.ChangePetAppearance(accessory.petAppearance);
 		accessory.equipped = true;
+		
+		equippedAccessories[accessory] = true;
 		accessory.buttonAdjustment();
 	}
 	
@@ -126,6 +129,8 @@ public class PetShopManager : MonoBehaviour, IDataPersistence
 	{
 		PetAnimations.instance.RemovePetAppearance(accessory.petAppearance);
 		accessory.equipped = false;
+		
+		equippedAccessories[accessory] = false;
 		accessory.buttonAdjustment();
 	}
 	
@@ -146,19 +151,30 @@ public class PetShopManager : MonoBehaviour, IDataPersistence
 	
 	public void LoadData(GameData gameData)
 	{
-		boughtAccessories = gameData.boughtAccessoriesInStorage;
-		
-		if (boughtAccessories != null)
+		// Загружаем данные
+		boughtAccessories = gameData.boughtAccessoriesInStorage ?? new SerializableDictionary<Accessory, bool>();
+		equippedAccessories = gameData.equippedAccessoriesInStorage ?? new SerializableDictionary<Accessory, bool>();
+
+		// Проверяем, что все аксессуары добавлены
+		foreach (var accessory in accessories)
 		{
-			foreach (var accessory in boughtAccessories)
-			{
-				accessory.Key.buttonAdjustment();
-			}
+			Accessory accessoryComponent = accessory.GetComponent<Accessory>();
+
+			if (!boughtAccessories.ContainsKey(accessoryComponent))
+				boughtAccessories.Add(accessoryComponent, false);
+
+			if (!equippedAccessories.ContainsKey(accessoryComponent))
+				equippedAccessories.Add(accessoryComponent, false);
+
+			// Настраиваем кнопку
+			accessoryComponent.buttonAdjustment();
 		}
 	}
+
 	
 	public void SaveData(ref GameData gameData)
 	{
 		gameData.boughtAccessoriesInStorage = boughtAccessories;
+		gameData.equippedAccessoriesInStorage = equippedAccessories;
 	}
 }

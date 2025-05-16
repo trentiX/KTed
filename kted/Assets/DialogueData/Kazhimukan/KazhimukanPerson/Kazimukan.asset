@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e049329994d79794094618d0af4407f3, type: 3}
+  m_Name: Kazimukan
+  m_EditorClassIdentifier: 
+  dialogueRus:
+  - "\u0421\u0430\u043B\u0435\u043C, \u0431\u0430\u043B\u0430\u043C!\r\n"
+  - "\u0425\u043E\u0447\u0435\u0448\u044C \u043F\u043E\u0434\u043D\u0438\u043C\u0443
+    \u044D\u0442\u043E\u0442 \u043A\u0430\u043C\u0435\u043D\u044C?\r\n"
+  dialogueKaz: []
+  sprite: {fileID: 21300000, guid: 82ba568da4838a74c912f80c3bf737d4, type: 3}
+  name: "\u041A\u0430\u0436\u044B\u043C\u0443\u043A\u0430\u043D \u041C\u0443\u043D\u0430\u0439\u0442\u043F\u0430\u0441\u043E\u0432"
+  responses:
+  - responseText: "\u042D\u0442\u043E \u0431\u0443\u0434\u0435\u0442 \u0432\u043F\u0435\u0447\u0430\u0442\u043B\u044F\u044E\u0449\u0435"
+    dialogueObject: {fileID: 11400000, guid: a7628d78bda7d114299ff2440cf17016, type: 2}
+  - responseText: "\u0421 \u0440\u0430\u0434\u043E\u0441\u0442\u044C\u044E \u043F\u043E\u0441\u043C\u043E\u0442\u0440\u044E."
+    dialogueObject: {fileID: 11400000, guid: a7628d78bda7d114299ff2440cf17016, type: 2}
+  - responseText: "\u0410 \u0412\u044B \u0442\u043E\u0447\u043D\u043E \u043D\u0435
+      \u043F\u043E\u0432\u0440\u0435\u0434\u0438\u0442\u0435 \u0441\u0435\u0431\u044F?"
+    dialogueObject: {fileID: 11400000, guid: a7628d78bda7d114299ff2440cf17016, type: 2}

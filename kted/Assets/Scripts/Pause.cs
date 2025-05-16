@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using UnityEngine.UIElements;
 
 public class Pause : MonoBehaviour
 {
@@ -27,11 +28,14 @@ public class Pause : MonoBehaviour
 		}); 
 	}
 	
-	public void Resume()
+	public void Resume(UnityEngine.UI.Button button)
 	{
 		//Cursor.visible = false;
 		isOpen = false;
 		panel.SetActive(false);
 		Time.timeScale = 1f;
+		
+		button.interactable = false;
+		button.interactable = true;
 	}
 }
