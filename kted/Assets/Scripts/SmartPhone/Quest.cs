@@ -33,23 +33,23 @@ public class Quest : MonoBehaviour
 	
 	private void OnClick()
 	{
-		if (_ktedwork._pointerClicked != null) ChangeAlpha(0, _ktedwork._pointerClicked.gameObject);
-		_ktedwork.OpenQuest(this);
-		_ktedwork._pointerClicked = this;
+		if (Ktedwork.instance._pointerClicked != null) ChangeAlpha(0, Ktedwork.instance._pointerClicked.gameObject);
+		Ktedwork.instance.OpenQuest(this);
+		Ktedwork.instance._pointerClicked = this;
 	}
 	
 	public virtual void StartQuest()
 	{
 		questIsOver = false;
 		
-	 	_ktedwork._currQuest.completionStatus.text = "Активный";
+	 	Ktedwork.instance._currQuest.completionStatus.text = "Активный";
 	}
 
 	public virtual void SubmitQuest()
 	{
 		if (!questIsOver) return;
 		questIsOver = true;		
-		_ktedwork._currQuest.completionStatus.text = "Выполненный";
+		Ktedwork.instance._currQuest.completionStatus.text = "Выполненный";
 	}
 	
 	private void ChangeAlpha(float value, GameObject chat)
@@ -88,7 +88,7 @@ public class Quest : MonoBehaviour
 		});
 		onExit.callback.AddListener((AbstractEventData) =>
 		{
-			if(_ktedwork._pointerClicked == this) return;
+			if(Ktedwork.instance._pointerClicked == this) return;
 			ChangeAlpha(0, gameObject);
 		});
 		

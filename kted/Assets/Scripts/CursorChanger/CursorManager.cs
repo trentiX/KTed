@@ -42,7 +42,7 @@ public class CursorManager : MonoBehaviour
 		{
 			if (CheckPlayerClick()) // Проверка клика по главному персонажу
 			{
-				ReactToPlayerClick();
+				//ReactToPlayerClick();
 			}
 			else
 			{

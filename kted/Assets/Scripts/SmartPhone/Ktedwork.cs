@@ -14,16 +14,19 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 	[SerializeField] private TextMeshProUGUI _taskReward;
 	[SerializeField] private TextMeshProUGUI _taskObjectives;
 	[SerializeField] private TextMeshProUGUI _accBalance;	
+	[SerializeField] private TextMeshProUGUI _accBalanceInPet;	
 	[SerializeField] private UnityEngine.UI.Button _submitQuest;
 	[SerializeField] private UnityEngine.UI.Button _startQuest;
 	
 	// Variables
 	public List<DialogueActivator> questChars;
+	public List<GameObject> objectsToInteract;
 	public int _accBalanceInt;
 	public bool questIsGoing;
 	
 	public SerializableDictionary<Quest, bool> _quests = new SerializableDictionary<Quest, bool>();
 	public static UnityEvent<DialogueActivator> OnQuestInteracted = new UnityEvent<DialogueActivator>();
+	public static UnityEvent<GameObject> OnQuestCollected = new UnityEvent<GameObject>();
 		
 	public Quest _pointerClicked;
 	public Quest _currQuest;
@@ -35,8 +38,7 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 	private AudioManager audioManager;
 	
 	// Code
-	
-	private void Start()
+	private void Awake()
 	{
 		if (instance == null)
 		{
@@ -74,33 +76,38 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 				_submitQuest.interactable = false;
 			}
 		}
+		if (_pointerClicked != null && _pointerClicked.interactedAmount == _pointerClicked.goalAmount 
+			&& _quests.ContainsKey(_pointerClicked) && _quests[_pointerClicked] == false)
+		{
+			_submitQuest.interactable = true;
+		}
 	}
 
 	public void StartQuestButton()
 	{
-		if (_currQuest != null) 
-		{
-			_currQuest.SubmitQuest();
-		}
+		if (questIsGoing) return;
 
 		questIsGoing = true;
 		_currQuest = _pointerClicked;
 		_currQuest.StartQuest();
 		_currQuest.completionStatus.text = "Активный";
 
-
 		_taskObjectives.text = "- " + _currQuest.questObjectives +
 		 $" ( {_currQuest.interactedAmount} / {_currQuest.goalAmount} )";
+		 		
+		_quests[_currQuest] = false;
 	}
 
 	public void SubmitQuestButton()
 	{
 		_currQuest.SubmitQuest();
 		
+		questIsGoing = false;
 		audioManager.SFXQuestBitCompletion();
 		
 		_accBalanceInt += _currQuest.taskReward;
 		_accBalance.text = _accBalanceInt + " KTedbux";
+		_accBalanceInPet.text = _accBalanceInt + " KTedbux";
 		
 		_currQuest.completionStatus.text = "Выполненный";
 		_startQuest.interactable = false;
@@ -125,16 +132,35 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 		 $" ( {_currQuest.interactedAmount} / {_currQuest.goalAmount} )";
 	}
 	
+	public void Collected(GameObject gameObject)
+	{
+	    OnQuestCollected.Invoke(gameObject);
+	    
+	    objectsToInteract.Remove(gameObject);
+	    _currQuest.interactedAmount++;
+	    
+	    if (_currQuest.interactedAmount == _currQuest.goalAmount)
+	    {
+	        _submitQuest.interactable = true;
+	        audioManager.SFXNotificationSound();
+	    }
+	    
+	    _taskObjectives.text = "- " + _currQuest.questObjectives +
+	     $" ( {_currQuest.interactedAmount} / {_currQuest.goalAmount} )";
+	}
+	
 	public void AccBalanceUIUpdate(int amountOfMoney)
 	{
 		_accBalanceInt = amountOfMoney;
 		
 		_accBalance.text = _accBalanceInt + " KTedbux";
+		_accBalanceInPet.text = _accBalanceInt + " KTedbux";
 	}
 	// DATA
 	public void LoadData(GameData gameData)
-	{
-		_quests = gameData.questsInStorage;
+	{	
+		if (gameData.questsInStorage != null) _quests = gameData.questsInStorage;
+		
 		AccBalanceUIUpdate(gameData.playersMoney);
 		
 		foreach(var quest in _quests)
@@ -145,6 +171,8 @@ public class Ktedwork : MonoBehaviour, IDataPersistence
 				quest.Key.interactedAmount = quest.Key.goalAmount;
 			}
 		}
+		
+		AmresQuest.instance.CheckOnComplete(); // Set active eastereggs if quest is completed
 	}
 
 	public void SaveData(ref GameData gameData)

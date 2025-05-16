@@ -68,7 +68,7 @@ public class Browser : MonoBehaviour, IDataPersistence
 	
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Escape))
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			CloseBrowser();
 		}

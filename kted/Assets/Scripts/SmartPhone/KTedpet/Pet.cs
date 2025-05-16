@@ -42,6 +42,8 @@ public class Pet : MonoBehaviour, IDataPersistence
 	private KTedpet ktedpet;
 	private SmartPhone smartPhone;
 	private SerializableDictionary<string, bool> interactions = new SerializableDictionary<string, bool>();
+	private int factsCounter = 0;
+	private int adviceCounter = 0;
 
     // Code
     void Awake()
@@ -64,13 +66,11 @@ public class Pet : MonoBehaviour, IDataPersistence
 				break;
 				
 			case "advice":
-				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
-					(advicePetPhrases), "intersection");
+				PhrasesOneByOne(advicePetPhrases, "advice");
 				break;
 				
 			case "fact":
-				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase
-					(factPetPhrases), "intersection");
+				PhrasesOneByOne(factPetPhrases, "fact");
 				break;
 				
 			case "changeRoom":
@@ -105,6 +105,52 @@ public class Pet : MonoBehaviour, IDataPersistence
 		}
 	}
 	
+	private void PhrasesOneByOne(string[] phrases, string action)
+	{
+		if (action == "advice")
+		{
+			ktedpet.GenerateMessage(phrases[adviceCounter], action);
+		}
+
+		if (action == "fact")
+		{
+			ktedpet.GenerateMessage(phrases[factsCounter], action);
+		}
+		
+		if (action == "advice")
+		{
+			adviceCounter++;
+			if (adviceCounter >= phrases.Length)
+			{
+				adviceCounter = 0;
+			}
+		}
+		else if (action == "fact")
+		{
+			factsCounter++;
+			if (factsCounter >= phrases.Length)
+			{
+				factsCounter = 0;
+			}
+		}
+	}
+	
+	private IEnumerator SeparatedPhrases(string[] phrases)
+	{
+		for (int i = 0; i < phrases.Length; i++)
+		{
+			if (i == phrases.Length - 1)
+			{
+				ktedpet.GenerateMessage(phrases[i], "greeting");
+				break;
+			}	
+			
+			ktedpet.GenerateMessage(phrases[i], "");
+				
+			yield return new WaitForSeconds(4f); // Задержка между сообщениями	
+		}
+	}
+	
 	// Метод для первого взаимодействия с игроком (оставляем без изменений)
 	public void FirstInteractionMessage()
 	{
@@ -115,7 +161,7 @@ public class Pet : MonoBehaviour, IDataPersistence
 			
 			if (value)
 			{
-				ktedpet.GenerateMessage(ktedpet.GetRandomPhrase(onPlayerFirstInteraction), "greeting");
+				StartCoroutine(SeparatedPhrases(onPlayerFirstInteraction));
 				interactions["firstInteraction"] = false;
 			}
 			else

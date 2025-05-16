@@ -24,21 +24,32 @@ public class Accessory : MonoBehaviour
 	{
 		petShopManager = FindObjectOfType<PetShopManager>();
 		
+		// Проверяем, что словари существуют
+		if (petShopManager.boughtAccessories == null)
+			petShopManager.boughtAccessories = new SerializableDictionary<Accessory, bool>();
+
+		if (petShopManager.equippedAccessories == null)
+			petShopManager.equippedAccessories = new SerializableDictionary<Accessory, bool>();
+
+		// Добавляем аксессуар, если его нет
 		if (!petShopManager.boughtAccessories.ContainsKey(this))
-			petShopManager.boughtAccessories.Add(this, false);
+			petShopManager.boughtAccessories[this] = false;
+
+		if (!petShopManager.equippedAccessories.ContainsKey(this))
+			petShopManager.equippedAccessories[this] = false;
 	}
-	
+
 	public void buttonAdjustment()
 	{	
 		buyButton.onClick.RemoveAllListeners();
-		if (!equipped && petShopManager.boughtAccessories[this])
+		if (!petShopManager.equippedAccessories[this] && petShopManager.boughtAccessories[this])
 		{
 			purchased = true;
 			buyButton.gameObject.GetComponentInChildren
 				<TextMeshProUGUI>().text = "Надеть";
 			buyButton.onClick.AddListener(() => petShopManager.PutOnItem(this));
 		}	
-		else if (equipped && petShopManager.boughtAccessories[this])
+		else if (petShopManager.equippedAccessories[this] && petShopManager.boughtAccessories[this])
 		{
 			purchased = true;
 			buyButton.gameObject.GetComponentInChildren

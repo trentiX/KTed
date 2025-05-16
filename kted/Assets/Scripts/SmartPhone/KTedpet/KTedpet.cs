@@ -18,6 +18,7 @@ public class KTedpet : MonoBehaviour
     [SerializeField][TextArea] private string[] letsWalkPhrases;
     [SerializeField][TextArea] private string[] advicePhrases;
     [SerializeField][TextArea] private string[] factPhrases;
+    [SerializeField][TextArea] private string[] morePhrases;
 
 
     // Serialization
@@ -129,6 +130,8 @@ public class KTedpet : MonoBehaviour
             "talk" => CreateButtons(2),
             "intersection" => CreateButtons(2),
             "whatToDo" => CreateButtons(3),
+            "fact" => CreateButtons(2), 
+            "advice" => CreateButtons(2),
             _ => new List<GameObject>() // Если тип неизвестен, возвращаем пустой список
         };
 
@@ -140,6 +143,16 @@ public class KTedpet : MonoBehaviour
 
             case "agree":
                 GenerateMessage(GetRandomPhrase(pet.continueDialoguePetPhrases), "intersection");
+                break;
+                
+            case "fact":
+                ConfigureButton(buttons[0], GetRandomPhrase(morePhrases), TellFact);
+                ConfigureButton(buttons[1], GetRandomPhrase(letsWalkPhrases), ChangeRoom);
+                break;    
+            
+            case "advice":
+                ConfigureButton(buttons[0], GetRandomPhrase(morePhrases), TellAdvice);
+                ConfigureButton(buttons[1], GetRandomPhrase(letsWalkPhrases), ChangeRoom);
                 break;
                 
             case "talk":

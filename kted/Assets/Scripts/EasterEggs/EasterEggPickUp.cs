@@ -47,6 +47,10 @@ public class EasterEggPickUp : MonoBehaviour
                 }
                 else 
                 {
+                    if (Ktedwork.instance.questIsGoing && Ktedwork.instance.objectsToInteract.Contains(gameObject))
+                    {
+                        Ktedwork.instance.Collected(gameObject);
+                    }
                     easterEggManager.IncreaseEasterEggCount();
                 }
             }
@@ -72,6 +76,7 @@ public class EasterEggPickUp : MonoBehaviour
 
             gameObject.transform.position = pickedPoint.transform.position;
             BoxCollider2D coll = gameObject.GetComponent<BoxCollider2D>();
+                
             coll.size = new Vector2(0.001f, 0.001f);
 
             GameObject fx2 = Instantiate(pickUpFX, transform.position, quaternion.identity);

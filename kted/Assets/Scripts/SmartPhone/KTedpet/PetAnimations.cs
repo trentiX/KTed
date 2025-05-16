@@ -141,7 +141,22 @@ public class PetAnimations : MonoBehaviour, IDataPersistence
     // Data persistence
     public void LoadData(GameData data)
     {
-        currentAppearance = data.petAppearance ?? new List<PetAppearance> { PetAppearance.normal };
+        Debug.Log($"Loading data... Data is null: {data == null}");
+        Debug.Log($"Data appearance is null: {data?.petAppearance == null}");
+        
+        // Проверяем, есть ли элементы в списке
+        if (data.petAppearance == null || data.petAppearance.Count == 0)
+        {
+            Debug.LogWarning("Appearance list is null or empty. Setting to default (normal).");
+            currentAppearance = new List<PetAppearance> { PetAppearance.normal };
+        }
+        else
+        {
+            currentAppearance = new List<PetAppearance>(data.petAppearance);
+        }
+
+        Debug.Log($"Current appearance count after fix: {currentAppearance.Count}");
+        
         ChangePetSprite(PetSprite.idle);
         UpdateAnimation();
         StartAnimationCoroutine();

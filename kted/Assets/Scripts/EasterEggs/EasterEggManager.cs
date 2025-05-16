@@ -30,6 +30,10 @@ public class EasterEggManager : MonoBehaviour
     
     public void MusicPlatePickedUp(GameObject musicPlate)
     {
+        if (Ktedwork.instance.questIsGoing && Ktedwork.instance.objectsToInteract.Contains(musicPlate))
+        {
+            Ktedwork.instance.Collected(musicPlate);
+        }
         if (_musicUI == null)
         {
             Debug.LogError("MusicUI component not assigned to EasterEggManager!");

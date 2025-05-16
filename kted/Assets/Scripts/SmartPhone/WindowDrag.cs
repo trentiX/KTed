@@ -23,9 +23,12 @@ public class WindowDrag : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private RectTransform canvasRect;
     public static WindowDrag instance;
 
-    private void Start()
+    void Awake()
     {
         instance = this;
+    }
+    private void Start()
+    {
         panelRect = GetComponent<RectTransform>();
         canvasRect = canvas.GetComponent<RectTransform>();
         targetPosition = transform.position;

@@ -10,6 +10,7 @@ public class GameData
 	public bool phoneIsPicked;
 	public bool browserEasterEggFound;
 	public Vector3 playerPosition;
+	public SerializableDictionary<GameObject, Vector3> eaterEggsPositionInStorage;
 	public SerializableDictionary<string, bool> interactionsWithPet;
 	public SerializableDictionary<DialogueActivator, Response> responsesInStorage;
 	public SerializableDictionary<GameObject, DialogueActivator> chatsInStorage;
@@ -17,6 +18,7 @@ public class GameData
 	public SerializableDictionary<Quest, bool> questsInStorage;
 	public SerializableDictionary<TestActivator, int> testsInStorage;
 	public SerializableDictionary<Accessory, bool> boughtAccessoriesInStorage;
+	public SerializableDictionary<Accessory, bool> equippedAccessoriesInStorage;
 	public List<AudioClip> favouriteSongs;
 	public int MaxCombo;
 	public int MaxScore;
@@ -29,6 +31,7 @@ public class GameData
 		this.phoneIsPicked = false;
 		this.browserEasterEggFound = false;
 		playerPosition = Vector3.zero;
+		eaterEggsPositionInStorage = new SerializableDictionary<GameObject, Vector3>();
 		interactionsWithPet = new SerializableDictionary<string, bool>();
 		chatsInStorage = new SerializableDictionary<GameObject, DialogueActivator>();
 		responsesInStorage = new SerializableDictionary<DialogueActivator, Response>();
@@ -36,6 +39,7 @@ public class GameData
 		questsInStorage = new SerializableDictionary<Quest, bool>();
 		testsInStorage = new SerializableDictionary<TestActivator, int>();
 		boughtAccessoriesInStorage = new SerializableDictionary<Accessory, bool>();
+		equippedAccessoriesInStorage = new SerializableDictionary<Accessory, bool>();
 		favouriteSongs = new List<AudioClip>();
 		MaxCombo = new int();
 		MaxScore = new int();
