@@ -20,6 +20,8 @@ public class LocationsManager : MonoBehaviour
     [SerializeField] private DialogueActivator[] ErmukhanItems;
     [SerializeField] private DialogueActivator[] JumabekItems;
     [SerializeField] private DialogueActivator[] MukhtarItems;
+    [SerializeField] private DialogueActivator[] AlimhanItems;
+    [SerializeField] private DialogueActivator[] ShaimerdenItems;
 
     [SerializeField] private AudioSource _audioSource;
 
@@ -36,6 +38,8 @@ public class LocationsManager : MonoBehaviour
         stationCompletionStatus.Add("Динмухамед Кунаев", (DinmukhamedItems, false));
         stationCompletionStatus.Add("Жумабек Ташенов", (JumabekItems, false));
         stationCompletionStatus.Add("Мухтар Ауэзов", (MukhtarItems, false));
+        stationCompletionStatus.Add("Алимхан Ермеков", (AlimhanItems, false));
+        stationCompletionStatus.Add("Шаймерден Косшыгулулы", (ShaimerdenItems, false));
     }
 
     public void CheckIfCompleted(string name)
@@ -44,7 +48,7 @@ public class LocationsManager : MonoBehaviour
         {
             var (dialogueActivators, isCompleted) = stationCompletionStatus[name];
 
-            if (!isCompleted && Cheking(dialogueActivators))
+            if (!isCompleted && Checking(dialogueActivators))
             {
                 // Mark the station as completed if all DialogueActivators are interacted with
                 stationCompletionStatus[name] = (dialogueActivators, true);
@@ -57,7 +61,7 @@ public class LocationsManager : MonoBehaviour
         }
     }
 
-    private bool Cheking(DialogueActivator[] items)
+    private bool Checking(DialogueActivator[] items)
     {
         foreach (var item in items)
         {

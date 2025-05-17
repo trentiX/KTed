@@ -22,7 +22,7 @@ public class NotificationManager : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI smallWinBoxText;
 	
 	// Variables
-	private List<GameObject> notifications;
+	public List<GameObject> notifications;
 	private Browser browser;
 	private Player player;
 	public static NotificationManager instance;
@@ -40,6 +40,12 @@ public class NotificationManager : MonoBehaviour
 	{
 		if (!player.canMove()) return;
 		
+		if (notifications.Count > 3)
+		{
+			Destroy(notifications[0]);
+			notifications.RemoveAt(0);
+		}
+		
 		GameObject newNotification = Instantiate(notificationTemplate, notificationsBox.transform);
 		newNotification.SetActive(true);
 			
@@ -48,6 +54,11 @@ public class NotificationManager : MonoBehaviour
 			
 		notifications.Add(newNotification);
 			
+		if (notifications.Count > 2)
+		{
+			return;
+		}
+		
 		if (notifications.Count > 1)
 		{
 			GameObject hideAllButton = Instantiate(hideAllButtonTemplate, notificationsBox.transform);

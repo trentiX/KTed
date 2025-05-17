@@ -81,7 +81,7 @@ public class DialogueUI : MonoBehaviour
 
         if (dialogueObject.HasResponses)
         {
-            _responseHandler.ShowResponses(dialogueObject.Responses);
+            _responseHandler.ShowResponses(dialogueObject.Responses, dialogueObject);
         }
         else
         {

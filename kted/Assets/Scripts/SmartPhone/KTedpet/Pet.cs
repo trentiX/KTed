@@ -107,47 +107,64 @@ public class Pet : MonoBehaviour, IDataPersistence
 	
 	private void PhrasesOneByOne(string[] phrases, string action)
 	{
-		if (action == "advice")
-		{
-			ktedpet.GenerateMessage(phrases[adviceCounter], action);
-		}
+		string phrase = "";
 
-		if (action == "fact")
-		{
-			ktedpet.GenerateMessage(phrases[factsCounter], action);
-		}
-		
 		if (action == "advice")
 		{
-			adviceCounter++;
-			if (adviceCounter >= phrases.Length)
-			{
-				adviceCounter = 0;
-			}
+			phrase = phrases[adviceCounter];
+			adviceCounter = (adviceCounter + 1) % phrases.Length; // Инкремент с цикличностью
 		}
 		else if (action == "fact")
 		{
-			factsCounter++;
-			if (factsCounter >= phrases.Length)
-			{
-				factsCounter = 0;
-			}
+			phrase = phrases[factsCounter];
+			factsCounter = (factsCounter + 1) % phrases.Length; // Инкремент с цикличностью
 		}
+
+		// Разделяем фразу на две части
+		string[] splitPhrases = SplitPhraseInTwo(phrase);
+
+		// Запускаем метод отправки сообщений по одному
+		StartCoroutine(SeparatedPhrases(splitPhrases, action, 2f));
 	}
-	
-	private IEnumerator SeparatedPhrases(string[] phrases)
+
+	// Метод деления фразы на две части
+	private string[] SplitPhraseInTwo(string phrase)
+	{
+		int middle = phrase.Length / 2;
+
+		// Если середина попадает не на пробел, ищем ближайший пробел
+		if (phrase[middle] != ' ')
+		{
+			int leftSpace = phrase.LastIndexOf(' ', middle);
+			int rightSpace = phrase.IndexOf(' ', middle);
+
+			middle = (leftSpace >= 0) ? leftSpace : (rightSpace >= 0 ? rightSpace : middle);
+		}
+
+		// Добавляем троеточие к первой части
+		string firstPart = phrase.Substring(0, middle).Trim() + "...";
+		string secondPart = "..." + phrase.Substring(middle).Trim();
+
+		return new string[]
+		{
+			firstPart,
+			secondPart
+		};
+	}
+
+	private IEnumerator SeparatedPhrases(string[] phrases, string typeOfMessage, float delay)
 	{
 		for (int i = 0; i < phrases.Length; i++)
 		{
 			if (i == phrases.Length - 1)
 			{
-				ktedpet.GenerateMessage(phrases[i], "greeting");
+				ktedpet.GenerateMessage(phrases[i], typeOfMessage);
 				break;
 			}	
 			
 			ktedpet.GenerateMessage(phrases[i], "");
 				
-			yield return new WaitForSeconds(4f); // Задержка между сообщениями	
+			yield return new WaitForSeconds(delay); // Задержка между сообщениями	
 		}
 	}
 	
@@ -161,7 +178,7 @@ public class Pet : MonoBehaviour, IDataPersistence
 			
 			if (value)
 			{
-				StartCoroutine(SeparatedPhrases(onPlayerFirstInteraction));
+				StartCoroutine(SeparatedPhrases(onPlayerFirstInteraction, "greeting", 4f));
 				interactions["firstInteraction"] = false;
 			}
 			else
@@ -228,10 +245,15 @@ public class Pet : MonoBehaviour, IDataPersistence
 		}
 		
 		FirstInteractionMessage();
+		adviceCounter = gameData.adviceCounterInStorage;
+		factsCounter = gameData.factsCounterInStorage;
 	}
 
 	public void SaveData(ref GameData gameData)
 	{
+		gameData.adviceCounterInStorage = adviceCounter;
+		gameData.factsCounterInStorage = factsCounter;
+		
 		for(int i = 0; i < possibleInteractions.Count; i++)
 		{
 			if (interactions.TryGetValue(possibleInteractions[i], out bool value))

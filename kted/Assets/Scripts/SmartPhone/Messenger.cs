@@ -24,9 +24,10 @@ public class Messenger : MonoBehaviour,IDataPersistence
     
     // Variables
     public SerializableDictionary<GameObject, DialogueActivator> chats;
-    public SerializableDictionary<DialogueActivator, Response> responses;
+    public SerializableDictionary<DialogueActivator, List<Response>> responses;
     public List<DialogueActivator> chatsTemp;
     public List<GameObject> messagesTemp;
+    private int index = 0;
     
     // Instances
     private Player _player;
@@ -100,6 +101,7 @@ public class Messenger : MonoBehaviour,IDataPersistence
             }
             messagesTemp.Clear();
             ktedGramTextBig.SetActive(false);
+            index = 0;
         }
         
         // Set the image for the current chat
@@ -118,7 +120,7 @@ public class Messenger : MonoBehaviour,IDataPersistence
             if (i == dialogueObject.DialogueRus.Length - 1 && dialogueObject.HasResponses) break;
         }
 
-        Response myResponse = dialogueActivator.chooseResponse;
+        List<Response> myResponse = dialogueActivator.chooseResponse;
         if (dialogueObject.HasResponses)
         {
             if (!responses.ContainsKey(dialogueActivator))
@@ -135,14 +137,15 @@ public class Messenger : MonoBehaviour,IDataPersistence
             
             GameObject newResponse = Instantiate(responseTemplate, messageBox.transform);
             newResponse.SetActive(true);
-            newResponse.GetComponentInChildren<TextMeshProUGUI>().text = myResponse.ResponseText;
+            newResponse.GetComponentInChildren<TextMeshProUGUI>().text = myResponse[index].ResponseText;
             
             messagesTemp.Add(newResponse);
             
             // After adding the new response, force its layout rebuild
             LayoutRebuilder.ForceRebuildLayoutImmediate(newResponse.GetComponent<RectTransform>());
             
-            ShowMessages(eventData, chat, dialogueActivator, myResponse.DialogueObject, false);
+            ShowMessages(eventData, chat, dialogueActivator, myResponse[index].DialogueObject, false);
+            index++;
         }
         RebuildLayout(chat);
     }
