@@ -119,65 +119,83 @@ public class KTedpet : MonoBehaviour
     }
 
     private void GenerateButton(string typeOfMessage)
+{
+    // Очищаем предыдущие кнопки, если генерируется новый набор ответов
+    ClearPossibleActivities();
+
+    // Создаем кнопки в зависимости от типа сообщения
+    List<GameObject> buttons = typeOfMessage switch
     {
-        // Очищаем предыдущие кнопки, если генерируется новый набор ответов
-        ClearPossibleActivities();
+        "greeting" => CreateButtons(1),
+        "talk" => CreateButtons(2),
+        "intersection" => CreateButtons(2),
+        "whatToDo" => CreateButtons(3),
+        "fact" => CreateButtons(2), 
+        "advice" => CreateButtons(2),
+        _ => new List<GameObject>() // Если тип неизвестен, возвращаем пустой список
+    };
 
-        // Создаем кнопки в зависимости от типа сообщения
-        List<GameObject> buttons = typeOfMessage switch
-        {
-            "greeting" => CreateButtons(1),
-            "talk" => CreateButtons(2),
-            "intersection" => CreateButtons(2),
-            "whatToDo" => CreateButtons(3),
-            "fact" => CreateButtons(2), 
-            "advice" => CreateButtons(2),
-            _ => new List<GameObject>() // Если тип неизвестен, возвращаем пустой список
-        };
+    switch (typeOfMessage)
+    {
+        case "greeting":
+            string greeting = GetRandomPhrase(playerGreetingPhrases);
+            ConfigureButton(buttons[0], greeting, () => Greet(greeting));
+            break;
 
-        switch (typeOfMessage)
-        {
-            case "greeting":
-                ConfigureButton(buttons[0], GetRandomPhrase(playerGreetingPhrases), Greet);
-                break;
-
-            case "agree":
-                GenerateMessage(GetRandomPhrase(pet.continueDialoguePetPhrases), "intersection");
-                break;
-                
-            case "fact":
-                ConfigureButton(buttons[0], GetRandomPhrase(morePhrases), TellFact);
-                ConfigureButton(buttons[1], GetRandomPhrase(letsWalkPhrases), ChangeRoom);
-                break;    
+        case "agree":
+            GenerateMessage(GetRandomPhrase(pet.continueDialoguePetPhrases), "intersection");
+            break;
             
-            case "advice":
-                ConfigureButton(buttons[0], GetRandomPhrase(morePhrases), TellAdvice);
-                ConfigureButton(buttons[1], GetRandomPhrase(letsWalkPhrases), ChangeRoom);
-                break;
-                
-            case "talk":
-				ConfigureButton(buttons[0], GetRandomPhrase(factPhrases), TellFact);
-				ConfigureButton(buttons[1], GetRandomPhrase(advicePhrases), TellAdvice);
-				break;
-                
-			case "intersection":
-				ConfigureButton(buttons[0], GetRandomPhrase(letsTalkPhrases), ToTalk);
-				ConfigureButton(buttons[1], GetRandomPhrase(letsWalkPhrases), ChangeRoom);
-				break;
-				
-            case "whatToDo":
-                ConfigureButton(buttons[0], GetRandomPhrase(goBackPhrases), GoBack);
-                ConfigureButton(buttons[1], GetRandomPhrase(gotoChooseGamePhrases), GoToChooseGame);
-                ConfigureButton(buttons[2], GetRandomPhrase(gotoStorePhrases), GoToStore);
-                break;
+        case "fact":
+            string morePhrase = GetRandomPhrase(morePhrases);
+            ConfigureButton(buttons[0], morePhrase, () => TellFact(morePhrase));
+            
+            string walkPhrase = GetRandomPhrase(letsWalkPhrases);
+            ConfigureButton(buttons[1], walkPhrase, () => ChangeRoom(walkPhrase));
+            break;    
+        
+        case "advice":
+            string morePhrase1 = GetRandomPhrase(morePhrases);
+            ConfigureButton(buttons[0], morePhrase1, () => TellAdvice(morePhrase1));
+            
+            string walkPhrase1 = GetRandomPhrase(letsWalkPhrases);
+            ConfigureButton(buttons[1], walkPhrase1, () => ChangeRoom(walkPhrase1));
+            break;
+            
+        case "talk":
+            string factPhrase = GetRandomPhrase(factPhrases);
+			ConfigureButton(buttons[0], factPhrase, () => TellFact(factPhrase));
+			
+			string advicePhrase = GetRandomPhrase(advicePhrases);
+            ConfigureButton(buttons[1], advicePhrase, () => TellAdvice(advicePhrase));
+			break;
+            
+		case "intersection":
+            string talkPhrase = GetRandomPhrase(letsTalkPhrases);
+            ConfigureButton(buttons[0], talkPhrase, () => ToTalk(talkPhrase));
+            
+            string walkPhrase2 = GetRandomPhrase(letsWalkPhrases);
+            ConfigureButton(buttons[1], walkPhrase2, () => ChangeRoom(walkPhrase2));
+			break;
+			
+        case "whatToDo":
+            string goBackPhrase = GetRandomPhrase(goBackPhrases);
+            ConfigureButton(buttons[0], goBackPhrase, () => GoBack(goBackPhrase));
+            
+            string gotoChooseGamePhrase = GetRandomPhrase(gotoChooseGamePhrases);
+            ConfigureButton(buttons[1], gotoChooseGamePhrase, () => GoToChooseGame(gotoChooseGamePhrase));
+            
+            string gotoStorePhrase = GetRandomPhrase(gotoStorePhrases);
+            ConfigureButton(buttons[2], gotoStorePhrase, () => GoToStore(gotoStorePhrase));
+            break;
 
-            default:
-                Debug.LogWarning($"Unhandled message type: {typeOfMessage}");
-                break;
-        }
+        default:
+            Debug.LogWarning($"Unhandled message type: {typeOfMessage}");
+            break;
+    }
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(messageBox.content);
-        messageBox.verticalNormalizedPosition = 0;
+    LayoutRebuilder.ForceRebuildLayoutImmediate(messageBox.content);
+    messageBox.verticalNormalizedPosition = 0;
     }
 
     private void ConfigureButton(GameObject button, string text, UnityEngine.Events.UnityAction action)
@@ -221,57 +239,56 @@ public class KTedpet : MonoBehaviour
         return phrases[Random.Range(0, phrases.Length)];
     }
 
-	public void ChangeRoom()
-	{
-		GenerateResponse(GetRandomPhrase(letsWalkPhrases));
-
-		pet.ReceiveAction("walk");
-	}
-	
-	public void ToTalk()
-	{
-        GenerateResponse(GetRandomPhrase(letsTalkPhrases));
-
-		pet.ReceiveAction("talk");
-	}
-
-	public void TellFact()
-	{
-	    GenerateResponse(GetRandomPhrase(factPhrases));
-
-		pet.ReceiveAction("fact");
-	}
-	
-	public void TellAdvice()
-	{
-	    GenerateResponse(GetRandomPhrase(advicePhrases));
-
-		pet.ReceiveAction("advice");
-	}
-	
-    public void GoToStore()
+    // Все методы теперь принимают строку как Greet()
+    public void ChangeRoom(string phrase)
     {
-        GenerateResponse(GetRandomPhrase(gotoStorePhrases));
+        GenerateResponse(phrase);
+        pet.ReceiveAction("walk");
+    }
 
+    public void ToTalk(string phrase)
+    {
+        GenerateResponse(phrase);
+        pet.ReceiveAction("talk");
+    }
+
+    public void TellFact(string phrase)
+    {
+        GenerateResponse(phrase);
+        pet.ReceiveAction("fact");
+    }
+
+    public void TellAdvice(string phrase)
+    {
+        GenerateResponse(phrase);
+        pet.ReceiveAction("advice");
+    }
+
+    public void GoToStore(string phrase)
+    {
+        GenerateResponse(phrase);
+        
         if (CanRoomChange(storeRoom))
         {
             StartCoroutine(RoomTransition(storeRoom));
             pet.ReceiveAction("store");
-            foreach (GameObject accesory in petShopManager.accessories)
+            
+            foreach (GameObject accessory in petShopManager.accessories)
             {
-                accesory.GetComponent<Accessory>().buyButton.interactable = true;
+                accessory.GetComponent<Accessory>().buyButton.interactable = true;
             }
         }
     }
 
-    public void GoToChooseGame()
+    public void GoToChooseGame(string phrase)
     {
-        GenerateResponse(GetRandomPhrase(gotoChooseGamePhrases));
-
+        GenerateResponse(phrase);
+        
         if (CanRoomChange(chooseGameRoom))
         {
             StartCoroutine(RoomTransition(chooseGameRoom));
             pet.ReceiveAction("chooseGame");
+            
             foreach (GameObject game in playRoomManager.gamesIcons)
             {
                 game.GetComponent<Games>().playButton.interactable = true;
@@ -279,10 +296,10 @@ public class KTedpet : MonoBehaviour
         }
     }
 
-    public void GoBack()
+    public void GoBack(string phrase)
     {
-        GenerateResponse(GetRandomPhrase(goBackPhrases));
-
+        GenerateResponse(phrase);
+        
         if (CanRoomChange(mainRoom))
         {
             StartCoroutine(RoomTransition(mainRoom));
@@ -290,15 +307,14 @@ public class KTedpet : MonoBehaviour
         }
     }
 
-    public void GoToPlay()
+    public void GoToPlay() // Этот метод остается без изменений, т.к. не использует фразы
     {
         playRoomManager.currGame.GetComponent<Games>().PlayStartAnim();
     }
 
-    public void Greet()
+    public void Greet(string phrase) // Образец, по которому сделаны остальные
     {
-        GenerateResponse(GetRandomPhrase(playerGreetingPhrases));
-
+        GenerateResponse(phrase);
         pet.ReceiveAction("playerGreeting");
     }
 

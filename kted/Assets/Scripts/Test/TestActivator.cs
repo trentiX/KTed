@@ -68,7 +68,7 @@ public class TestActivator : MonoBehaviour, IInteractable
 	}
 
 
-	public void OnChoseAnswer(Response answer)
+	public void OnChoseAnswer(Response answer, DialogueObject dialogueObject)
 	{
 		// Проверяем, что это текущий активный тест
 		if (!testHandler.TestGoing || testHandler.currTestActivator != this) 

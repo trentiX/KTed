@@ -36,7 +36,7 @@ public class Player : MonoBehaviour, IDataPersistence
 	Rigidbody2D rb;
 
 	// Player
-	float walkSpeed = 3.3f;
+	[SerializeField] float walkSpeed = 3.3f;
 	float speedLimiter = 0.7f;
 	float inputHorizontal;
 	float inputVertical;

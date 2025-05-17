@@ -12,7 +12,7 @@ public class GameData
 	public Vector3 playerPosition;
 	public SerializableDictionary<GameObject, Vector3> eaterEggsPositionInStorage;
 	public SerializableDictionary<string, bool> interactionsWithPet;
-	public SerializableDictionary<DialogueActivator, Response> responsesInStorage;
+	public SerializableDictionary<DialogueActivator, List<Response>> responsesInStorage;
 	public SerializableDictionary<GameObject, DialogueActivator> chatsInStorage;
 	public SerializableDictionary<string, bool> ringedActionsInStorage;
 	public SerializableDictionary<Quest, bool> questsInStorage;
@@ -22,6 +22,8 @@ public class GameData
 	public List<AudioClip> favouriteSongs;
 	public int MaxCombo;
 	public int MaxScore;
+	public int adviceCounterInStorage;
+	public int factsCounterInStorage;
 	public List<PetAppearance> petAppearance; // Добавленное поле для внешнего вида питомца
 
 
@@ -34,7 +36,7 @@ public class GameData
 		eaterEggsPositionInStorage = new SerializableDictionary<GameObject, Vector3>();
 		interactionsWithPet = new SerializableDictionary<string, bool>();
 		chatsInStorage = new SerializableDictionary<GameObject, DialogueActivator>();
-		responsesInStorage = new SerializableDictionary<DialogueActivator, Response>();
+		responsesInStorage = new SerializableDictionary<DialogueActivator, List<Response>>();
 		ringedActionsInStorage = new SerializableDictionary<string, bool>();
 		questsInStorage = new SerializableDictionary<Quest, bool>();
 		testsInStorage = new SerializableDictionary<TestActivator, int>();
@@ -43,6 +45,8 @@ public class GameData
 		favouriteSongs = new List<AudioClip>();
 		MaxCombo = new int();
 		MaxScore = new int();
+		adviceCounterInStorage = new int();
+		factsCounterInStorage = new int();
 		petAppearance = new List<PetAppearance>(); // Инициализация значения по умолчанию
 	}
 }

@@ -14,14 +14,14 @@ public class ResponseHandler : MonoBehaviour
     private DialogueUI _dialogueUI;
 
     private List<GameObject> tempResponseButtons = new List<GameObject>();
-    public static UnityEvent<Response> onResponsePicked = new UnityEvent<Response>();
+    public static UnityEvent<Response, DialogueObject> onResponsePicked = new UnityEvent<Response, DialogueObject>();
 
     private void Start()
     {
         _dialogueUI = GetComponent<DialogueUI>();
     }
 
-    public void ShowResponses(Response[] responses)
+    public void ShowResponses(Response[] responses, DialogueObject dialogueObject)
     {
         float responseBoxWidth = 0;
 
@@ -38,7 +38,7 @@ public class ResponseHandler : MonoBehaviour
             
             responseButton.SetActive(true);
             responseButton.GetComponentInChildren<TMP_Text>().text = response.ResponseText;
-            responseButton.GetComponentInChildren<UnityEngine.UI.Button>().onClick.AddListener(() => OnPickedResponse(response));
+            responseButton.GetComponentInChildren<UnityEngine.UI.Button>().onClick.AddListener(() => OnPickedResponse(response, dialogueObject));
             
             // Add PointerEnter event to change text
             EventTrigger eventTrigger = responseButton.GetComponentInChildren<EventTrigger>();
@@ -75,7 +75,7 @@ public class ResponseHandler : MonoBehaviour
     }
 
 
-    public void OnPickedResponse(Response response)
+    public void OnPickedResponse(Response response, DialogueObject dialogueObject)
     {
         responseBox.gameObject.SetActive(false);
 
@@ -86,6 +86,6 @@ public class ResponseHandler : MonoBehaviour
         tempResponseButtons.Clear();
 
         _dialogueUI.showDialogue(response.DialogueObject, response.DialogueObject.name);
-        onResponsePicked.Invoke(response);
+        onResponsePicked.Invoke(response, dialogueObject);
     }
 }

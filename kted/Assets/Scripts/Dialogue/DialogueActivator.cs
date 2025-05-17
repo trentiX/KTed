@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 {
 	[Header("Dialogue activator props")]
 	[SerializeField] public DialogueObject dialogueObject;
+	[SerializeField] public List<DialogueObject> dialogueObjects;
 	[SerializeField] private GameObject prefab;
 	[SerializeField] private Transform prefabMother;
 	[SerializeField] private string id;
@@ -20,7 +22,7 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 	}
 	
 	[HideInInspector] public bool Interacted = false;
-	[HideInInspector] public Response chooseResponse;
+	public List<Response> chooseResponse = new List<Response>();
 	private GameObject sprite;	
 	private Messenger _messenger;
 	private RingManager _ringManager;
@@ -93,8 +95,9 @@ public class DialogueActivator : MonoBehaviour, IInteractable
 		}
 	}
 
-	private void OnPickedResponse(Response response)
+	private void OnPickedResponse(Response response, DialogueObject dialogueObjectFromResponse)
 	{
-		chooseResponse = response;
+		if (!dialogueObjects.Contains(dialogueObjectFromResponse)) return;
+		chooseResponse.Add(response);
 	}
 }
