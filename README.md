@@ -3,8 +3,8 @@
 </p>
 
 <p align="center">
-   <img alt="Static Badge" src="https://img.shields.io/badge/Views-729-009FB7">
-   <img alt="Static Badge" src="https://img.shields.io/badge/Downloads-279-7678ED">
+   <img alt="Static Badge" src="https://img.shields.io/badge/Views-1,124-009FB7">
+   <img alt="Static Badge" src="https://img.shields.io/badge/Downloads-400-7678ED">
    <img src="https://img.shields.io/badge/Engine-Unity%202022.3.16f1-violet" alt="Unity Version">
    <img src="https://img.shields.io/badge/Version-v1.3-698f3f" alt="Game Version">
    <img src="https://img.shields.io/badge/License-MIT-f2542d" alt="License">
